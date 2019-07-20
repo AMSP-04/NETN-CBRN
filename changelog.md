@@ -1,15 +1,15 @@
-## Changelog
+## NETN-CBRN Changelog
 
 ### Changes in vX
 Version X of the NETN-CBRN was updated by MSG-163 and included in NETN-FOM v3.0 and AMSP-04 Ed B.
 
 #### NETN-CBRN#1 Update modelIdentification
-* Change ´modelIdentification´ ´securityClassification´ from ´unclassified´ to ´Not Classified´
-* Change ´modelIdentification´ ´other´ to include license information
-* Change ´modelIdentification´ ´reference´ to only refer to directly dependent FOM Modules
-* Add ´modelIdentification´ ´useLimitation´ to reflect Scope of FOM Module as defined in NETN-CBRN#2
-* Update ´modelIdentification´ ´purpose´ to reflect Purpose of FOM Module as defined in NETN-CBRN#2
-* Update ´modelIdentification´ ´description´ to reflect Introduction of FOM Module as defined in NETN-CBRN#2
+* Change `modelIdentification` `securityClassification` from `unclassified` to `Not Classified`
+* Change `modelIdentification` `other` to include license information
+* Change `modelIdentification` `reference` to only refer to directly dependent FOM Modules
+* Add `modelIdentification` `useLimitation` to reflect Scope of FOM Module as defined in NETN-CBRN#2
+* Update `modelIdentification` `purpose` to reflect Purpose of FOM Module as defined in NETN-CBRN#2
+* Update `modelIdentification` `description` to reflect Introduction of FOM Module as defined in NETN-CBRN#2
 
 #### NETN-CBRN#2 Update Introduction documentation
 * Introduction section restructured and clarified including description, purpose and useLimitation.
