@@ -47,6 +47,7 @@ Copyright © 2019 by NATO/OTAN. All rights reserved.
 This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License.
 
 Above license gives you the right to use and redistribute the NETN FOM Module (XML file and Documentation) in its entirety without modification. You are also allowed to develop your own new FOM Modules (in separate XML files and separate documentation) that build-on/extends the NETN module by reference. You are NOT allowed to modify the NETN FOM Module or its documentation without prior permission by the NATO Modelling and Simulation Group.</other>
+        <glyph type="png" height="64" width="64" alt="">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</glyph>
     </modelIdentification>
     <objects>
         <objectClass>
@@ -732,7 +733,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 <parameter>
                     <name>Agent</name>
                     <dataType>AgentTypeEnum16</dataType>
-                    <semantics>The released agent.</semantics>
+                    <semantics>The type of released CBRN hazardous agent.</semantics>
                 </parameter>
                 <parameter>
                     <name>Location</name>
@@ -742,7 +743,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 <parameter>
                     <name>Mass</name>
                     <dataType>MassKilogramFloat32</dataType>
-                    <semantics>Total released mass in kg.</semantics>
+                    <semantics>Total released agent mass in kg.</semantics>
                 </parameter>
                 <parameter>
                     <name>Duration</name>
@@ -752,12 +753,12 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 <parameter>
                     <name>ReleaseSize</name>
                     <dataType>ReleaseSizeStruct</dataType>
-                    <semantics>Includes SourceSize (sigmas), mean and variance of released particulates.</semantics>
+                    <semantics>The initial size of the release including initial Gaussian sigmas of the released puff and mean &amp; variance of released particles.</semantics>
                 </parameter>
                 <parameter>
                     <name>ReleaseDynamics</name>
                     <dataType>ReleaseDynamicsStruct</dataType>
-                    <semantics>Temperature and buoyancy of released mass.</semantics>
+                    <semantics>Temperature differance and density ratio of released material relative to the atmosphere.</semantics>
                 </parameter>
                 <parameter>
                     <name>ReleaseVelocity</name>

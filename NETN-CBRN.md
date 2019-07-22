@@ -15,7 +15,7 @@ The specification is based on IEEE 1516 High Level Architecture (HLA) Object Mod
 
 ### Purpose
 
-NETN-CBRN provides a common standard interface for representation of CBRN release, detection, effects, and protective measueres in a federated distributed simulation. E.g the expoure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.
+NETN-CBRN provides a common standard interface for representation of CBRN release, detection, effects, and protective measueres in a federated distributed simulation. E.g the expoure effect on individual humans in a CBRN contaminated Hazard area where the humans are represented in one simulation and the effect is modelled in another federated simulation.
 
 ### Scope
 
@@ -33,23 +33,66 @@ Meteorological conditions and CBRN material properties for modelling the dispers
 
 Whilst designing this CBRN FOM module considerations have been taken as to how the CBRN FOM module can be used by legacy systems that cannot be updated to implement the CBRN FOM module. These considerations have resulted in the CBRN FOM module including interactions that mirror the changes that can be made to objects. These interactions allow for a translation federate to sit between the CBRN and simulation federate to translate the CBRN data into data that the simulation federate can understand.
 
-## CBRN SOURCE RELEASE MODELLING
+<img src="./images/interactions.png" width="800px"/>
 
-### CBRN_Release
+**Figure: CBRN Interaction Classes**
 
-The CBRN_Release interaction defines all of the CBRN source release information required for a CBRN federate to model a CBRN source release.
- 
-Figure 10-1: CBRN_Release Interaction.
 
-### CBRN Warheads on Conventional Munitions
+## CBRN Source Release
 
-Ideally the CBRN_Release interaction would be sent from a simulation federate to the CBRN federate to inform it that a release had occurred, allowing the CBRN federate to model the release. However if a legacy simulation federate that can’t be updated to use the CBRN FOM module is being used, then the MunitionDetonation from the RPR FOM can be used instead. In this situation an additional federate will be created that can subscribe to the MunitionDetonation interactions and use the WarheadType parameter to check that the MunitionDetonation is a CBRN release. If it is a CBRN release then the additional federate will create a CBRN_Release using the WarheadType parameter, and publish the CBRN_Release interaction allowing the CBRN federate to start its CBRN modelling.
+The `CBRN_Release` interaction include all of the CBRN source release information required for a CBRN federate to model a CBRN source release.
 
-## DETECTOR MODELLING
+|Attribute|Description|
+|---|---|
+|UniqueID|Unique representation of the release’s ID.|
+|Agent|The type of released CBRN hazardous agent.|
+|Location|Initial location of the release in the geocentric location system.|
+|Mass|Total released agent mass in kg.|
+|Duration|Duration in seconds over which the release takes place.|
+|ReleaseSize|The initial size of the release including initial Gaussian sigmas of the released puff and mean & variance of released particles.|
+|ReleaseDynamics|Temperature differance and density ratio of released material relative to the atmosphere.|
+|ReleaseVelocity|Velocity of the source term.|
+
+
+The `CBRN_Release` interaction acts as a trigger for starting the simulation of a CBRN release event.
+
+<img src="./images/release.svg" width="1000px"/>
+
+**Figure: Triggering a CBRN Release**
+<!--
+participant CBRN Mediation
+participant CGF
+participant CBRN
+autonumber 1
+alt CBRN aware CGF
+CGF->CBRN:CBRN_Release(UniqueID, Agent, Location, Mass, \nDuration, ReleaseSize, ReleaseDynamics, ReleaseVelocity)
+else legacy RPR CGF
+CGF->CBRN Mediation:RPR-Warfare::MunitionDetonation(WarheadType, ...)
+CBRN Mediation->CBRN:CBRN_Release(UniqueID, Agent, Location, Mass, Duration, ReleaseSize, ReleaseDynamics, ReleaseVelocity)
+end
+autonumber off
+-->
+
+1. The `CBRN_Release` interaction can be sent directly from a CBRN aware CGF to inform a CBRN federate that a release has occurred. 
+
+However, in some federations an itermediate step is required to support the generation of the `CBRN_Release` interaction. 
+
+2. A legacy RPR based CGF, not aware of NETN-CBRN concepts, can generate a RPR-Warfare `MunitionDetonation` interaction. 
+3. A CBRN Mediation federate receives the `MunitionDetonation`. If the `WarheadType` parameter indicates that it is a CBRN release, then the CBRN Mediation federate sends the `CBRN_Release` interaction.
+
+
+
+
+
+
+
+
+
+## CBRN Detector
 
 There are two use cases for a detector in a HLA simulation:
-a.	The first is for detector properties to be created and published by a simulation federate. A detector model within a CBRN federate would calculate the detector readings and publish the alarm status. This process would use the CBRN_Detector object and CBRN_DetectorAlarm interaction.
-b.	The second would have a complete detector model in a federate; this would request concentration readings from a CBRN federate and calculate its own alarm status. This would use the CBRN_Sensor object and CBRN_SensorUpdate interaction.
+1.	The first is for detector properties to be created and published by a simulation federate. A detector model within a CBRN federate would calculate the detector readings and publish the alarm status. This process would use the CBRN_Detector object and CBRN_DetectorAlarm interaction.
+2.	The second would have a complete detector model in a federate; this would request concentration readings from a CBRN federate and calculate its own alarm status. This would use the CBRN_Sensor object and CBRN_SensorUpdate interaction.
 
 Both the CBRN_Detector and CBRN_Sensor objects extend the BaseEntity.PhysicalEntity.Sensor object in the RPR Physical FOM module.
  
@@ -64,6 +107,14 @@ The CBRN_Sensor object is used when there is a detector federate performing the 
 Figure 10-2: CBRN Detector Objects.
  
 Figure 10-3: CBRN Detector Interactions.
+
+
+
+
+
+
+
+
 
 ## CBRN EFFECTS MODELLING
 
@@ -86,10 +137,10 @@ The CBRN_Casualty interaction is provided to give support to legacy systems that
 #### CBRNDamageEnum8 
 
 The triage levels used in the CBRNDamageEnum8 enumeration uses the ‘T system’ to denote the priority of treatment for casualties where the levels are defined as:
-a.	T3 – Delayed priority.
-b.	T2 – Urgent priority.
-c.	T1 – Immediate priority.
-d.	T4 – Expectant priority (treatment would be ineffective).
+*	T3 – Delayed priority.
+*	T2 – Urgent priority.
+*	T1 – Immediate priority.
+*	T4 – Expectant priority (treatment would be ineffective).
  
 Figure 10-5: CBRN_Casualty Interaction.
 
@@ -106,6 +157,13 @@ Figure 10-6: CBRN Platform Objects.
 Using the same pattern as that used for the CBRN_Human object, the contaminating mass inside a platform due to embedded units can be updated by an external federate using the CBRN_PlatformUpdate interaction.
  
 Figure 10-7: CBRN_PlatformUpdate Interaction.
+
+
+
+
+
+
+
 
 ## PROTECTIVE MEASURES MODELLING
 
@@ -143,11 +201,18 @@ The CBRN_TreatmentCommand can be used for both pre-mission countermeasures and f
  
 Figure 10-9: CBRN Protective Measures Interactions.
 
+
+
+
+
+
+
 ## HAZARD AREA MODELLING
 
 The modelling of hazard areas allows the representation of a contamination area to be sent to a simulation federate in the simplest possible form. This could be in the form of:
-a.	The output from a hazard prediction algorithm (a warning area defined in Allied Tactical Publication (ATP)-45) [3] in response to a detector alarm or observation.
-b.	Raw output from a dispersion model (contours) during a simulation run.
+
+* The output from a hazard prediction algorithm (a warning area defined in Allied Tactical Publication (ATP)-45) [3] in response to a detector alarm or observation.
+*	Raw output from a dispersion model (contours) during a simulation run.
 
 ### ATP45HazardArea
 
