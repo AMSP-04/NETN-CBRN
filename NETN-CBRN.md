@@ -42,7 +42,7 @@ Whilst designing this CBRN FOM module considerations have been taken as to how t
 
 The `CBRN_Release` interaction include all of the CBRN source release information required for a CBRN federate to model a CBRN source release.
 
-|Attribute|Description|
+|Parameter|Description|
 |---|---|
 |UniqueID|Unique representation of the release’s ID.|
 |Agent|The type of released CBRN hazardous agent.|
