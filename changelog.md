@@ -1,4 +1,4 @@
-## NETN-CBRN Changelog
+## Changelog NETN-CBRN 
 
 ### Changes in vX
 Version X of the NETN-CBRN was updated by MSG-163 and included in NETN-FOM v3.0 and AMSP-04 Ed B.
