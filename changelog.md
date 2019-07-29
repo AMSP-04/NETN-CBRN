@@ -8,6 +8,7 @@ Version X of the NETN-CBRN was updated by MSG-163 and included in NETN-FOM v3.0 
 * Change `modelIdentification` `other` to include license information
 * Change `modelIdentification` `reference` to only refer to directly dependent FOM Modules
 * Add `modelIdentification` `useLimitation` to reflect Scope of FOM Module as defined in NETN-CBRN#2
+* Add `modelIdentification` `glyph` 
 * Update `modelIdentification` `purpose` to reflect Purpose of FOM Module as defined in NETN-CBRN#2
 * Update `modelIdentification` `description` to reflect Introduction of FOM Module as defined in NETN-CBRN#2
 
