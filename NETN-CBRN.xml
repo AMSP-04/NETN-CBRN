@@ -3,8 +3,8 @@
     <modelIdentification>
         <name>NETN-CBRN</name>
         <type>FOM</type>
-        <version>vX(RC 1)</version>
-        <modificationDate>2019-07-18</modificationDate>
+        <version>v 2.0 (RC 1)</version>
+        <modificationDate>2019-07-31</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <purpose>NETN-CBRN provides a common standard interface for representation of CBRN release, detection, effects, and protective measueres in a federated distributed simulation. E.g the expoure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.</purpose>
         <applicationDomain>Training</applicationDomain>
@@ -16,23 +16,83 @@ reasons, such as spills, accidental releases or leakages.
 The NATO Education and Training Network CBRN Module (NETN-CBRN) is a specification of how to model CBRN releated events in a federated distributed simulation. 
 
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-CBRN FOM module is available as an XML file for use in HLA based federations. </description>
-        <useLimitation>The NETN-CBRN FOM module covers:
-
-1.	CBRN Source release modelling
-2.	CBRN Detector modelling
-3.	CBRN Effects modelling
-4.	CBRN Protective measures modelling
-5.	Hazard area modelling
-
-Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model wether conditions that may impact the dispersion of CBRN materials and cause dynmaic change to hazard areas.</useLimitation>
-        <useHistory>v1.1.9 - Initial version included in NETN-FOM v2.0 and AMSP-04 Ed A.</useHistory>
-        <useHistory>vX - Updated version included in NETN-FOM v3.0 and AMSP-04 Ed B.</useHistory>
+        <useLimitation>The NETN-CBRN FOM module covers:  1.	CBRN Source release modelling 2.	CBRN Detector modelling 3.	CBRN Effects modelling 4.	CBRN Protective measures modelling 5.	Hazard area modelling  Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model wether conditions that may impact the dispersion of CBRN materials and cause dynmaic change to hazard areas.</useLimitation>
+        <useHistory>v1.1.9 - Initial version developed by MSG-106. Included in NETN-FOM v2.0 and AMSP-04 Ed A.</useHistory>
+        <poc>
+            <pocType>Release authority</pocType>
+            <pocName>NATO Modelling and Simulation Group</pocName>
+            <pocOrg>NATO Science and Technology Organization</pocOrg>
+            <pocEmail>msg@cso.nato.int</pocEmail>
+        </poc>
         <poc>
             <pocType>Primary author</pocType>
+            <pocName>MSG-163 Evolution of NATO Standards for Federated Simulation</pocName>
+            <pocOrg>NATO Modelling and Simulation Group</pocOrg>
+            <pocEmail>msg@cso.nato.int</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>MSG-134 NATO Distributed Simulation Architecture &amp; Design, Compliance Testing and Certification</pocName>
+            <pocOrg>NATO Modelling and Simulation Group</pocOrg>
+            <pocEmail>msg@cso.nato.int</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>MSG-106 Enhanced CAX Architecture, Desing and Methodology</pocName>
+            <pocOrg>NATO Modelling and Simulation Group</pocOrg>
+            <pocEmail>msg@cso.nato.int</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Proponent</pocType>
             <pocName>Hazard Assessment Simulation and Prediction (HASP) Group</pocName>
             <pocOrg>Defence Science and Technology Laboratory (dstl)</pocOrg>
             <pocTelephone>+44 (0) 1980 613121</pocTelephone>
             <pocEmail>centralenquiries@dstl.gov.uk</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
+            <pocName>Björn Löfstrand</pocName>
+            <pocOrg>Pitch Technologies, Sweden</pocOrg>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
+            <pocName>Jon Lloyd</pocName>
+            <pocOrg>Dstl, UK MOD</pocOrg>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
+            <pocName>Nathan Newton</pocName>
+            <pocOrg>Dstl, UK MOD</pocOrg>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
+            <pocName>Russell Mills</pocName>
+            <pocOrg>Riskaware Ltd., UK</pocOrg>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
+            <pocName>David Désert</pocName>
+            <pocOrg>AIRBUS Defense &amp; Space, France</pocOrg>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
+            <pocName>José Ruiz</pocName>
+            <pocOrg>DGA/DS/CATOD, France</pocOrg>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
+            <pocName>Antony Hubervic</pocName>
+            <pocOrg>MASA Group, France</pocOrg>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
+            <pocName>Lennart Olsson</pocName>
+            <pocOrg>Pitch Technologies, Sweden</pocOrg>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
+            <pocName>Richard Perkins</pocName>
+            <pocOrg>Dstl, UK MOD</pocOrg>
         </poc>
         <reference>
             <type>Dependency</type>
@@ -47,7 +107,7 @@ Copyright © 2019 by NATO/OTAN. All rights reserved.
 This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License.
 
 Above license gives you the right to use and redistribute the NETN FOM Module (XML file and Documentation) in its entirety without modification. You are also allowed to develop your own new FOM Modules (in separate XML files and separate documentation) that build-on/extends the NETN module by reference. You are NOT allowed to modify the NETN FOM Module or its documentation without prior permission by the NATO Modelling and Simulation Group.</other>
-        <glyph type="png" height="64" width="64" alt="">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</glyph>
+        <glyph type="png" height="48" width="48" alt="">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</glyph>
     </modelIdentification>
     <objects>
         <objectClass>

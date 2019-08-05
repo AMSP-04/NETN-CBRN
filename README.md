@@ -1,6 +1,7 @@
 # NETN-CBRN
 NATO Education and Training Network (NETN) Chemical, Biological, Radiological, Nuclear (CBRN) Module
 
+## Introduction
 CBRN are Chemical, Biological, Radiological and Nuclear materials that can be delivered intentially as a weapon using conventional bombs, explosive materials and enhanced blast weapons (e.g., dirty bombs) or unintentionally caused by human error or natural or technological
 reasons, such as spills, accidental releases or leakages. 
 
@@ -8,11 +9,11 @@ The NATO Education and Training Network CBRN Module (NETN-CBRN) is a specificati
 
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-CBRN FOM module is available as an XML file for use in HLA based federations.
 
-## Purpose
+### Purpose
 
 NETN-CBRN provides a common standard interface for representation of CBRN release, detection, effects, and protective measueres in a federated distributed simulation. E.g the expoure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.
 
-## Scope
+### Scope
 
 The NETN-CBRN FOM module covers:
 
