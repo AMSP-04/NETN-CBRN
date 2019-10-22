@@ -30,7 +30,7 @@ Meteorological conditions and CBRN material properties for modelling the dispers
 Copyright (C) 2019 NATO/OTAN.
 This work is licensed under a [Creative Commons Attribution-NoDerivatives 4.0 International License](LICENCE.md). 
 
-The work includes the [NETN-CBRN.xml](NETN-CBRN.xml) FOM Module [NETN-CBRN.md](NETN-CBRN.md).
+The work includes the [NETN-CBRN.xml](CBRN_v1.1.9.xml FOM Module.
 
 Above license gives you the right to use and redistribute the NETN FOM Module (XML file) in its entirety without modification. You are also allowed to develop your own new FOM Modules (in separate XML files and separate documentation) that build-on/extends the NETN module by reference and including neccessary scaffolding classes. You are NOT allowed to modify this FOM Module without prior permission by the NATO Modelling and Simulation Group. 
 
