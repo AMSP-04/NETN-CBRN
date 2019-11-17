@@ -6,16 +6,16 @@ This work is licensed under a [Creative Commons Attribution-NoDerivatives 4.0 In
 
 ## Introduction
 
-CBRN are Chemical, Biological, Radiological and Nuclear materials that can be delivered intentially as a weapon using conventional bombs, explosive materials and enhanced blast weapons (e.g., dirty bombs) or unintentionally caused by human error or natural or technological
+CBRN is Chemical, Biological, Radiological and Nuclear materials that can be delivered intentionally as a weapon using conventional bombs, explosive materials and enhanced blast weapons (e.g., dirty bombs) or unintentionally caused by human error or natural or technological
 reasons, such as spills, accidental releases or leakages. 
 
-The NATO Education and Training Network CBRN Module (NETN-CBRN) is a specification of how to model CBRN releated concepts in a federated distributed simulation. 
+The NATO Education and Training Network CBRN Module (NETN-CBRN) is a specification of how to model CBRN related concepts in a federated distributed simulation. 
 
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-CBRN FOM module is available as an XML file for use in HLA based federations.
 
 ### Purpose
 
-NETN-CBRN provides a common standard interface for representation of CBRN release, detection, effects, and protective measueres in a federated distributed simulation. E.g the expoure effect on individual humans in a CBRN contaminated Hazard area where the humans are represented in one simulation and the effect is modelled in another federated simulation.
+NETN-CBRN provides a common standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g the exposure effect on individual humans in a CBRN contaminated Hazard area where the humans are represented in one simulation and the effect is modelled in another federated simulation.
 
 ### Scope
 
@@ -27,7 +27,7 @@ The NETN-CBRN FOM module covers:
 4.	CBRN Protective measures modelling
 5.	Hazard area modelling
 
-Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model wether conditions that may impact the dispersion of CBRN materials and cause dynmaic change to hazard areas.
+Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas.
 
 ### Overview
 
@@ -40,7 +40,7 @@ Whilst designing this CBRN FOM module considerations have been taken as to how t
 
 ## CBRN Source Release
 
-The `CBRN_Release` interaction include all of the CBRN source release information required for a CBRN federate to model a CBRN source release.
+The `CBRN_Release` interaction includes all of the CBRN source release information required for a CBRN federate to model a CBRN source release.
 
 |Parameter|Description|
 |---|---|
@@ -75,7 +75,7 @@ autonumber off
 
 1. The `CBRN_Release` interaction can be sent directly from a CBRN aware CGF to inform a CBRN federate that a release has occurred. 
 
-However, in some federations an itermediate step is required to support the generation of the `CBRN_Release` interaction. 
+However, in some federations, an intermediate step is required to support the generation of the `CBRN_Release` interaction. 
 
 2. A legacy RPR based CGF, not aware of NETN-CBRN concepts, can generate a RPR-Warfare `MunitionDetonation` interaction. 
 3. A CBRN Mediation federate receives the `MunitionDetonation`. If the `WarheadType` parameter indicates that it is a CBRN release, then the CBRN Mediation federate sends the `CBRN_Release` interaction.
@@ -90,7 +90,7 @@ However, in some federations an itermediate step is required to support the gene
 
 ## CBRN Detector
 
-There are two use cases for a detector in a HLA simulation:
+There are two use cases for a detector in an HLA simulation:
 1.	The first is for detector properties to be created and published by a simulation federate. A detector model within a CBRN federate would calculate the detector readings and publish the alarm status. This process would use the CBRN_Detector object and CBRN_DetectorAlarm interaction.
 2.	The second would have a complete detector model in a federate; this would request concentration readings from a CBRN federate and calculate its own alarm status. This would use the CBRN_Sensor object and CBRN_SensorUpdate interaction.
 
