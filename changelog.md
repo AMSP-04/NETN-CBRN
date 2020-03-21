@@ -25,6 +25,9 @@ Version X of the NETN-CBRN was updated by MSG-163 and included in NETN-FOM v3.0 
 
 #### NETN-CBRN#6 Update Detector Modelling section
 
+#### NETN-CBRN#9 Harmonize data types
+* Removed SimpleDatatype `ConcentrationKgPerMeterCubedFloat32` (move to NETN-BASE)
+* Changed use of data type `TimeSecInt64` to `EpochTimeSecInt64` (renamed in NETN-BASE) 
 
 
 ### Changes in v1.1.9
