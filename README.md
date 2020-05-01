@@ -54,7 +54,7 @@ Version numbering of this FOM Module and associated documentation is based on th
 |Version|Description|
 |---|---|
 | v 1.1.9 | Initial public release of the NETN-CBRN FOM Module developed by MSG-106 & MSG-134 and included in AMSP-04 Ed A. |
-| v X | (Minor ?) update of the NETN-CBRN FOM Module developed by MSG-163 and included in AMSP-04 Ed B. |
+| v 1.2.0 | Minor update of the NETN-CBRN FOM Module developed by MSG-163 and included in AMSP-04 Ed B. |
 
 [Changelog](changelog.md)
 

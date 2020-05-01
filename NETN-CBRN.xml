@@ -3,8 +3,8 @@
     <modelIdentification>
         <name>NETN-CBRN</name>
         <type>FOM</type>
-        <version>v2.0</version>
-        <modificationDate>2020-04-28</modificationDate>
+        <version>v1.2</version>
+        <modificationDate>2020-05-01</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <purpose>NETN-CBRN provides a common standard interface for representation of CBRN release, detection, effects, and protective measueres in a federated distributed simulation. E.g the expoure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.</purpose>
         <applicationDomain>Training</applicationDomain>
@@ -18,6 +18,7 @@ The NATO Education and Training Network CBRN Module (NETN-CBRN) is a specificati
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-CBRN FOM module is available as an XML file for use in HLA based federations. </description>
         <useLimitation>The NETN-CBRN FOM module covers:  1.	CBRN Source release modelling 2.	CBRN Detector modelling 3.	CBRN Effects modelling 4.	CBRN Protective measures modelling 5.	Hazard area modelling  Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model wether conditions that may impact the dispersion of CBRN materials and cause dynmaic change to hazard areas.</useLimitation>
         <useHistory>v1.1.9 - Initial version developed by MSG-106. Included in NETN-FOM v2.0 and AMSP-04 Ed A.</useHistory>
+        <useHistory>v1.2.0 - Minor update of the NETN-CBRN FOM Module developed by MSG-163 and included in AMSP-04 Ed B.</useHistory>
         <poc>
             <pocType>Release authority</pocType>
             <pocName>NATO Modelling and Simulation Group</pocName>
@@ -41,58 +42,6 @@ The specification is based on IEEE 1516 High Level Architecture (HLA) Object Mod
             <pocName>MSG-106 Enhanced CAX Architecture, Desing and Methodology</pocName>
             <pocOrg>NATO Modelling and Simulation Group</pocOrg>
             <pocEmail>msg@cso.nato.int</pocEmail>
-        </poc>
-        <poc>
-            <pocType>Proponent</pocType>
-            <pocName>Hazard Assessment Simulation and Prediction (HASP) Group</pocName>
-            <pocOrg>Defence Science and Technology Laboratory (dstl)</pocOrg>
-            <pocTelephone>+44 (0) 1980 613121</pocTelephone>
-            <pocEmail>centralenquiries@dstl.gov.uk</pocEmail>
-        </poc>
-        <poc>
-            <pocType>Contributor</pocType>
-            <pocName>Björn Löfstrand</pocName>
-            <pocOrg>Pitch Technologies, Sweden</pocOrg>
-        </poc>
-        <poc>
-            <pocType>Contributor</pocType>
-            <pocName>Jon Lloyd</pocName>
-            <pocOrg>Dstl, UK MOD</pocOrg>
-        </poc>
-        <poc>
-            <pocType>Contributor</pocType>
-            <pocName>Nathan Newton</pocName>
-            <pocOrg>Dstl, UK MOD</pocOrg>
-        </poc>
-        <poc>
-            <pocType>Contributor</pocType>
-            <pocName>Russell Mills</pocName>
-            <pocOrg>Riskaware Ltd., UK</pocOrg>
-        </poc>
-        <poc>
-            <pocType>Contributor</pocType>
-            <pocName>David Désert</pocName>
-            <pocOrg>AIRBUS Defense &amp; Space, France</pocOrg>
-        </poc>
-        <poc>
-            <pocType>Contributor</pocType>
-            <pocName>José Ruiz</pocName>
-            <pocOrg>DGA/DS/CATOD, France</pocOrg>
-        </poc>
-        <poc>
-            <pocType>Contributor</pocType>
-            <pocName>Antony Hubervic</pocName>
-            <pocOrg>MASA Group, France</pocOrg>
-        </poc>
-        <poc>
-            <pocType>Contributor</pocType>
-            <pocName>Lennart Olsson</pocName>
-            <pocOrg>Pitch Technologies, Sweden</pocOrg>
-        </poc>
-        <poc>
-            <pocType>Contributor</pocType>
-            <pocName>Richard Perkins</pocName>
-            <pocOrg>Dstl, UK MOD</pocOrg>
         </poc>
         <reference>
             <type>Dependency</type>
@@ -140,7 +89,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 </attribute>
                 <attribute>
                     <name>Locations</name>
-                    <dataType>ArrayOfWorldLocationStruct3</dataType>
+                    <dataType>GeocentricPolygon</dataType>
                     <updateType>Conditional</updateType>
                     <updateCondition>On change</updateCondition>
                     <ownership>DivestAcquire</ownership>
@@ -1412,7 +1361,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 </field>
                 <field>
                     <name>Locations</name>
-                    <dataType>ArrayOfWorldLocationStruct3</dataType>
+                    <dataType>GeocentricPolygon</dataType>
                     <semantics>Array of locations that define the probability contour.</semantics>
                 </field>
             </fixedRecordData>
@@ -1442,7 +1391,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 </field>
                 <field>
                     <name>Locations</name>
-                    <dataType>ArrayOfWorldLocationStruct3</dataType>
+                    <dataType>GeocentricPolygon</dataType>
                     <semantics>Array of locations that define the hazard contour.</semantics>
                 </field>
             </fixedRecordData>
