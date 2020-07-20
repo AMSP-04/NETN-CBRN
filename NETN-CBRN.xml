@@ -1276,7 +1276,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 <semantics>Concentration value associated with a specific agent.</semantics>
                 <field>
                     <name>MeanConcentration</name>
-                    <dataType>ConcentrationKgPerMeterCubedFloat32</dataType>
+                    <dataType>MassConcentrationFloat32</dataType>
                     <semantics>Concentration in kg m-3.</semantics>
                 </field>
                 <field>
