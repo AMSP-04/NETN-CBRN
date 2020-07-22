@@ -45,10 +45,6 @@ The specification is based on IEEE 1516 High Level Architecture (HLA) Object Mod
         </poc>
         <reference>
             <type>Dependency</type>
-            <identification>NETN-BASE</identification>
-        </reference>
-        <reference>
-            <type>Dependency</type>
             <identification>NETN-Physical</identification>
         </reference>
         <other>
