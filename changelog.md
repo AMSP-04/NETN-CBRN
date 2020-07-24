@@ -20,7 +20,7 @@ Version 1.2 of the NETN-CBRN was updated by MSG-163 and included in NETN-FOM v3.
 * Semantics of CBRN_Release attributes updated
 
 #### NETN-CBRN#9 Harmonize data types
-* Removed SimpleDatatype `ConcentrationKgPerMeterCubedFloat32` (move to NETN-BASE)
+* Removed SimpleDatatype `ConcentrationKgPerMeterCubedFloat32` (move to NETN-BASE and renamed MassConcentrationFloat32) 
 * Changed use of data type `TimeSecInt64` to `EpochTimeSecInt64` (renamed in NETN-BASE) 
 * Changed use of datatype `ArrayOfWorldLocationStruct3` to `GeocentricPolygon` (renamed in NETN-BASE) 
 

@@ -15,23 +15,23 @@ The specification is based on IEEE 1516 High Level Architecture (HLA) Object Mod
 
 ### Purpose
 
-NETN-CBRN provides a common standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g the exposure effect on individual humans in a CBRN contaminated Hazard area where the humans are represented in one simulation and the effect is modelled in another federated simulation.
+NETN-CBRN provides a standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g. the exposure effect on individual humans in a CBRN contaminated Hazard area where the humans are represented in one simulation, and the effect is modelled in another.
 
 ### Scope
 
 The NETN-CBRN FOM module covers:
 
-1.	CBRN Source release modelling
-2.	CBRN Detector modelling
-3.	CBRN Effects modelling
-4.	CBRN Protective measures modelling
-5.	Hazard area modelling
+1.  CBRN Source release modelling
+2.  CBRN Detector modelling
+3.  CBRN Effects modelling
+4.  CBRN Protective measures modelling
+5.  Hazard area modelling
 
 Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas.
 
 ### Overview
 
-Whilst designing this CBRN FOM module considerations have been taken as to how the CBRN FOM module can be used by legacy systems that cannot be updated to implement the CBRN FOM module. These considerations have resulted in the CBRN FOM module including interactions that mirror the changes that can be made to objects. These interactions allow for a translation federate to sit between the CBRN and simulation federate to translate the CBRN data into data that the simulation federate can understand.
+Considerations have been made as to how the CBRN FOM module can be used by legacy systems that cannot be updated to implement the CBRN FOM module. These considerations have resulted in the CBRN FOM module, including interactions that mirror the changes that can be made to objects. These interactions allow for a translation federate to sit between the CBRN and simulation federate to translate the CBRN data into data that the simulation federate can understand.
 
 <img src="./images/interactions.png" width="800px"/>
 
@@ -51,7 +51,7 @@ The `CBRN_Release` interaction includes all of the CBRN source release informati
 
 ### CBRN Warheads on Conventional Munitions
 
-Ideally the CBRN_Release interaction would be sent from a simulation federate to the CBRN federate to inform it that a release had occurred, allowing the CBRN federate to model the release. However if a legacy simulation federate that can’t be updated to use the CBRN FOM module is being used, then the `MunitionDetonation` from the RPR FOM can be used instead. In this situation an additional federate will be created that can subscribe to the `MunitionDetonation` interactions and use the `WarheadType` parameter to check that the `MunitionDetonation` is a CBRN release. If it is a CBRN release then the additional federate will create a `CBRN_Release` using the `WarheadType` parameter, and publish the `CBRN_Release` interaction allowing the CBRN federate to start its CBRN modelling.
+Ideally, the `CBRN_Release` interaction would be sent from a simulation federate to the CBRN federate to inform it that a release had occurred, allowing the CBRN federate to model the release. However, if a legacy simulation federate that can’t be updated to use the CBRN FOM module is being used, then the `MunitionDetonation` from the RPR FOM can be used instead. In this situation an additional federate will be created that can subscribe to the `MunitionDetonation` interactions and use the `WarheadType` parameter to check that the `MunitionDetonation` is a CBRN release. If it is a CBRN release then the additional federate will create a `CBRN_Release` using the `WarheadType` parameter, and publish the `CBRN_Release` interaction allowing the CBRN federate to start its CBRN modelling.
 
 The `CBRN_Release` interaction acts as a trigger for starting the simulation of a CBRN release event.
 
@@ -83,15 +83,15 @@ However, in some federations, an intermediate step is required to support the ge
 ## Detector Modelling
 
 There are two use cases for a detector in an HLA simulation:
-1.	The first is for detector properties to be created and published by a simulation federate. A detector model within a CBRN federate would calculate the detector readings and publish the alarm status. This process would use the CBRN_Detector object and CBRN_DetectorAlarm interaction.
-2.	The second would have a complete detector model in a federate; this would request concentration readings from a CBRN federate and calculate its own alarm status. This would use the CBRN_Sensor object and CBRN_SensorUpdate interaction.
+1.  The first is for detector properties to be created and published by a simulation federate. A detector model within a CBRN federate would calculate the detector readings and publish the alarm status. This process would use the CBRN_Detector object and CBRN_DetectorAlarm interaction.
+2.  The second would have a complete detector model in a federate; this would request concentration readings from a CBRN federate and calculate its alarm status. This would use the CBRN_Sensor object and CBRN_SensorUpdate interaction.
 
 <img src="./images/detectorobjects.png" width="800px"/>
 
 Figure: CBRN Detector Objects.
 
 Both the `CBRN_Detector` and `CBRN_Sensor` objects extend the BaseEntity.PhysicalEntity.Sensor object in the RPR Physical FOM module.
- 
+ 
 ### CBRN_Detector
 
 The `CBRN_Detector` object is used when a CGF creates a detector with a CBRN federate performing the modelling of the detector. When the federate controlling the detector calculates a concentration above a threshold, it will issue a `CBRN_DetectorAlarm` interaction.
@@ -108,7 +108,7 @@ Figure: CBRN Detector Interactions.
 
 ## CBRN Effects Modelling
 
-Previous systems utilising HLA as the interoperability mechanism have used representations of damage from existing object models for representing kinetic weapons in order to represent CBRN exposure. The representation of damage from kinetic models does not necessarily map well to represent CBRN exposure.
+Previous systems utilising HLA as the interoperability mechanism have used representations of damage from existing object models for representing kinetic weapons to represent CBRN exposure. The representation of damage from kinetic models does not necessarily map well to represent CBRN exposure.
 
 This section presents the use cases and data types for CBRN casualty modelling.
 
@@ -124,15 +124,15 @@ Figure: CBRN_Human Object.
 
 #### CBRN_Casualty 
 
-The `CBRN_Casualty` interaction is provided to give support to legacy systems that do not use the CBRN FOM module. A translation federate can then map the `CBRN_Casualty` interaction into a data type that the legacy system can use.
+The `CBRN_Casualty` interaction is provided to give support to legacy systems that do not use the CBRN FOM module. A translation federate can then map the `CBRN_Casualty` interaction into a data type that the legacy system can handle.
 
 #### CBRNDamageEnum8 
 
 The triage levels used in the `CBRNDamageEnum8` enumeration uses the ‘T system’ to denote the priority of treatment for casualties where the levels are defined as:
-*	T3 – Delayed priority.
-*	T2 – Urgent priority.
-*	T1 – Immediate priority.
-*	T4 – Expectant priority (treatment would be ineffective).
+*   T3 – Delayed priority.
+*   T2 – Urgent priority.
+*   T1 – Immediate priority.
+*   T4 – Expectant priority (treatment would be ineffective).
  
 
 <img src="./images/cbrn_casualty.png" width="350px"/>
@@ -143,7 +143,7 @@ Figure: CBRN_Casualty Interaction.
 
 #### CBRN Platforms 
 
-In order to calculate further contamination and exposure for a platform, extensions are made to seven NETN leaf nodes in the NETN Physical FOM module. These are all extensions of the Platform object from the RPR Physical FOM module. Each extension contains an array of the mass of all materials that are contaminating the vehicle.
+To calculate further contamination and exposure for a platform, extensions are made to seven NETN leaf nodes in the NETN Physical FOM module. These are all extensions of the Platform object from the RPR Physical FOM module. Each extension contains an array of the mass of all materials that are contaminating the vehicle.
 
  <img src="./images/cbrn_platform.png" />
 
@@ -160,12 +160,12 @@ Figure: CBRN_PlatformUpdate Interaction.
 ## Protective Measures Modelling
 
 The use case for protective measures covers both the modelling of CBRN treatment and the modelling of CBRN protective equipment. This includes both individual (i.e. a respirator) and collective protection (i.e. Collective Protection (COLPRO)).
- 
+ 
 ### COLPRO
 
 The COLPRO object extends the `BaseEntity.PhysicalEntity.CulturalFeature.NETN_CulturalFeature` and provides information on how many entities it can contain as well as what agents it provides protection against.
 
-###	DecontaminationStation
+### DecontaminationStation
 
 The `DecontaminationStation` object also extends the `BaseEntity.PhysicalEntity.CulturalFeature.NETN_CulturalFeature` and provides information on how many entities it can contain as well as what agents it can provide decontamination for.
  
@@ -175,7 +175,7 @@ Figure: CBRN Protective Measures Objects.
 
 ### CBRN_FacilityUpdate
 
-The CBRN_FacilityUpdate interaction is a base interaction that allows entities to be instructed to enter or leave a CBRN facility, it is not possible to publish or subscribe to this interaction.
+The CBRN_FacilityUpdate interaction is a base interaction that allows entities to be instructed to enter or leave a CBRN facility; it is not possible to publish or subscribe to this interaction.
 
 ### COLPROUpdate
 
@@ -184,7 +184,7 @@ The COLPROUpdate interaction extends the CBRN_FacilityUpdate and allows entities
 ### DecontaminationStationUpdate
 
 The DecontaminationStationUpdate interaction extends the CBRNFacilityUpdate and allows entities to be instructed to enter or leave a DecontaminationStation object.
- 
+ 
 ### IPECommand
 
 The IPECommand interaction allows entities to be instructed to don IPE by an external federate.
@@ -202,18 +202,18 @@ Figure: CBRN Protective Measures Interactions.
 The modelling of hazard areas allows the representation of a contamination area to be sent to a simulation federate in the simplest possible form. This could be in the form of:
 
 * The output from a hazard prediction algorithm (a warning area defined in Allied Tactical Publication (ATP)-45) in response to a detector alarm or observation.
-*	Raw output from a dispersion model (contours) during a simulation run.
+*   Raw output from a dispersion model (contours) during a simulation run.
 
 ### ATP45HazardArea
 
-The ATP45HazardArea object represents the hazard region as calculated by a warning and reporting model. Currently only a subset of the ATP-45 definition is used.
+The ATP45HazardArea object represents the hazard region as calculated by a warning and reporting model. Currently, only a subset of the ATP-45 definition is used.
 
 ### ProbabilityHazardContourGroup
 
 The ProbabilityHazardContourGroup object provides a representation of the hazard area of the casualty effects of this CBRN hazard, calculated from the properties of the particular material.
 
 ### RawDataHazardContourGroup
-The RawDataHazardContourGroup object provides a representation of the raw dispersion output which is purely the quantity of the material calculated by a dispersion model.
+The RawDataHazardContourGroup object provides a representation of the raw dispersion output, which is purely the quantity of the material calculated by a dispersion model.
  
 
 <img src="./images/cbrn_hazard.png" width="700px" />
