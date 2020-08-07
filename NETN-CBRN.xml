@@ -1201,6 +1201,13 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 <encoding>HLAvariableArray</encoding>
                 <semantics>Array of agents and their concentrations.</semantics>
             </arrayData>
+             <arrayData>
+                <name>GeocentricPolygon</name>
+                <dataType>WorldLocationStruct</dataType>
+                <cardinality>[3..2147483647]</cardinality>
+                <encoding>HLAvariableArray</encoding>
+                <semantics>A polygon defined as a closed polygonal chain of geocentric world locations where the last location is connected to the first.</semantics>
+            </arrayData>
             <arrayData>
                 <name>ArrayOfAgentMassStruct</name>
                 <dataType>AgentMassStruct</dataType>
