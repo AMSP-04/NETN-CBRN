@@ -3,24 +3,19 @@
 ### Changes in v 1.2
 Version 1.2 of the NETN-CBRN was updated by MSG-163 and included in NETN-FOM v3.0 and AMSP-04 Ed B.
 
-#### NETN-CBRN#1 Update modelIdentification
+
 * Changed `modelIdentification` `securityClassification` from `unclassified` to `Not Classified`
 * Changed `modelIdentification` `other` to include license information
 * Changed `modelIdentification` `reference` to only refer to directly dependent FOM Modules
 * Added `modelIdentification` `useLimitation` to reflect Scope of FOM Module as defined in NETN-CBRN#2
 * Added `modelIdentification` `glyph` 
+* Added datatype `GeocentricPolygon`
 * Updated `modelIdentification` `purpose` to reflect Purpose of FOM Module as defined in NETN-CBRN#2
 * Updated `modelIdentification` `description` to reflect Introduction of FOM Module as defined in NETN-CBRN#2
 * Changed object class `CBRN_SubmersibleVehicle` to `CBRN_SubmersibleVessel`
-
-#### NETN-CBRN#2 Update Introduction documentation
 * Introduction section restructured and clarified including description, purpose and useLimitation.
-
-#### NETN-CBRN#5 Reword Source Release section
 * Source Release section restructured and clarified including a new sequence diagram
 * Semantics of CBRN_Release attributes updated
-
-#### NETN-CBRN#9 Harmonize data types
 * Removed SimpleDatatype `ConcentrationKgPerMeterCubedFloat32` (move to NETN-BASE and renamed MassConcentrationFloat32) 
 * Changed use of data type `TimeSecInt64` to `EpochTimeSecInt64` (renamed in NETN-BASE) 
 * Changed use of datatype `ArrayOfWorldLocationStruct3` to `GeocentricPolygon` (renamed in NETN-BASE) 
