@@ -11,6 +11,7 @@ Version 1.2 of the NETN-CBRN was updated by MSG-163 and included in NETN-FOM v3.
 * Added `modelIdentification` `glyph` 
 * Updated `modelIdentification` `purpose` to reflect Purpose of FOM Module as defined in NETN-CBRN#2
 * Updated `modelIdentification` `description` to reflect Introduction of FOM Module as defined in NETN-CBRN#2
+* Changed object class `CBRN_SubmersibleVehicle` to `CBRN_SubmersibleVessel`
 
 #### NETN-CBRN#2 Update Introduction documentation
 * Introduction section restructured and clarified including description, purpose and useLimitation.

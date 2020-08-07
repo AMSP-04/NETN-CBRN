@@ -496,9 +496,9 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                         <objectClass>
                             <name>SubmersibleVessel</name>
                             <objectClass>
-                                <name>NETN_SubmersibleVehicle</name>
+                                <name>NETN_SubmersibleVessel</name>
                                 <objectClass>
-                                    <name>CBRN_SubmersibleVehicle</name>
+                                    <name>CBRN_SubmersibleVessel</name>
                                     <sharing>PublishSubscribe</sharing>
                                     <semantics>Extension of NETN_SubmersibleVehicle to provide CBRN modelling.</semantics>
                                     <attribute>
