@@ -6,8 +6,7 @@ This work is licensed under a [Creative Commons Attribution-NoDerivatives 4.0 In
 
 ## Introduction
 
-CBRN is Chemical, Biological, Radiological and Nuclear materials that can be delivered intentionally as a weapon using conventional bombs, explosive materials and enhanced blast weapons (e.g., dirty bombs) or unintentionally caused by human error or natural or technological
-reasons, such as spills, accidental releases or leakages. 
+CBRN is Chemical, Biological, Radiological and Nuclear materials that can be delivered intentionally as a weapon using conventional bombs, explosive materials and enhanced blast weapons (e.g., dirty bombs) or unintentionally caused by human error or natural or technological reasons, such as spills, accidental releases or leakages. 
 
 The NATO Education and Training Network CBRN Module (NETN-CBRN) is a specification of how to model CBRN related concepts in a federated distributed simulation. 
 
@@ -76,7 +75,7 @@ autonumber off
 
 However, in some federations, an intermediate step is required to support the generation of the `CBRN_Release` interaction. 
 
-2. A legacy RPR based CGF, not aware of NETN-CBRN concepts, can generate a RPR-Warfare `MunitionDetonation` interaction. 
+2. A legacy RPR based CGF, not aware of NETN-CBRN concepts, can generate an RPR-Warfare `MunitionDetonation` interaction. 
 3. A CBRN Mediation federate receives the `MunitionDetonation`. If the `WarheadType` parameter indicates that it is a CBRN release, then the CBRN Mediation federate sends the `CBRN_Release` interaction.
 
 
@@ -114,42 +113,33 @@ This section presents the use cases and data types for CBRN casualty modelling.
 
 ### Lifeform CBRN Effects Modelling
 
-#### CBRN_Human 
-
 The `CBRN_Human` object is an extension of the `NETN_Human` object from the NETN Physical FOM module. The CBRN federate will update the appropriate attributes as the casualty state of the entity changes. The TriageLevel uses the NATO representation of triage category scores. The IPEType attribute denotes the level of Individual Protective Equipment (IPE) that the unit is wearing. These levels are those defined by the Nuclear, Biological and Chemical (NBC) dress states.
  
 <img src="./images/cbrn_human.png" width="400px%"/>
 
 Figure: CBRN_Human Object.
 
-#### CBRN_Casualty 
 
 The `CBRN_Casualty` interaction is provided to give support to legacy systems that do not use the CBRN FOM module. A translation federate can then map the `CBRN_Casualty` interaction into a data type that the legacy system can handle.
 
-#### CBRNDamageEnum8 
+<img src="./images/cbrn_casualty.png" width="350px"/>
+
+Figure: CBRN_Casualty Interaction.
 
 The triage levels used in the `CBRNDamageEnum8` enumeration uses the ‘T system’ to denote the priority of treatment for casualties where the levels are defined as:
 *   T3 – Delayed priority.
 *   T2 – Urgent priority.
 *   T1 – Immediate priority.
 *   T4 – Expectant priority (treatment would be ineffective).
- 
 
-<img src="./images/cbrn_casualty.png" width="350px"/>
-
-Figure: CBRN_Casualty Interaction.
-
-### Platform CBRN Effects Modelling
-
-#### CBRN Platforms 
+### CBRN Platforms 
 
 To calculate further contamination and exposure for a platform, extensions are made to seven NETN leaf nodes in the NETN Physical FOM module. These are all extensions of the Platform object from the RPR Physical FOM module. Each extension contains an array of the mass of all materials that are contaminating the vehicle.
 
- <img src="./images/cbrn_platform.png" />
+<img src="./images/cbrn_platform.png" />
 
 Figure: CBRN Platform Objects.
 
-#### CBRN_PlatformUpdate 
 
 Using the same pattern as that used for the `CBRN_Human` object, the contaminating mass inside a platform due to embedded units can be updated by an external federate using the `CBRN_PlatformUpdate` interaction.
  
@@ -160,43 +150,28 @@ Figure: CBRN_PlatformUpdate Interaction.
 ## Protective Measures Modelling
 
 The use case for protective measures covers both the modelling of CBRN treatment and the modelling of CBRN protective equipment. This includes both individual (i.e. a respirator) and collective protection (i.e. Collective Protection (COLPRO)).
- 
-### COLPRO
 
-The COLPRO object extends the `BaseEntity.PhysicalEntity.CulturalFeature.NETN_CulturalFeature` and provides information on how many entities it can contain as well as what agents it provides protection against.
-
-### DecontaminationStation
-
-The `DecontaminationStation` object also extends the `BaseEntity.PhysicalEntity.CulturalFeature.NETN_CulturalFeature` and provides information on how many entities it can contain as well as what agents it can provide decontamination for.
+The `COLPRO` and `DecontaminationStation` object classes extends the `NETN_CulturalFeature` object class and provides information on how many entities it can contain as well as what agents it provides protection against.
  
 <img src="./images/cbrn_protectobjects.png" width="700px" />
 
 Figure: CBRN Protective Measures Objects.
 
-### CBRN_FacilityUpdate
+### Protective Measures Interactions
 
-The CBRN_FacilityUpdate interaction is a base interaction that allows entities to be instructed to enter or leave a CBRN facility; it is not possible to publish or subscribe to this interaction.
-
-### COLPROUpdate
-
-The COLPROUpdate interaction extends the CBRN_FacilityUpdate and allows entities to be instructed to enter or leave a COLPRO object.
-
-### DecontaminationStationUpdate
-
-The DecontaminationStationUpdate interaction extends the CBRNFacilityUpdate and allows entities to be instructed to enter or leave a DecontaminationStation object.
- 
-### IPECommand
-
-The IPECommand interaction allows entities to be instructed to don IPE by an external federate.
-
-### CBRN_TreatmentCommand
-
-The CBRN_TreatmentCommand can be used for both pre-mission countermeasures and for treatment to be applied post-exposure. The CBRN_Human object has an attribute which denotes the treatments that have been applied to the unit.
- 
 <img src="./images/cbrn_protectinteractions.png" width="800px" />
 
 Figure: CBRN Protective Measures Interactions.
 
+The `CBRN_FacilityUpdate` interactions allows entities to be instructed to enter or leave a CBRN facility.
+
+* The `COLPROUpdate` interaction extends the CBRN_FacilityUpdate and allows entities to be instructed to enter or leave a COLPRO object.
+* The `DecontaminationStationUpdate` interaction extends the CBRNFacilityUpdate and allows entities to be instructed to enter or leave a DecontaminationStation object.
+
+The `IPECommand` interaction allows entities to be instructed to don IPE by an external federate.
+
+The `CBRN_TreatmentCommand` can be used for both pre-mission countermeasures and for treatment to be applied post-exposure. The `CBRN_Human` object has an attribute which denotes the treatments that have been applied to the unit.
+ 
 ## Hazard Area Modelling
 
 The modelling of hazard areas allows the representation of a contamination area to be sent to a simulation federate in the simplest possible form. This could be in the form of:
@@ -204,18 +179,12 @@ The modelling of hazard areas allows the representation of a contamination area 
 * The output from a hazard prediction algorithm (a warning area defined in Allied Tactical Publication (ATP)-45) in response to a detector alarm or observation.
 *   Raw output from a dispersion model (contours) during a simulation run.
 
-### ATP45HazardArea
-
-The ATP45HazardArea object represents the hazard region as calculated by a warning and reporting model. Currently, only a subset of the ATP-45 definition is used.
-
-### ProbabilityHazardContourGroup
-
-The ProbabilityHazardContourGroup object provides a representation of the hazard area of the casualty effects of this CBRN hazard, calculated from the properties of the particular material.
-
-### RawDataHazardContourGroup
-The RawDataHazardContourGroup object provides a representation of the raw dispersion output, which is purely the quantity of the material calculated by a dispersion model.
- 
-
 <img src="./images/cbrn_hazard.png" width="700px" />
 
 Figure: CBRN Hazard Area Objects.
+
+The `ATP45HazardArea` object represents the hazard region as calculated by a warning and reporting model. Currently, only a subset of the ATP-45 definition is used.
+
+The `ProbabilityHazardContourGroup` object provides a representation of the hazard area of the casualty effects of this CBRN hazard, calculated from the properties of the particular material.
+
+The `RawDataHazardContourGroup` object provides a representation of the raw dispersion output, which is purely the quantity of the material calculated by a dispersion model.
