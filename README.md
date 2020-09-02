@@ -1,8 +1,6 @@
 # NETN-CBRN
 NATO Education and Training Network (NETN) Chemical, Biological, Radiological, Nuclear (CBRN) Module
 
-![overview](./images/overview.png)
-
 ## Introduction
 CBRN is Chemical, Biological, Radiological and Nuclear materials that can be delivered intentionally as a weapon using conventional bombs, explosive materials and enhanced blast weapons (e.g., dirty bombs) or unintentionally caused by human error or natural or technological
 reasons, such as spills, accidental releases or leakages. 
