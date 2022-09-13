@@ -62,77 +62,9 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 <objectClass>
                     <name>PhysicalEntity</name>
                     <objectClass>
-                        <name>CulturalFeature</name>
-                        <objectClass>
-                            <name>COLPRO</name>
-                            <sharing>PublishSubscribe</sharing>
-                            <semantics>Represents a feature that provides Collective Protection (COLPRO) against a CBRN threat.</semantics>
-                            <attribute>
-                                <name>NumberEntities</name>
-                                <dataType>QuantityUInt32</dataType>
-                                <updateType>Static</updateType>
-                                <updateCondition>N/A</updateCondition>
-                                <ownership>DivestAcquire</ownership>
-                                <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
-                                <order>Receive</order>
-                                <semantics>The number of entities that this COLPRO can handle.</semantics>
-                            </attribute>
-                            <attribute>
-                                <name>Protection</name>
-                                <dataType>ArrayOfProtectionEffectivenessStruct</dataType>
-                                <updateType>Static</updateType>
-                                <updateCondition>N/A</updateCondition>
-                                <ownership>DivestAcquire</ownership>
-                                <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
-                                <order>Receive</order>
-                                <semantics>The effectiveness that this COLPRO offers for each agent.</semantics>
-                            </attribute>
-                        </objectClass>
-                        <objectClass>
-                            <name>DecontaminationStation</name>
-                            <sharing>PublishSubscribe</sharing>
-                            <semantics>Represents a feature that provides treatment for CBRN exposure.</semantics>
-                            <attribute>
-                                <name>NumberEntities</name>
-                                <dataType>QuantityUInt32</dataType>
-                                <updateType>Static</updateType>
-                                <updateCondition>N/A</updateCondition>
-                                <ownership>DivestAcquire</ownership>
-                                <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
-                                <order>Receive</order>
-                                <semantics>The number of entities that this decontamination station can handle.</semantics>
-                            </attribute>
-                            <attribute>
-                                <name>DecontaminationPeriod</name>
-                                <dataType>TimeSecondInteger32</dataType>
-                                <updateType>Static</updateType>
-                                <updateCondition>N/A</updateCondition>
-                                <ownership>DivestAcquire</ownership>
-                                <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
-                                <order>Receive</order>
-                                <semantics>Duration in seconds it takes to decontaminate an entity.</semantics>
-                            </attribute>
-                            <attribute>
-                                <name>Treatments</name>
-                                <dataType>ArrayOfTreatmentStruct</dataType>
-                                <updateType>Conditional</updateType>
-                                <updateCondition>On change</updateCondition>
-                                <ownership>DivestAcquire</ownership>
-                                <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
-                                <order>Receive</order>
-                                <semantics>The types of treatment that this decontamination station currently offers.</semantics>
-                            </attribute>
-                        </objectClass>
-                    </objectClass>
-                    <objectClass>
                         <name>Lifeform</name>
                         <objectClass>
-                            <name>CBRN_Human</name>
+                            <name>Human</name>
                             <sharing>PublishSubscribe</sharing>
                             <semantics>Extension of NETN_Human to provide CBRN modelling.</semantics>
                             <attribute>
@@ -188,17 +120,6 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                             <sharing>PublishSubscribe</sharing>
                             <semantics>Represents a CBRN detector. This object is used to pass information to a CBRN federate, which will model the detector internally and publish a CBRN_DetectorAlarm.</semantics>
                             <attribute>
-                                <name>UniqueID</name>
-                                <dataType>UuidArrayOfHLAbyte16</dataType>
-                                <updateType>Static</updateType>
-                                <updateCondition>N/A</updateCondition>
-                                <ownership>DivestAcquire</ownership>
-                                <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
-                                <order>Receive</order>
-                                <semantics>Unique representation of the detector’s ID.</semantics>
-                            </attribute>
-                            <attribute>
                                 <name>ProcessingTime</name>
                                 <dataType>TimeSecondInteger32</dataType>
                                 <updateType>Static</updateType>
@@ -248,17 +169,6 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                             <sharing>PublishSubscribe</sharing>
                             <semantics>Represents a CBRN sensor. This object is used to pass information to a CBRN federate, which will return sensor readings by publishing CBRN_SensorUpdate interactions.</semantics>
                             <attribute>
-                                <name>UniqueID</name>
-                                <dataType>UuidArrayOfHLAbyte16</dataType>
-                                <updateType>Static</updateType>
-                                <updateCondition>N/A</updateCondition>
-                                <ownership>DivestAcquire</ownership>
-                                <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
-                                <order>Receive</order>
-                                <semantics>Unique representation of the sensor’s ID.</semantics>
-                            </attribute>
-                            <attribute>
                                 <name>UpdateFrequency</name>
                                 <dataType>TimeSecondInteger32</dataType>
                                 <updateType>Static</updateType>
@@ -305,8 +215,8 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                         </objectClass>
                     </objectClass>
                     <objectClass>
-                        <name>CBRN_Platform</name>
-                        <sharing>PublishSubscribe</sharing>
+                        <name>Platform</name>
+                        <sharing>Subscribe</sharing>
                         <semantics>Extension of NETN_Aircraft to provide CBRN modelling.</semantics>
                         <attribute>
                             <name>Contamination</name>
@@ -323,199 +233,268 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 </objectClass>
             </objectClass>
             <objectClass>
-                <name>CBRN_Root</name>
-                <sharing>Neither</sharing>
-                <semantics></semantics>
+                <name>SE_Facility</name>
                 <objectClass>
-                    <name>RawDataHazardContourGroup</name>
+                    <name>DecontaminationStation</name>
                     <sharing>PublishSubscribe</sharing>
-                    <semantics>Represents the footprint covered by a CBRN hazard. This object covers the raw data which would be the output from a dispersion model.</semantics>
+                    <semantics>Represents a feature that provides treatment for CBRN exposure.</semantics>
                     <attribute>
-                        <name>Time</name>
-                        <dataType>EpochTimeSecInt64</dataType>
-                        <updateType>Conditional</updateType>
-                        <updateCondition>On change</updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>Simulation time at which this contour group was generated.</semantics>
-                    </attribute>
-                    <attribute>
-                        <name>Agent</name>
-                        <dataType>AgentTypeEnum16</dataType>
-                        <updateType>Static</updateType>
-                        <updateCondition>NA</updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>Agent reflected in this contour.</semantics>
-                    </attribute>
-                    <attribute>
-                        <name>HazardType</name>
-                        <dataType>HazardTypeEnum8</dataType>
-                        <updateType>Static</updateType>
-                        <updateCondition>NA</updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>Type of hazard.</semantics>
-                    </attribute>
-                    <attribute>
-                        <name>Contours</name>
-                        <dataType>ArrayOfRawDataHazardContourStruct</dataType>
-                        <updateType>Conditional</updateType>
-                        <updateCondition>On change</updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>Array of contours. These should be ordered in a sequence of ascending ExposureLevel.</semantics>
-                    </attribute>
-                    <attribute>
-                        <name>UniqueID</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <name>NumberEntities</name>
+                        <dataType>QuantityUInt32</dataType>
                         <updateType>Static</updateType>
                         <updateCondition>N/A</updateCondition>
                         <ownership>DivestAcquire</ownership>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAbestEffort</transportation>
                         <order>Receive</order>
-                        <semantics>Unique representation of the contour’s ID.</semantics>
-                    </attribute>
-                </objectClass>
-                <objectClass>
-                    <name>ProbabilityHazardContourGroup</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <semantics>Represents the footprint covered by a CBRN hazard. This object covers the agent-specific effects which would be the output from a casualty model.</semantics>
-                    <attribute>
-                        <name>Time</name>
-                        <dataType>EpochTimeSecInt64</dataType>
-                        <updateType>Conditional</updateType>
-                        <updateCondition>On change</updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>Simulation time at which this contour group was generated.</semantics>
+                        <semantics>The number of entities that this decontamination station can handle.</semantics>
                     </attribute>
                     <attribute>
-                        <name>Agent</name>
-                        <dataType>AgentTypeEnum16</dataType>
-                        <updateType>Static</updateType>
-                        <updateCondition>NA</updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>Agent reflected in this contour.</semantics>
-                    </attribute>
-                    <attribute>
-                        <name>ExposureType</name>
-                        <dataType>ExposureTypeEnum8</dataType>
-                        <updateType>Static</updateType>
-                        <updateCondition>NA</updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>Type of exposure.</semantics>
-                    </attribute>
-                    <attribute>
-                        <name>Contours</name>
-                        <dataType>ArrayOfProbabilityHazardContourStruct</dataType>
-                        <updateType>Conditional</updateType>
-                        <updateCondition>On change</updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>Array of contours. These should be ordered in a sequence of ascending PercentProbabilityLevel.</semantics>
-                    </attribute>
-                    <attribute>
-                        <name>UniqueID</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
-                        <updateType>Static</updateType>
-                        <updateCondition>N/A</updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>Unique representation of the contour’s ID.</semantics>
-                    </attribute>
-                </objectClass>
-                <objectClass>
-                    <name>ATP45HazardArea</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <semantics>Represents the footprint generated by a CBRN warning and reporting simulation. This follows the NATO ATP-45 doctrine to generate a hazard area.</semantics>
-                    <attribute>
-                        <name>Time</name>
-                        <dataType>EpochTimeSecInt64</dataType>
-                        <updateType>Conditional</updateType>
-                        <updateCondition>On change</updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>Simulation time at which this hazard area was generated.</semantics>
-                    </attribute>
-                    <attribute>
-                        <name>ValidityTime</name>
+                        <name>DecontaminationPeriod</name>
                         <dataType>TimeSecondInteger32</dataType>
+                        <updateType>Static</updateType>
+                        <updateCondition>N/A</updateCondition>
+                        <ownership>DivestAcquire</ownership>
+                        <sharing>PublishSubscribe</sharing>
+                        <transportation>HLAbestEffort</transportation>
+                        <order>Receive</order>
+                        <semantics>Duration in seconds it takes to decontaminate an entity.</semantics>
+                    </attribute>
+                    <attribute>
+                        <name>Treatments</name>
+                        <dataType>ArrayOfTreatmentStruct</dataType>
                         <updateType>Conditional</updateType>
                         <updateCondition>On change</updateCondition>
                         <ownership>DivestAcquire</ownership>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAbestEffort</transportation>
                         <order>Receive</order>
-                        <semantics>Duration (in seconds) from the Time attribute that this hazard area prediction is valid.</semantics>
+                        <semantics>The types of treatment that this decontamination station currently offers.</semantics>
                     </attribute>
+                </objectClass>
+                <objectClass>
+                    <name>COLPRO</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <semantics>Represents a feature that provides Collective Protection (COLPRO) against a CBRN threat.</semantics>
                     <attribute>
-                        <name>Locations</name>
-                        <dataType>GeocentricPolygon</dataType>
-                        <updateType>Conditional</updateType>
-                        <updateCondition>On change</updateCondition>
-                        <ownership>DivestAcquire</ownership>
-                        <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>Array of locations that define the hazard area</semantics>
-                    </attribute>
-                    <attribute>
-                        <name>ATP45HazardAreaType</name>
-                        <dataType>ATP45HazardAreaTypeEnum8</dataType>
+                        <name>NumberEntities</name>
+                        <dataType>QuantityUInt32</dataType>
                         <updateType>Static</updateType>
                         <updateCondition>N/A</updateCondition>
                         <ownership>DivestAcquire</ownership>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAbestEffort</transportation>
                         <order>Receive</order>
-                        <semantics>This hazard area's type</semantics>
+                        <semantics>The number of entities that this COLPRO can handle.</semantics>
                     </attribute>
                     <attribute>
-                        <name>AgentClass</name>
-                        <dataType>AgentClassEnum8</dataType>
+                        <name>Protection</name>
+                        <dataType>ArrayOfProtectionEffectivenessStruct</dataType>
                         <updateType>Static</updateType>
                         <updateCondition>N/A</updateCondition>
                         <ownership>DivestAcquire</ownership>
                         <sharing>PublishSubscribe</sharing>
                         <transportation>HLAbestEffort</transportation>
                         <order>Receive</order>
-                        <semantics>The agent class</semantics>
+                        <semantics>The effectiveness that this COLPRO offers for each agent.</semantics>
                     </attribute>
-                    <attribute>
-                        <name>UniqueID</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
-                        <updateType>Static</updateType>
-                        <updateCondition>N/A</updateCondition>
-                        <ownership>DivestAcquire</ownership>
+                </objectClass>
+            </objectClass>
+            <objectClass>
+                <name>SE_GeoObject</name>
+                <objectClass>
+                    <name>Region</name>
+                    <objectClass>
+                        <name>ATP45HazardArea</name>
                         <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
-                        <order>Receive</order>
-                        <semantics>Unique representation of the area’s ID.</semantics>
-                    </attribute>
+                        <semantics>Represents the footprint generated by a CBRN warning and reporting simulation. This follows the NATO ATP-45 doctrine to generate a hazard area.</semantics>
+                        <attribute>
+                            <name>Time</name>
+                            <dataType>EpochTimeSecInt64</dataType>
+                            <updateType>Conditional</updateType>
+                            <updateCondition>On change</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Simulation time at which this hazard area was generated.</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>ValidityTime</name>
+                            <dataType>TimeSecondInteger32</dataType>
+                            <updateType>Conditional</updateType>
+                            <updateCondition>On change</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Duration (in seconds) from the Time attribute that this hazard area prediction is valid.</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>Locations</name>
+                            <dataType>GeocentricPolygon</dataType>
+                            <updateType>Conditional</updateType>
+                            <updateCondition>On change</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Array of locations that define the hazard area</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>ATP45HazardAreaType</name>
+                            <dataType>ATP45HazardAreaTypeEnum8</dataType>
+                            <updateType>Static</updateType>
+                            <updateCondition>N/A</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>This hazard area's type</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>AgentClass</name>
+                            <dataType>AgentClassEnum8</dataType>
+                            <updateType>Static</updateType>
+                            <updateCondition>N/A</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>The agent class</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>UniqueID</name>
+                            <dataType>UUID</dataType>
+                            <updateType>Static</updateType>
+                            <updateCondition>N/A</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Unique representation of the area’s ID.</semantics>
+                        </attribute>
+                    </objectClass>
+                    <objectClass>
+                        <name>RawDataHazardContourGroup</name>
+                        <sharing>PublishSubscribe</sharing>
+                        <semantics>Represents the footprint covered by a CBRN hazard. This object covers the raw data which would be the output from a dispersion model.</semantics>
+                        <attribute>
+                            <name>Time</name>
+                            <dataType>EpochTimeSecInt64</dataType>
+                            <updateType>Conditional</updateType>
+                            <updateCondition>On change</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Simulation time at which this contour group was generated.</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>Agent</name>
+                            <dataType>AgentTypeEnum16</dataType>
+                            <updateType>Static</updateType>
+                            <updateCondition>NA</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Agent reflected in this contour.</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>HazardType</name>
+                            <dataType>HazardTypeEnum8</dataType>
+                            <updateType>Static</updateType>
+                            <updateCondition>NA</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Type of hazard.</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>Contours</name>
+                            <dataType>ArrayOfRawDataHazardContourStruct</dataType>
+                            <updateType>Conditional</updateType>
+                            <updateCondition>On change</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Array of contours. These should be ordered in a sequence of ascending ExposureLevel.</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>UniqueID</name>
+                            <dataType>UUID</dataType>
+                            <updateType>Static</updateType>
+                            <updateCondition>N/A</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Unique representation of the contour’s ID.</semantics>
+                        </attribute>
+                    </objectClass>
+                    <objectClass>
+                        <name>ProbabilityHazardContourGroup</name>
+                        <sharing>PublishSubscribe</sharing>
+                        <semantics>Represents the footprint covered by a CBRN hazard. This object covers the agent-specific effects which would be the output from a casualty model.</semantics>
+                        <attribute>
+                            <name>Time</name>
+                            <dataType>EpochTimeSecInt64</dataType>
+                            <updateType>Conditional</updateType>
+                            <updateCondition>On change</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Simulation time at which this contour group was generated.</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>Agent</name>
+                            <dataType>AgentTypeEnum16</dataType>
+                            <updateType>Static</updateType>
+                            <updateCondition>NA</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Agent reflected in this contour.</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>ExposureType</name>
+                            <dataType>ExposureTypeEnum8</dataType>
+                            <updateType>Static</updateType>
+                            <updateCondition>NA</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Type of exposure.</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>Contours</name>
+                            <dataType>ArrayOfProbabilityHazardContourStruct</dataType>
+                            <updateType>Conditional</updateType>
+                            <updateCondition>On change</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Array of contours. These should be ordered in a sequence of ascending PercentProbabilityLevel.</semantics>
+                        </attribute>
+                        <attribute>
+                            <name>UniqueID</name>
+                            <dataType>UUID</dataType>
+                            <updateType>Static</updateType>
+                            <updateCondition>N/A</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAbestEffort</transportation>
+                            <order>Receive</order>
+                            <semantics>Unique representation of the contour’s ID.</semantics>
+                        </attribute>
+                    </objectClass>
                 </objectClass>
             </objectClass>
         </objectClass>
@@ -524,7 +503,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
         <interactionClass>
             <name>HLAinteractionRoot</name>
             <interactionClass>
-                <name>CBRN_Interactions</name>
+                <name>CBRN_Interaction</name>
                 <sharing>Neither</sharing>
                 <transportation>HLAreliable</transportation>
                 <order>Receive</order>
@@ -542,7 +521,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                     </parameter>
                     <parameter>
                         <name>SensorID</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>Unique representation of the sensor’s ID.</semantics>
                     </parameter>
                     <parameter>
@@ -559,7 +538,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                     <semantics>Represents the alarm trigger of a previously registered CBRN detector.</semantics>
                     <parameter>
                         <name>DetectorID</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>Unique representation of the detector’s ID.</semantics>
                     </parameter>
                     <parameter>
@@ -610,7 +589,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                     <semantics>Represents an order for the specified entities to enter or leave the CBRN facility.</semantics>
                     <parameter>
                         <name>FacilityID</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>The unique ID of the CBRN facility.</semantics>
                     </parameter>
                     <parameter>
@@ -646,7 +625,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                     <semantics>Communicates information associated with the release of hazardous agent.</semantics>
                     <parameter>
                         <name>UniqueID</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>Unique representation of the release’s ID.</semantics>
                     </parameter>
                     <parameter>
@@ -693,7 +672,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                     <semantics>Represents an update to the contaminating mass inside a vehicle due to embedded entities.</semantics>
                     <parameter>
                         <name>PlatformID</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>The unique ID of the platform.</semantics>
                     </parameter>
                     <parameter>
@@ -710,7 +689,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                     <semantics>Represents a CBRN casualty caused by exposure. This is for use with federates that cannot support the TriageLevel attribute in CBRN_Human.</semantics>
                     <parameter>
                         <name>UniqueID</name>
-                        <dataType>UuidArrayOfHLAbyte16</dataType>
+                        <dataType>UUID</dataType>
                         <semantics>Unique representation of the entity’s ID.</semantics>
                     </parameter>
                     <parameter>
@@ -1311,7 +1290,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 <semantics>Defines the properties for a CBRN treatment.</semantics>
                 <field>
                     <name>UniqueID</name>
-                    <dataType>UuidArrayOfHLAbyte16</dataType>
+                    <dataType>UUID</dataType>
                     <semantics>The ID of this treatment.</semantics>
                 </field>
                 <field>
@@ -1336,7 +1315,6 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 </field>
             </fixedRecordData>
         </fixedRecordDataTypes>
-        <variantRecordDataTypes/>
     </dataTypes>
     <notes/>
 </objectModel>
