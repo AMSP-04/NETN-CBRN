@@ -66,7 +66,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                         <objectClass>
                             <name>Human</name>
                             <sharing>PublishSubscribe</sharing>
-                            <semantics>Extension of NETN_Human to provide CBRN modelling.</semantics>
+                            <semantics>A human lifeform.</semantics>
                             <attribute>
                                 <name>Exposures</name>
                                 <dataType>ArrayOfCBRNExposureStruct</dataType>
