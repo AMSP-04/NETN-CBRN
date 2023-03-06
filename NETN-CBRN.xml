@@ -217,7 +217,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                     <objectClass>
                         <name>Platform</name>
                         <sharing>Subscribe</sharing>
-                        <semantics>Extension of NETN_Aircraft to provide CBRN modelling.</semantics>
+                        <semantics>A physical object under the control of armed forces upon which sensor, communication, or weapon systems may be mounted.</semantics>
                         <attribute>
                             <name>Contamination</name>
                             <dataType>ArrayOfAgentMassStruct</dataType>
