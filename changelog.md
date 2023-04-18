@@ -1,15 +1,13 @@
 ## Changelog NETN-CBRN 
 
 ### Changes in v2.0
+* Replaced all `WorldLocationStruct` with `LocationStruct`
+* Replaced all `ArrayOfWorldLocationStruct` with `LocationStructArray`
 * Renamed datatype `UuidArrayOfHLAbyte16` to `UUID`
 * Refactored all CBRN Platform subclasses as HLA 4 attribute extensions of RPR-FOM Platform object class
 * Refactored CBRN_Human as HLA 4 attributes extensions of RPR-FOM Human object class
-* All CBRN interactions made subclasses of root CBRN_Interaction interactio class
+* All CBRN interactions made subclasses of root CBRN_Interaction interaction class
 * Added dependency of NETN-SE
-* Removed dependency of NETN-Physical
-* Added dependency of RPR-Physical
-* Change COLPRO and DecontaminationStation as subclass of SE_Facility instead of RPR-FOM CulturalFeature
-
 
 
 ### Changes in v 1.2
