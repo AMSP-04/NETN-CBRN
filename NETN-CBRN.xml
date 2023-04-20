@@ -19,7 +19,7 @@ The specification is based on IEEE 1516 High Level Architecture (HLA) Object Mod
 2.	CBRN Detector modelling 
 3.	CBRN Effects modelling 
 4.	CBRN Protective measures modelling
- 5.	Hazard area modelling  
+5.	Hazard area modelling  
  
  Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas.</useLimitation>
         <useHistory>v1.1 - Initial version developed by MSG-106. Included in NETN-FOM v2.0 and AMSP-04 Ed A.</useHistory>
@@ -90,7 +90,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>On change</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>Array of agents to which this entity has been exposed to. Defaults to an empty array.</semantics>
                             </attribute>
@@ -101,7 +101,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>On change</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>The types of treatment that this entity has used. Defaults to an empty array.</semantics>
                             </attribute>
@@ -112,7 +112,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>On change</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>Triage level of this entity. Defaults to Uninjured.</semantics>
                             </attribute>
@@ -123,7 +123,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>On change</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>Type of IPE that the entity is using. Defaults to None.</semantics>
                             </attribute>
@@ -142,7 +142,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>N/A</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>Duration between the detector being exposed to a concentration of agent above its threshold and the detector raising an alarm.</semantics>
                             </attribute>
@@ -153,7 +153,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>N/A</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>Duration the detector will collect samples.</semantics>
                             </attribute>
@@ -164,7 +164,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>N/A</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>Array of detectable agents and their thresholds.</semantics>
                             </attribute>
@@ -175,7 +175,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>On change</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>Data representing the alarm of this detector. Defaults to no alarm if the attribute is not set.</semantics>
                             </attribute>
@@ -191,7 +191,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>N/A</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>Duration that this sensor would like between updated readings.</semantics>
                             </attribute>
@@ -202,7 +202,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>N/A</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>Duration the sensor will collect samples.</semantics>
                             </attribute>
@@ -213,7 +213,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>N/A</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>Array of agents that this sensor wishes to detect.</semantics>
                             </attribute>
@@ -224,7 +224,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>On change</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>Latest sensor readings. Defaults to no readings if this attribute is not set.</semantics>
                             </attribute>
@@ -241,7 +241,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                             <updateCondition>On change</updateCondition>
                             <ownership>DivestAcquire</ownership>
                             <sharing>PublishSubscribe</sharing>
-                            <transportation>HLAbestEffort</transportation>
+                            <transportation>HLAreliable</transportation>
                             <order>Receive</order>
                             <semantics>CBRN hazardous agent inside vehicle due to embedded units.</semantics>
                         </attribute>
@@ -259,7 +259,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>N/A</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>The number of entities that this COLPRO can handle.</semantics>
                             </attribute>
@@ -270,7 +270,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>N/A</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>The effectiveness that this COLPRO offers for each agent.</semantics>
                             </attribute>
@@ -286,7 +286,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>N/A</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>The number of entities that this decontamination station can handle.</semantics>
                             </attribute>
@@ -297,7 +297,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>N/A</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>Duration it takes to decontaminate an entity.</semantics>
                             </attribute>
@@ -308,7 +308,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <updateCondition>On change</updateCondition>
                                 <ownership>DivestAcquire</ownership>
                                 <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAbestEffort</transportation>
+                                <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
                                 <semantics>The types of treatment that this decontamination station currently offers.</semantics>
                             </attribute>
@@ -329,7 +329,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                         <updateCondition>N/A</updateCondition>
                         <ownership>DivestAcquire</ownership>
                         <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
+                        <transportation>HLAreliable</transportation>
                         <order>Receive</order>
                         <semantics>Required: The class of the agent.</semantics>
                     </attribute>
@@ -340,7 +340,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                         <updateCondition>NA</updateCondition>
                         <ownership>DivestAcquire</ownership>
                         <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
+                        <transportation>HLAreliable</transportation>
                         <order>Receive</order>
                         <semantics>Requierd: Agent reflected in this contour.</semantics>
                     </attribute>
@@ -362,7 +362,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                         <updateCondition>On change</updateCondition>
                         <ownership>DivestAcquire</ownership>
                         <sharing>PublishSubscribe</sharing>
-                        <transportation>HLAbestEffort</transportation>
+                        <transportation>HLAreliable</transportation>
                         <order>Receive</order>
                         <semantics>Optional: Array of contours. These should be ordered in a sequence of ascending PercentProbabilityLevel.</semantics>
                     </attribute>
