@@ -1,3 +1,4 @@
+
 # NETN-CBRN
 |Version| Date| Dependencies|
 |---|---|---|
@@ -17,47 +18,34 @@ The NETN-CBRN FOM module covers:
 2.	CBRN Detector modelling 
 3.	CBRN Effects modelling 
 4.	CBRN Protective measures modelling
- 5.	Hazard area modelling  
+5.	Hazard area modelling  
  
  Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas.
 
 
 ## Overview
 
-Modelling of CBRN involves the following aspects:
+Modelling and Simulation of CBRN involve the following aspects:
 1. Triggering the release of CBRN agents 
-2. Modelling the consequences of the release of a `CBRN Agent`, including concentration, spreading and the result of decontamination activities
-3. The `CBRN Effect` of the CBRN agents on simulated entities
-4. `CBRN Sensor` modelling
-5. The `CBRN Detection` of the CBRN agents
+2. Modelling CBRN agent concentration and spreading 
+3. Modelling the result of decontamination activities
+3. Modelling the effects of the CBRN agents on simulated entities
+4. CBRN Sensor modelling
+5. Detection of CBRN agents and CBRN alarms 
 
-Depending on the federation design, these aspects are modelled in one or more CBRN federates. E.g. a design where agent concentration, detection and effects are all modelled in the same federate, or a design where CBRN Sensors, CBRN Detectors, CBRN Effects and modelling of the concentration of agents are all in different federates.
-
-
+Depending on the federation design, these aspects are modelled in one or more CBRN federates.
 
 ### CBRN Release 
 
-The `Release` interaction is a trigger for starting the simulation of a CBRN release.
+The `Release` interaction is a trigger for starting the simulation of a CBR hazard area with contours defining the spread and concentration of CBRN agents. In some cases, the `Release` is directly related to an RPR-FOM Warfare `MunitionDetonation` event with a `WarheadType` parameter indicating a CBRN release.
 
-```mermaid
+### CBRN Hazard Area 
 
-sequenceDiagram
-autonumber
-Simulation->>CBRN Agent:Release
-
-```
-1. The `Release` interaction is sent by the federate modelling the release event, allowing a CBRN Agent federate to start modelling the CBRN agents related to the release.
-
-If a simulation can not directly produce the `Release` interaction, another federate can e.g. interpret an RPR-FOM Warfare `MunitionDetonation` and if the `WarheadType` parameter indicates a CBRN release, then a `Release` is generated using the `WarheadType` parameters.
-
-
-### CBRN Agent 
-
-A hazard area is a representation of a CBRN-contaminated area published in the federation. The hazard area can be either:
+A CBRN hazard area is a representation of a CBRN-contaminated area published in the federation. The hazard area can be either:
 * The output from a hazard prediction algorithm (a warning area defined in Allied Tactical Publication (ATP)-45) in response to a detector alarm or observation. (Perceived Truth)
 *   Raw output from a dispersion model (contours) in a simulation. (Ground Truth)
 
-<img src="./images/cbrn_hazard.png" width="700px" />
+<img src="./images/cbrn_hazard.pngkl" width="700px" />
 
 Figure: CBRN Hazard Area Objects.
 
@@ -217,7 +205,7 @@ Note that inherited and dependency attributes are not included in the descriptio
 ```mermaid
 graph RL
 BaseEntity-->HLAobjectRoot
-EnvironmentObject-->HLAobjectRoot
+DIM_HazardRegion-->HLAobjectRoot
 PhysicalEntity-->BaseEntity
 Lifeform-->PhysicalEntity
 Sensor-->PhysicalEntity
@@ -228,10 +216,7 @@ CBRN_Detector-->Sensor
 CBRN_Sensor-->Sensor
 COLPRO-->CulturalFeature
 DecontaminationStation-->CulturalFeature
-ArealObject-->EnvironmentObject
-ATP45HazardArea-->ArealObject
-RawDataHazardContourGroup-->ArealObject
-ProbabilityHazardContourGroup-->ArealObject
+CBRN_Hazard-->DIM_HazardRegion
 ```
 
 ### Human
@@ -243,7 +228,7 @@ A human lifeform.
 |Exposures|ArrayOfCBRNExposureStruct|Array of agents to which this entity has been exposed to. Defaults to an empty array.|
 |Treatments|ArrayOfTreatmentStruct|The types of treatment that this entity has used. Defaults to an empty array.|
 |TriageLevel|CBRNDamageEnum8|Triage level of this entity. Defaults to Uninjured.|
-|IPEType|IPETypeEnum8|Type of IPE that the entity has donned. Defaults to None.|
+|IPEType|IPETypeEnum8|Type of IPE that the entity is using. Defaults to None.|
 
 ### CBRN_Detector
 
@@ -251,8 +236,8 @@ Represents a CBRN detector. This object is used to pass information to a CBRN fe
 
 |Attribute|Datatype|Semantics|
 |---|---|---|
-|ProcessingTime|TimeSecondInteger32|Duration (in seconds) between the detector being exposed to a concentration of agent above its threshold and the detector raising an alarm.|
-|AveragingTime|TimeSecondInteger32|Duration (in seconds) over which the detector will collect samples.|
+|ProcessingTime|TimeSecondInteger32|Duration between the detector being exposed to a concentration of agent above its threshold and the detector raising an alarm.|
+|AveragingTime|TimeSecondInteger32|Duration the detector will collect samples.|
 |DetectableAgents|ArrayOfAgentConcentrationStruct|Array of detectable agents and their thresholds.|
 |Alarm|CBRNAlarmStruct|Data representing the alarm of this detector. Defaults to no alarm if the attribute is not set.|
 
@@ -262,8 +247,8 @@ Represents a CBRN sensor. This object is used to pass information to a CBRN fede
 
 |Attribute|Datatype|Semantics|
 |---|---|---|
-|UpdateFrequency|TimeSecondInteger32|Duration (in seconds) that this sensor would like between updated readings.|
-|AveragingTime|TimeSecondInteger32|Duration (in seconds) over which the sensor will collect samples.|
+|UpdateFrequency|TimeSecondInteger32|Duration that this sensor would like between updated readings.|
+|AveragingTime|TimeSecondInteger32|Duration the sensor will collect samples.|
 |DetectableAgents|ArrayOfAgentTypeEnum|Array of agents that this sensor wishes to detect.|
 |SensorReadings|ArrayOfCBRNSensorReadingStruct|Latest sensor readings. Defaults to no readings if this attribute is not set.|
 
@@ -281,7 +266,7 @@ Represents a feature that provides Collective Protection (COLPRO) against a CBRN
 
 |Attribute|Datatype|Semantics|
 |---|---|---|
-|Capacity|QuantityUInt32|The number of entities that this COLPRO can handle.|
+|Capacity|QuantityInt32|The number of entities that this COLPRO can handle.|
 |Protection|ArrayOfProtectionEffectivenessStruct|The effectiveness that this COLPRO offers for each agent.|
 
 ### DecontaminationStation
@@ -290,43 +275,20 @@ Represents a feature that provides treatment for CBRN exposure.
 
 |Attribute|Datatype|Semantics|
 |---|---|---|
-|Capacity|QuantityUInt32|The number of entities that this decontamination station can handle.|
-|DecontaminationPeriod|TimeSecondInteger32|Duration in seconds it takes to decontaminate an entity.|
+|Capacity|QuantityInt32|The number of entities that this decontamination station can handle.|
+|DecontaminationPeriod|TimeSecondInteger32|Duration it takes to decontaminate an entity.|
 |Treatments|ArrayOfTreatmentStruct|The types of treatment that this decontamination station currently offers.|
 
-### ATP45HazardArea
+### CBRN_Hazard
 
-Represents the footprint generated by a CBRN warning and reporting simulation. This follows the NATO ATP-45 doctrine to generate a hazard area.
-
-|Attribute|Datatype|Semantics|
-|---|---|---|
-|Time|EpochTimeSecInt64|Simulation time at which this hazard area was generated.|
-|ValidityTime|TimeSecondInteger32|Duration (in seconds) from the Time attribute that this hazard area prediction is valid.|
-|Locations|GeocentricPolygon|Array of locations that define the hazard area|
-|ATP45HazardAreaType|ATP45HazardAreaTypeEnum8|This hazard area's type|
-|AgentClass|AgentClassEnum8|The agent class|
-
-### RawDataHazardContourGroup
-
-Represents the footprint covered by a CBRN hazard. This object covers the raw data which would be the output from a dispersion model.
+A generic representation of a CBRN Hazard.
 
 |Attribute|Datatype|Semantics|
 |---|---|---|
-|Time|EpochTimeSecInt64|Simulation time at which this contour group was generated.|
-|Agent|AgentTypeEnum16|Agent reflected in this contour.|
-|HazardType|HazardTypeEnum8|Type of hazard.|
-|Contours|ArrayOfRawDataHazardContourStruct|Array of contours. These should be ordered in a sequence of ascending ExposureLevel.|
-
-### ProbabilityHazardContourGroup
-
-Represents the footprint covered by a CBRN hazard. This object covers the agent-specific effects which would be the output from a casualty model.
-
-|Attribute|Datatype|Semantics|
-|---|---|---|
-|Time|EpochTimeSecInt64|Simulation time at which this contour group was generated.|
-|Agent|AgentTypeEnum16|Agent reflected in this contour.|
-|ExposureType|ExposureTypeEnum8|Type of exposure.|
-|Contours|ArrayOfProbabilityHazardContourStruct|Array of contours. These should be ordered in a sequence of ascending PercentProbabilityLevel.|
+|AgentClass|AgentClassEnum8|Required: The class of the agent.|
+|AgentType|AgentTypeEnum16|Requierd: Agent reflected in this contour.|
+|EffectType|ExposureEffectTypeEnum16|The type of effects seen following an exposure.|
+|Contours|ArrayOfContourStruct|Optional: Array of contours. These should be ordered in a sequence of ascending PercentProbabilityLevel.|
 
 ## Interaction Classes
 
@@ -335,111 +297,85 @@ Note that inherited and dependency parameters are not included in the descriptio
 ```mermaid
 graph RL
 CBRN_Interaction-->HLAinteractionRoot
-ETR_Root-->HLAinteractionRoot
-CBRN_Release-->CBRN_Interaction
-CBRN_PlatformUpdate-->CBRN_Interaction
-CBRN_Casualty-->CBRN_Interaction
-ETR_Report-->ETR_Root
-ETR_Task-->ETR_Root
-CBRN_SensorUpdate-->ETR_Report
-CBRN_DetectorAlarm-->ETR_Report
-CBRN_TreatmentCommand-->ETR_Task
-IPECommand-->ETR_Task
-CBRN_FacilityUpdate-->ETR_Task
-COLPROUpdate-->CBRN_FacilityUpdate
-DecontaminationStationUpdate-->CBRN_FacilityUpdate
+ETR_Task-->HLAinteractionRoot
+Release-->CBRN_Interaction
+PlatformUpdate-->CBRN_Interaction
+CasualtyUpdate-->CBRN_Interaction
+SensorUpdate-->CBRN_Interaction
+DetectorAlarm-->CBRN_Interaction
+RequestTask-->ETR_Task
+ApplyIPE-->RequestTask
+AdministerTreatment-->RequestTask
 ```
 
-### CBRN_Release
+### Release
 
 Communicates information associated with the release of hazardous agent.
 
 |Parameter|Datatype|Semantics|
 |---|---|---|
-|UniqueID|UUID|Unique representation of the release’s ID.|
 |Agent|AgentTypeEnum16|The type of released CBRN hazardous agent.|
-|Location|WorldLocationStruct|Initial location of the release in the geocentric location system.|
+|Location|LocationStruct|Initial location of the release in the geocentric location system.|
 |Mass|MassKilogramFloat32|Total released agent mass in kg.|
-|Duration|TimeSecondInteger32|Duration in seconds over which the release takes place.|
+|Duration|TimeSecondInteger32|Duration the release takes place.|
 |ReleaseSize|ReleaseSizeStruct|The initial size of the release including initial Gaussian sigmas of the released puff and mean & variance of released particles.|
 |ReleaseDynamics|ReleaseDynamicsStruct|Temperature differance and density ratio of released material relative to the atmosphere.|
 |ReleaseVelocity|VelocityVectorStruct|Velocity of the source term.|
 
-### CBRN_PlatformUpdate
+### PlatformUpdate
 
 Represents an update to the contaminating mass inside a vehicle due to embedded entities.
 
 |Parameter|Datatype|Semantics|
 |---|---|---|
-|PlatformID|UUID|The unique ID of the platform.|
+|Platform|UUID|The unique ID of the platform.|
 |Contamination|ArrayOfAgentMassStruct|New state of CBRN hazardous agent inside vehicle due to embedded units.|
 
-### CBRN_Casualty
+### CasualtyUpdate
 
-Represents a CBRN casualty caused by exposure. This is for use with federates that cannot support the TriageLevel attribute in CBRN_Human.
+Informs the federate representing the entity of the casualty effects of exposure.
 
 |Parameter|Datatype|Semantics|
 |---|---|---|
-|UniqueID|UUID|Unique representation of the entity’s ID.|
-|TriageLevel|CBRNDamageEnum8|Triage level of this entity.|
-|Exposures|ArrayOfCBRNExposureStruct|Array of agents to which this unit has been exposed.|
+|Entity|UUID|Required: Reference to the entity affected by CBRN.|
+|TriageLevel|CBRNDamageEnum8|Required: Triage level of this entity.|
+|Exposures|ArrayOfCBRNExposureStruct|Optional: Array of agents to which this unit has been exposed.|
 
-### CBRN_SensorUpdate
+### SensorUpdate
 
 Sends information about the current state of a previously registered CBRN sensor.
 
 |Parameter|Datatype|Semantics|
 |---|---|---|
-|Time|EpochTimeSecInt64|Time of this sensor update|
-|SensorID|UUID|Unique representation of the sensor’s ID.|
-|Readings|ArrayOfAgentConcentrationStruct|Readings for this sensor|
+|Sensor|UUID|Required: Unique representation of the sensor’s ID.|
+|Concentration|MassConcentrationFloat32|Required: Mean Concentration in kg m-3.|
+|Agent|AgentTypeEnum16|Required: Type of the agent.|
 
-### CBRN_DetectorAlarm
+### DetectorAlarm
 
 Represents the alarm trigger of a previously registered CBRN detector.
 
 |Parameter|Datatype|Semantics|
 |---|---|---|
-|DetectorID|UUID|Unique representation of the detector’s ID.|
-|Alarm|CBRNAlarmStruct|Details of the alarm.|
+|Agent|AgentTypeEnum16|Enumeration representation of the agent.|
+|Location|LocationStruct|Required: Location of the detection (location of Detector)|
+|DetectorId|UUID|Optional: Reference to detector object.|
 
-### CBRN_TreatmentCommand
+### ApplyIPE
+
+Represents an task for the specified entities to use individual protective equipment.
+
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|TaskParameters|ApplyIPETaskStruct|Required: Task parameters.|
+
+### AdministerTreatment
 
 Represents an order for the specified entities to receive the list of treatments.
 
 |Parameter|Datatype|Semantics|
 |---|---|---|
-|UnitList|ArrayOfUuid|List of unique IDs of the entities who will receive the treatment.|
-|Treatments|TreatmentStruct|Type of treatment to be applied to the entities.|
-
-### IPECommand
-
-Represents an order for the specified entities to don protective equipment.
-
-|Parameter|Datatype|Semantics|
-|---|---|---|
-|UnitList|ArrayOfUuid|List of unique IDs of the entities who will don IPE.|
-|IPEType|IPETypeEnum8|Type of IPE that the entities will don.|
-
-### CBRN_FacilityUpdate
-
-Represents an order for the specified entities to enter or leave the CBRN facility.
-
-|Parameter|Datatype|Semantics|
-|---|---|---|
-|FacilityID|UUID|The unique ID of the CBRN facility.|
-|EmbeddedUnitList|ArrayOfUuid|List of unique IDs of the entities who will enter or exit the CBRN facility.|
-|IsEntry|HLAboolean|Determines whether the entities are entering (IsEntry = true) or exiting (IsEntry = false) the CBRN facility.|
-
-### COLPROUpdate
-
-Represents an order for the specified entities to enter or leave the COLPRO.
-
-
-### DecontaminationStationUpdate
-
-Represents an order for the specified entities to enter or leave the decontamination station.
-
+|TaskParameters|AdministerTreatmentTaskStruct|Required: Task parameters.|
 
 ## Datatypes
 
@@ -449,15 +385,18 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 |Name|Semantics|
 |---|---|
 |ATP45HazardAreaTypeEnum8|Type of ATP-45 Hazard Area (simple or detailed).|
+|AdministerTreatmentTaskStruct|Task-specific data.|
 |AgentClassEnum8|Class of Agent for an ATP-45 Hazard Area.|
 |AgentConcentrationStruct|Concentration value associated with a specific agent.|
 |AgentMassStruct|Mass of contaminant inside a vehicle brought in by an embedded unit.|
 |AgentTypeEnum16|Type of CBRN hazardous agent.|
+|ApplyIPETaskStruct|Task-specific data.|
 |ArrayOfAgentConcentrationStruct|Array of agents and their concentrations.|
 |ArrayOfAgentMassStruct|Array of agents and their masses.|
 |ArrayOfAgentTypeEnum|Array of agents.|
 |ArrayOfCBRNExposureStruct|Array of agents and their dosages.|
 |ArrayOfCBRNSensorReadingStruct|Array of sensor readings.|
+|ArrayOfContourStruct|A set of contour boundaries defining concentration levels in ascending order.|
 |ArrayOfProbabilityHazardContourStruct|Array of Probability Hazard Contours.|
 |ArrayOfProtectionEffectivenessStruct|Array of the protection’s effectiveness.|
 |ArrayOfRawDataHazardContourStruct|Array of Raw Data Hazard Contours.|
@@ -467,8 +406,10 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 |CBRNDamageEnum8|Level of damage due to CBRN exposure.|
 |CBRNExposureStruct|Dosage exposure value associated with a specific agent.|
 |CBRNSensorReadingStruct|Timed CBRN sensor reading.|
+|ContourStruct|Countour description.|
 |DensityRatioFloat32|Ratio of density of two materials in range [0, 1].|
 |DosageKgSecondPerMeterCubedFloat32|Dosage in SI units.|
+|ExposureEffectTypeEnum16|The type of CBRN agent will define the type of effects seen following an exposure, these are: Intoxication: This is due to a chemical (and toxin) exposure. Infection: This is due to a live biological agent exposure. Irradiation: This is due to ionising radiation exposure. Injuries: This is due to exposure to trauma or climatic stress (heat) either in isolation or as a combined injury (CBRN and trauma). The delivery method of the CBRN agent may cause trauma as well as physical degradation from individual protective equipment (IPE) use (heat injury).|
 |ExposureFloat32|Data type for exposure.|
 |ExposureTypeEnum8|Type of exposure represented in a contour group.|
 |GeocentricPolygon|A polygon defined as a closed polygonal chain of geocentric world locations where the last location is connected to the first.|
@@ -477,11 +418,13 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 |MeanMetersFloat32|Mean of a Gaussian distribution, based on SI unit meter, unit symbol m.|
 |ProbabilityHazardContourStruct|Represents the footprint covered by a CBRN hazard. This object covers the agent-specific effects which would be the output from a casualty model.|
 |ProtectionEffectivenessStruct|Protection effectiveness associated with a specific agent.|
-|QuantityUInt32|Quantity in range [0, 2^32-1]|
 |RawDataHazardContourStruct|Contour locations bounding a given exposure value.|
 |ReleaseDistributionStruct|Mean and variance of the distribution of the particles or droplets in a release.|
 |ReleaseDynamicsStruct|Defines the dynamic properties of a release.|
 |ReleaseSizeStruct|Defines the properties of the initial size of a release.|
+|TaskDefinitionVariantRecord|Variant record for task definition data.|
+|TaskProgressVariantRecord|Variant record for task progress data.|
+|TaskTypeEnum|Task types.|
 |TreatmentStruct|Defines the properties for a CBRN treatment.|
 |VarianceMetersSquaredFloat32|Variance of a Gaussian distribution, based on SI unit meter squared, unit symbol m2.|
         
@@ -492,7 +435,6 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 |DosageKgSecondPerMeterCubedFloat32|Kg Second Per Meter Cubed|Dosage in SI units.|
 |ExposureFloat32|NA|Data type for exposure.|
 |MeanMetersFloat32|meters|Mean of a Gaussian distribution, based on SI unit meter, unit symbol m.|
-|QuantityUInt32|NA|Quantity in range [0, 2^32-1]|
 |VarianceMetersSquaredFloat32|meters squared|Variance of a Gaussian distribution, based on SI unit meter squared, unit symbol m2.|
         
 ### Enumerated Datatypes
@@ -502,9 +444,11 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 |AgentClassEnum8|HLAoctet|Class of Agent for an ATP-45 Hazard Area.|
 |AgentTypeEnum16|HLAinteger16BE|Type of CBRN hazardous agent.|
 |CBRNDamageEnum8|HLAoctet|Level of damage due to CBRN exposure.|
+|ExposureEffectTypeEnum16|HLAinteger16BE|The type of CBRN agent will define the type of effects seen following an exposure, these are: Intoxication: This is due to a chemical (and toxin) exposure. Infection: This is due to a live biological agent exposure. Irradiation: This is due to ionising radiation exposure. Injuries: This is due to exposure to trauma or climatic stress (heat) either in isolation or as a combined injury (CBRN and trauma). The delivery method of the CBRN agent may cause trauma as well as physical degradation from individual protective equipment (IPE) use (heat injury).|
 |ExposureTypeEnum8|HLAoctet|Type of exposure represented in a contour group.|
 |HazardTypeEnum8|HLAoctet|Type of dispersion output represented in a contour group.|
 |IPETypeEnum8|HLAoctet|Types of Individual Protective Equipment.|
+|TaskTypeEnum|HLAinteger32BE|Task types.|
         
 ### Array Datatypes
 |Name|Element Datatype|Semantics|
@@ -514,25 +458,36 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 |ArrayOfAgentTypeEnum|AgentTypeEnum16|Array of agents.|
 |ArrayOfCBRNExposureStruct|CBRNExposureStruct|Array of agents and their dosages.|
 |ArrayOfCBRNSensorReadingStruct|CBRNSensorReadingStruct|Array of sensor readings.|
+|ArrayOfContourStruct|ContourStruct|A set of contour boundaries defining concentration levels in ascending order.|
 |ArrayOfProbabilityHazardContourStruct|ProbabilityHazardContourStruct|Array of Probability Hazard Contours.|
 |ArrayOfProtectionEffectivenessStruct|ProtectionEffectivenessStruct|Array of the protection’s effectiveness.|
 |ArrayOfRawDataHazardContourStruct|RawDataHazardContourStruct|Array of Raw Data Hazard Contours.|
 |ArrayOfSigmas6|LengthMeterFloat32|Size of the initial Gaussian puff sigma values.|
 |ArrayOfTreatmentStruct|TreatmentStruct|Array of TreatmentStruct types.|
-|GeocentricPolygon|WorldLocationStruct|A polygon defined as a closed polygonal chain of geocentric world locations where the last location is connected to the first.|
+|GeocentricPolygon|LocationStruct|A polygon defined as a closed polygonal chain of geocentric world locations where the last location is connected to the first.|
         
 ### Fixed Record Datatypes
 |Name|Fields|Semantics|
 |---|---|---|
+|AdministerTreatmentTaskStruct|Entities, Treatment, Duration|Task-specific data.|
 |AgentConcentrationStruct|MeanConcentration, Agent|Concentration value associated with a specific agent.|
 |AgentMassStruct|ContaminatedMass, Agent|Mass of contaminant inside a vehicle brought in by an embedded unit.|
-|CBRNAlarmStruct|Time, Location, Agent|Properties of a CBRN alarm.|
+|ApplyIPETaskStruct|IPEType|Task-specific data.|
+|CBRNAlarmStruct|Location, Agent|Properties of a CBRN alarm.|
 |CBRNExposureStruct|Exposure, Agent|Dosage exposure value associated with a specific agent.|
 |CBRNSensorReadingStruct|Time, Reading|Timed CBRN sensor reading.|
+|ContourStruct|Boundary, ConcentrationLevel|Countour description.|
 |ProbabilityHazardContourStruct|PercentProbabilityLevel, Locations|Represents the footprint covered by a CBRN hazard. This object covers the agent-specific effects which would be the output from a casualty model.|
 |ProtectionEffectivenessStruct|Effectiveness, Agent|Protection effectiveness associated with a specific agent.|
 |RawDataHazardContourStruct|ExposureLevel, Locations|Contour locations bounding a given exposure value.|
 |ReleaseDistributionStruct|Mean, Variance|Mean and variance of the distribution of the particles or droplets in a release.|
 |ReleaseDynamicsStruct|DensityRatio, TemperatureDifference|Defines the dynamic properties of a release.|
 |ReleaseSizeStruct|SigmaArray, ReleaseDistribution|Defines the properties of the initial size of a release.|
-|TreatmentStruct|UniqueID, Effectiveness, Duration, TreatmentWindow, TreatableAgents|Defines the properties for a CBRN treatment.|
+|TreatmentStruct|Effectiveness, Duration, TreatmentWindow, TreatableAgents|Defines the properties for a CBRN treatment.|
+        
+### Variant Record Datatypes
+|Name|Discriminant (Datatype)|Alternatives|Semantics|
+|---|---|---|---|
+|TaskDefinitionVariantRecord|TaskType (TaskTypeEnum)|ApplyIPE, AdministerTreatment|Variant record for task definition data.|
+|TaskProgressVariantRecord|TaskType (TaskTypeEnum)|Treatment|Variant record for task progress data.|
+    
