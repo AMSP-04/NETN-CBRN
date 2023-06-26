@@ -1040,7 +1040,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 <semantics>Timed CBRN sensor reading.</semantics>
                 <field>
                     <name>Time</name>
-                    <dataType>ScenarioTime</dataType>
+                    <dataType>EpochTime</dataType>
                     <semantics>Simulation time of this sensor reading.</semantics>
                 </field>
                 <field>
