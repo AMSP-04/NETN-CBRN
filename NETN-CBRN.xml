@@ -57,11 +57,19 @@ The specification is based on IEEE 1516 High Level Architecture (HLA) Object Mod
         </poc>
         <reference>
             <type>Dependency</type>
-            <identification>NETN-Physical</identification>
+            <identification>RPR-Physical</identification>
         </reference>
         <reference>
             <type>Dependency</type>
-            <identification>NETN-SE</identification>
+            <identification>NETN-DIM</identification>
+        </reference>
+        <reference>
+            <type>Dependency</type>
+            <identification>NETN-BASE</identification>
+        </reference>
+        <reference>
+            <type>Dependency</type>
+            <identification>NETN-ETR</identification>
         </reference>
         <other>
 Copyright © 2020 by NATO/OTAN. All rights reserved.
