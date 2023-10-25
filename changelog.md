@@ -11,7 +11,7 @@
 
 
 ### Changes in v 1.2
-Version 1.2 of the NETN-CBRN was updated by MSG-163 and included in NETN-FOM v3.0 and AMSP-04 Ed B.
+Version 1.2 of the NETN-CBRN was updated by MSG-163 and included in NETN FOM v3.0 and AMSP-04 Ed B.
 
 
 * Changed `modelIdentification` `securityClassification` from `unclassified` to `Not Classified`
@@ -32,7 +32,7 @@ Version 1.2 of the NETN-CBRN was updated by MSG-163 and included in NETN-FOM v3.
 
 
 ### Changes in v1.1.9
-Version 1.1.9 is the initial public release of the NETN-CBRN FOM Module developed by MSG-106 & MSG-134. This version is included in NETN-FOM v2.0 and AMSP-04 Ed A. Several internal development releases were also made available to the team and a summary of the changes are provided below
+Version 1.1.9 is the initial public release of the NETN-CBRN FOM Module developed by MSG-106 & MSG-134. This version is included in NETN FOM v2.0 and AMSP-04 Ed A. Several internal development releases were also made available to the team and a summary of the changes are provided below
 
 * v1.0.0 - Initial; object, interaction classes and datatypes.
 * v1.0.1 - Added semantics.
