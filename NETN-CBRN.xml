@@ -4,7 +4,7 @@
         <name>NETN-CBRN</name>
         <type>FOM</type>
         <version>v2.0</version>
-        <modificationDate>2023-03-28</modificationDate>
+        <modificationDate>2023-11-20</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <purpose>The NATO Education and Training Network (NETN) CBRN FOM Module (NETN-CBRN) provides a common standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g the exposure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.</purpose>
         <applicationDomain>Training</applicationDomain>
@@ -420,141 +420,9 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
         <interactionClass>
             <name>HLAinteractionRoot</name>
             <interactionClass>
-                <name>CBRN_Interaction</name>
-                <sharing>Neither</sharing>
-                <transportation>HLAreliable</transportation>
-                <order>Receive</order>
-                <semantics>Base class for CBRN related interactions.</semantics>
+                <name>SMC_EntityControl</name>
                 <interactionClass>
-                    <name>Release</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>Communicates information associated with the release of hazardous agent.</semantics>
-                    <parameter>
-                        <name>Agent</name>
-                        <dataType>AgentTypeEnum16</dataType>
-                        <semantics>The type of released CBRN hazardous agent.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>Location</name>
-                        <dataType>LocationStruct</dataType>
-                        <semantics>Initial location of the release in the geocentric location system.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>Mass</name>
-                        <dataType>MassKilogramFloat32</dataType>
-                        <semantics>Total released agent mass in kg.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>Duration</name>
-                        <dataType>TimeSecondInteger32</dataType>
-                        <semantics>Duration the release takes place.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>ReleaseSize</name>
-                        <dataType>ReleaseSizeStruct</dataType>
-                        <semantics>The initial size of the release including initial Gaussian sigmas of the released puff and mean &amp; variance of released particles.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>ReleaseDynamics</name>
-                        <dataType>ReleaseDynamicsStruct</dataType>
-                        <semantics>Temperature differance and density ratio of released material relative to the atmosphere.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>ReleaseVelocity</name>
-                        <dataType>VelocityVectorStruct</dataType>
-                        <semantics>Velocity of the source term.</semantics>
-                    </parameter>
-                </interactionClass>
-                <interactionClass>
-                    <name>PlatformUpdate</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>Represents an update to the contaminating mass inside a vehicle due to embedded entities.</semantics>
-                    <parameter>
-                        <name>Platform</name>
-                        <dataType>UUID</dataType>
-                        <semantics>The unique ID of the platform.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>Contamination</name>
-                        <dataType>ArrayOfAgentMassStruct</dataType>
-                        <semantics>New state of CBRN hazardous agent inside vehicle due to embedded units.</semantics>
-                    </parameter>
-                </interactionClass>
-                <interactionClass>
-                    <name>CasualtyUpdate</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>Informs the federate representing the entity of the casualty effects of exposure.</semantics>
-                    <parameter>
-                        <name>Entity</name>
-                        <dataType>UUID</dataType>
-                        <semantics>Required: Reference to the entity affected by CBRN.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>TriageLevel</name>
-                        <dataType>CBRNDamageEnum8</dataType>
-                        <semantics>Required: Triage level of this entity.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>Exposures</name>
-                        <dataType>ArrayOfCBRNExposureStruct</dataType>
-                        <semantics>Optional: Array of agents to which this unit has been exposed.</semantics>
-                    </parameter>
-                </interactionClass>
-                <interactionClass>
-                    <name>SensorUpdate</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>Sends information about the current state of a previously registered CBRN sensor.</semantics>
-                    <parameter>
-                        <name>Sensor</name>
-                        <dataType>UUID</dataType>
-                        <semantics>Required: Unique representation of the sensor’s ID.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>Concentration</name>
-                        <dataType>MassConcentrationFloat32</dataType>
-                        <semantics>Required: Mean Concentration in kg m-3.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>Agent</name>
-                        <dataType>AgentTypeEnum16</dataType>
-                        <semantics>Required: Type of the agent.</semantics>
-                    </parameter>
-                </interactionClass>
-                <interactionClass>
-                    <name>DetectorAlarm</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>Represents the alarm trigger of a previously registered CBRN detector.</semantics>
-                    <parameter>
-                        <name>Agent</name>
-                        <dataType>AgentTypeEnum16</dataType>
-                        <semantics>Enumeration representation of the agent.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>Location</name>
-                        <dataType>LocationStruct</dataType>
-                        <semantics>Required: Location of the detection (location of Detector)</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>DetectorId</name>
-                        <dataType>UUID</dataType>
-                        <semantics>Optional: Reference to detector object.</semantics>
-                    </parameter>
-                </interactionClass>
-            </interactionClass>
-            <interactionClass>
-                <name>ETR_Task</name>
-                <interactionClass>
-                    <name>RequestTask</name>
+                    <name>Task</name>
                     <interactionClass>
                         <name>ApplyIPE</name>
                         <sharing>PublishSubscribe</sharing>
@@ -580,6 +448,114 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                         </parameter>
                     </interactionClass>
                 </interactionClass>
+                <interactionClass>
+                    <name>SetPlatformContamination</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics>Represents an update to the contaminating mass inside a vehicle due to embedded entities.</semantics>
+                    <parameter>
+                        <name>Contamination</name>
+                        <dataType>ArrayOfAgentMassStruct</dataType>
+                        <semantics>New state of CBRN hazardous agent inside vehicle due to embedded units.</semantics>
+                    </parameter>
+                </interactionClass>
+                <interactionClass>
+                    <name>SetCasualtyEffect</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics>Informs the federate representing the entity of the casualty effects of exposure.</semantics>
+                    <parameter>
+                        <name>TriageLevel</name>
+                        <dataType>CBRNDamageEnum8</dataType>
+                        <semantics>Required: Triage level of this entity.</semantics>
+                    </parameter>
+                    <parameter>
+                        <name>Exposures</name>
+                        <dataType>ArrayOfCBRNExposureStruct</dataType>
+                        <semantics>Optional: Array of agents to which this unit has been exposed.</semantics>
+                    </parameter>
+                </interactionClass>
+            </interactionClass>
+            <interactionClass>
+                <name>SensorEvent</name>
+                <interactionClass>
+                    <name>CBRN_SensorUpdate</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics>Sends information about the current state of a previously registered CBRN sensor.</semantics>
+                    <parameter>
+                        <name>Agent</name>
+                        <dataType>AgentTypeEnum16</dataType>
+                        <semantics>Required: Type of the agent.</semantics>
+                    </parameter>
+                    <parameter>
+                        <name>Concentration</name>
+                        <dataType>MassConcentrationFloat32</dataType>
+                        <semantics>Required: Mean Concentration in kg m-3.</semantics>
+                    </parameter>
+                </interactionClass>
+                <interactionClass>
+                    <name>CBRN_DetectorAlarm</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics>Represents the alarm trigger of a previously registered CBRN detector.</semantics>
+                    <parameter>
+                        <name>Agent</name>
+                        <dataType>AgentTypeEnum16</dataType>
+                        <semantics>Enumeration representation of the agent.</semantics>
+                    </parameter>
+                    <parameter>
+                        <name>Location</name>
+                        <dataType>LocationStruct</dataType>
+                        <semantics>Required: Location of the detection (location of Detector)</semantics>
+                    </parameter>
+                </interactionClass>
+            </interactionClass>
+            <interactionClass>
+                <name>CBRN_Release</name>
+                <sharing>PublishSubscribe</sharing>
+                <transportation>HLAreliable</transportation>
+                <order>Receive</order>
+                <semantics>Communicates information associated with the release of hazardous agent.</semantics>
+                <parameter>
+                    <name>Agent</name>
+                    <dataType>AgentTypeEnum16</dataType>
+                    <semantics>The type of released CBRN hazardous agent.</semantics>
+                </parameter>
+                <parameter>
+                    <name>Location</name>
+                    <dataType>LocationStruct</dataType>
+                    <semantics>Initial location of the release in the geocentric location system.</semantics>
+                </parameter>
+                <parameter>
+                    <name>Mass</name>
+                    <dataType>MassKilogramFloat32</dataType>
+                    <semantics>Total released agent mass in kg.</semantics>
+                </parameter>
+                <parameter>
+                    <name>Duration</name>
+                    <dataType>TimeSecondInteger32</dataType>
+                    <semantics>Duration the release takes place.</semantics>
+                </parameter>
+                <parameter>
+                    <name>ReleaseSize</name>
+                    <dataType>ReleaseSizeStruct</dataType>
+                    <semantics>The initial size of the release including initial Gaussian sigmas of the released puff and mean &amp; variance of released particles.</semantics>
+                </parameter>
+                <parameter>
+                    <name>ReleaseDynamics</name>
+                    <dataType>ReleaseDynamicsStruct</dataType>
+                    <semantics>Temperature differance and density ratio of released material relative to the atmosphere.</semantics>
+                </parameter>
+                <parameter>
+                    <name>ReleaseVelocity</name>
+                    <dataType>VelocityVectorStruct</dataType>
+                    <semantics>Velocity of the source term.</semantics>
+                </parameter>
             </interactionClass>
         </interactionClass>
     </interactions>
@@ -903,9 +879,9 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 </enumerator>
             </enumeratedData>
             <enumeratedData>
-                <name>TaskTypeEnum</name>
+                <name>EntityControlActionEnum</name>
                 <representation>HLAinteger32BE</representation>
-                <semantics>Task types.</semantics>
+                <semantics>Control actions for entities.</semantics>
                 <enumerator>
                     <name>ApplyIPE</name>
                     <value>501</value>
@@ -1197,7 +1173,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
             <variantRecordData>
                 <name>TaskDefinitionVariantRecord</name>
                 <discriminant>TaskType</discriminant>
-                <dataType>TaskTypeEnum</dataType>
+                <dataType>EntityControlActionEnum</dataType>
                 <alternative>
                     <enumerator>ApplyIPE</enumerator>
                     <name>ApplyIPE</name>
@@ -1216,7 +1192,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
             <variantRecordData>
                 <name>TaskProgressVariantRecord</name>
                 <discriminant>TaskType</discriminant>
-                <dataType>TaskTypeEnum</dataType>
+                <dataType>EntityControlActionEnum</dataType>
                 <alternative>
                     <enumerator>AdministerTreatment</enumerator>
                     <name>Treatment</name>
