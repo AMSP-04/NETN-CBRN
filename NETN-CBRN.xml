@@ -4,7 +4,7 @@
         <name>NETN-CBRN</name>
         <type>FOM</type>
         <version>v2.0</version>
-        <modificationDate>2023-11-20</modificationDate>
+        <modificationDate>2023-12-09</modificationDate>
         <securityClassification>Not Classified</securityClassification>
         <purpose>The NATO Education and Training Network (NETN) CBRN FOM Module (NETN-CBRN) provides a common standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g the exposure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.</purpose>
         <applicationDomain>Training</applicationDomain>
@@ -256,21 +256,23 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                     </objectClass>
                     <objectClass>
                         <name>CulturalFeature</name>
+                        <sharing>PublishSubscribe</sharing>
+                        <semantics>Engineering and natural effects such as craters, bridges, vehicle tracks, etc.</semantics>
+                        <attribute>
+                            <name>Capacity</name>
+                            <dataType>QuantityInt32</dataType>
+                            <updateType>Static</updateType>
+                            <updateCondition>N/A</updateCondition>
+                            <ownership>DivestAcquire</ownership>
+                            <sharing>PublishSubscribe</sharing>
+                            <transportation>HLAreliable</transportation>
+                            <order>Receive</order>
+                            <semantics>Required: The number of entities that this cultural feature can handle.</semantics>
+                        </attribute>
                         <objectClass>
                             <name>COLPRO</name>
                             <sharing>PublishSubscribe</sharing>
                             <semantics>Represents a feature that provides Collective Protection (COLPRO) against a CBRN threat.</semantics>
-                            <attribute>
-                                <name>Capacity</name>
-                                <dataType>QuantityInt32</dataType>
-                                <updateType>Static</updateType>
-                                <updateCondition>N/A</updateCondition>
-                                <ownership>DivestAcquire</ownership>
-                                <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAreliable</transportation>
-                                <order>Receive</order>
-                                <semantics>The number of entities that this COLPRO can handle.</semantics>
-                            </attribute>
                             <attribute>
                                 <name>Protection</name>
                                 <dataType>ArrayOfProtectionEffectivenessStruct</dataType>
@@ -288,17 +290,6 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                             <sharing>PublishSubscribe</sharing>
                             <semantics>Represents a feature that provides treatment for CBRN exposure.</semantics>
                             <attribute>
-                                <name>Capacity</name>
-                                <dataType>QuantityInt32</dataType>
-                                <updateType>Static</updateType>
-                                <updateCondition>N/A</updateCondition>
-                                <ownership>DivestAcquire</ownership>
-                                <sharing>PublishSubscribe</sharing>
-                                <transportation>HLAreliable</transportation>
-                                <order>Receive</order>
-                                <semantics>The number of entities that this decontamination station can handle.</semantics>
-                            </attribute>
-                            <attribute>
                                 <name>DecontaminationPeriod</name>
                                 <dataType>TimeSecondInteger32</dataType>
                                 <updateType>Static</updateType>
@@ -307,7 +298,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <sharing>PublishSubscribe</sharing>
                                 <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
-                                <semantics>Duration it takes to decontaminate an entity.</semantics>
+                                <semantics>Required: Duration it takes to decontaminate an entity.</semantics>
                             </attribute>
                             <attribute>
                                 <name>Treatments</name>
@@ -318,7 +309,7 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                                 <sharing>PublishSubscribe</sharing>
                                 <transportation>HLAreliable</transportation>
                                 <order>Receive</order>
-                                <semantics>The types of treatment that this decontamination station currently offers.</semantics>
+                                <semantics>Required: The types of treatment that this decontamination station currently offers.</semantics>
                             </attribute>
                         </objectClass>
                     </objectClass>
@@ -479,43 +470,6 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 </interactionClass>
             </interactionClass>
             <interactionClass>
-                <name>SensorEvent</name>
-                <interactionClass>
-                    <name>CBRN_SensorUpdate</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>Sends information about the current state of a previously registered CBRN sensor.</semantics>
-                    <parameter>
-                        <name>Agent</name>
-                        <dataType>AgentTypeEnum16</dataType>
-                        <semantics>Required: Type of the agent.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>Concentration</name>
-                        <dataType>MassConcentrationFloat32</dataType>
-                        <semantics>Required: Mean Concentration in kg m-3.</semantics>
-                    </parameter>
-                </interactionClass>
-                <interactionClass>
-                    <name>CBRN_DetectorAlarm</name>
-                    <sharing>PublishSubscribe</sharing>
-                    <transportation>HLAreliable</transportation>
-                    <order>Receive</order>
-                    <semantics>Represents the alarm trigger of a previously registered CBRN detector.</semantics>
-                    <parameter>
-                        <name>Agent</name>
-                        <dataType>AgentTypeEnum16</dataType>
-                        <semantics>Enumeration representation of the agent.</semantics>
-                    </parameter>
-                    <parameter>
-                        <name>Location</name>
-                        <dataType>LocationStruct</dataType>
-                        <semantics>Required: Location of the detection (location of Detector)</semantics>
-                    </parameter>
-                </interactionClass>
-            </interactionClass>
-            <interactionClass>
                 <name>CBRN_Release</name>
                 <sharing>PublishSubscribe</sharing>
                 <transportation>HLAreliable</transportation>
@@ -556,6 +510,44 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                     <dataType>VelocityVectorStruct</dataType>
                     <semantics>Velocity of the source term.</semantics>
                 </parameter>
+            </interactionClass>
+            <interactionClass>
+                <name>ETR_SensorEvent</name>
+                
+                <interactionClass>
+                    <name>CBRN_SensorUpdate</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics>Sends information about the current state of a previously registered CBRN sensor.</semantics>
+                    <parameter>
+                        <name>Agent</name>
+                        <dataType>AgentTypeEnum16</dataType>
+                        <semantics>Required: Type of the agent.</semantics>
+                    </parameter>
+                    <parameter>
+                        <name>Concentration</name>
+                        <dataType>MassConcentrationFloat32</dataType>
+                        <semantics>Required: Mean Concentration in kg m-3.</semantics>
+                    </parameter>
+                </interactionClass>
+                <interactionClass>
+                    <name>CBRN_DetectorAlarm</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>Receive</order>
+                    <semantics>Represents the alarm trigger of a previously registered CBRN detector.</semantics>
+                    <parameter>
+                        <name>Agent</name>
+                        <dataType>AgentTypeEnum16</dataType>
+                        <semantics>Enumeration representation of the agent.</semantics>
+                    </parameter>
+                    <parameter>
+                        <name>Location</name>
+                        <dataType>LocationStruct</dataType>
+                        <semantics>Required: Location of the detection (location of Detector)</semantics>
+                    </parameter>
+                </interactionClass>
             </interactionClass>
         </interactionClass>
     </interactions>

@@ -3,7 +3,7 @@
 
 |Version| Date| Dependencies|
 |---|---|---|
-|v2.0|2023-11-20|RPR-Physical, NETN-DIM, NETN-BASE, NETN-ETR|
+|v2.0|2023-12-09|RPR-Physical, NETN-DIM, NETN-BASE, NETN-ETR|
 
 > [Full Documentation](NETN-CBRN.md)
 
