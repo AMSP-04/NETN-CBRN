@@ -226,7 +226,7 @@ CBRN_Release : ReleaseSize
 CBRN_Release : ReleaseVelocity
 ETR_SensorEvent <|-- CBRN_SensorUpdate
 ETR_SensorEvent <|-- CBRN_DetectorAlarm
-ETR_SensorEvent : Entity(NETN-ETR)
+ETR_SensorEvent : ProducingEntity(NETN-ETR)
 CBRN_SensorUpdate : Agent
 CBRN_SensorUpdate : Concentration
 CBRN_DetectorAlarm : Agent
@@ -241,9 +241,9 @@ Represents an task for the specified entities to use individual protective equip
 |---|---|---|
 |TaskParameters|ApplyIPETaskStruct|Required: Task parameters.|
 |Entity<br/>(NETN-SMC)|UUID|Reference to a simulation entity for which the control action is intended.| 
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Scenario time is milliseconds since Epoch, where Epoch is January 1, 1970, 00:00:00 UTC or otherwise defined in federation agreements. Default is interpreted as the receivers scenario time when the interaction is received.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
-|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
 ### AdministerTreatment
 
@@ -253,9 +253,9 @@ Represents an order for the specified entities to receive the list of treatments
 |---|---|---|
 |TaskParameters|AdministerTreatmentTaskStruct|Required: Task parameters.|
 |Entity<br/>(NETN-SMC)|UUID|Reference to a simulation entity for which the control action is intended.| 
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Scenario time is milliseconds since Epoch, where Epoch is January 1, 1970, 00:00:00 UTC or otherwise defined in federation agreements. Default is interpreted as the receivers scenario time when the interaction is received.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
-|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
 ### SetPlatformContamination
 
@@ -265,8 +265,8 @@ Represents an update to the contaminating mass inside a vehicle due to embedded 
 |---|---|---|
 |Contamination|ArrayOfAgentMassStruct|New state of CBRN hazardous agent inside vehicle due to embedded units.|
 |Entity<br/>(NETN-SMC)|UUID|Reference to a simulation entity for which the control action is intended.| 
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Scenario time is milliseconds since Epoch, where Epoch is January 1, 1970, 00:00:00 UTC or otherwise defined in federation agreements. Default is interpreted as the receivers scenario time when the interaction is received.| 
-|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
 ### SetCasualtyEffect
 
@@ -277,8 +277,8 @@ Informs the federate representing the entity of the casualty effects of exposure
 |Exposures|ArrayOfCBRNExposureStruct|Optional: Array of agents to which this unit has been exposed.|
 |TriageLevel|CBRNDamageEnum8|Required: Triage level of this entity.|
 |Entity<br/>(NETN-SMC)|UUID|Reference to a simulation entity for which the control action is intended.| 
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Scenario time is milliseconds since Epoch, where Epoch is January 1, 1970, 00:00:00 UTC or otherwise defined in federation agreements. Default is interpreted as the receivers scenario time when the interaction is received.| 
-|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
 ### CBRN_Release
 
@@ -293,8 +293,8 @@ Communicates information associated with the release of hazardous agent.
 |ReleaseDynamics|ReleaseDynamicsStruct|Temperature differance and density ratio of released material relative to the atmosphere.|
 |ReleaseSize|ReleaseSizeStruct|The initial size of the release including initial Gaussian sigmas of the released puff and mean & variance of released particles.|
 |ReleaseVelocity|VelocityVectorStruct|Velocity of the source term.|
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Scenario time is milliseconds since Epoch, where Epoch is January 1, 1970, 00:00:00 UTC or otherwise defined in federation agreements. Default is interpreted as the receivers scenario time when the interaction is received.| 
-|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
 ### CBRN_SensorUpdate
 
@@ -304,9 +304,9 @@ Sends information about the current state of a previously registered CBRN sensor
 |---|---|---|
 |Agent|AgentTypeEnum16|Required: Type of the agent.|
 |Concentration|MassConcentrationFloat32|Required: Mean Concentration in kg m-3.|
-|Entity<br/>(NETN-ETR)|UUID|Optional: Reference to an entity with a sensor producing the sensor event. Default is no specific entity referenced.| 
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Scenario time is milliseconds since Epoch, where Epoch is January 1, 1970, 00:00:00 UTC or otherwise defined in federation agreements. Default is interpreted as the receivers scenario time when the interaction is received.| 
-|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction.| 
+|ProducingEntity<br/>(NETN-ETR)|UUID|Optional: Reference to an entity with a sensor producing the sensor event. Default is no specific entity referenced.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
 ### CBRN_DetectorAlarm
 
@@ -316,9 +316,9 @@ Represents the alarm trigger of a previously registered CBRN detector.
 |---|---|---|
 |Agent|AgentTypeEnum16|Enumeration representation of the agent.|
 |Location|LocationStruct|Required: Location of the detection (location of Detector)|
-|Entity<br/>(NETN-ETR)|UUID|Optional: Reference to an entity with a sensor producing the sensor event. Default is no specific entity referenced.| 
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Scenario time is milliseconds since Epoch, where Epoch is January 1, 1970, 00:00:00 UTC or otherwise defined in federation agreements. Default is interpreted as the receivers scenario time when the interaction is received.| 
-|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction.| 
+|ProducingEntity<br/>(NETN-ETR)|UUID|Optional: Reference to an entity with a sensor producing the sensor event. Default is no specific entity referenced.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
 ## Datatypes
 
