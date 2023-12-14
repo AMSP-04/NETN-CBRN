@@ -513,7 +513,6 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
             </interactionClass>
             <interactionClass>
                 <name>ETR_SensorEvent</name>
-                
                 <interactionClass>
                     <name>CBRN_SensorUpdate</name>
                     <sharing>PublishSubscribe</sharing>
@@ -1196,5 +1195,14 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
             </variantRecordData>
         </variantRecordDataTypes>
     </dataTypes>
-    <notes/>
+    <notes>
+        <note>
+            <label>netn-cbrn_overview</label>
+            <semantics></semantics>
+        </note>
+        <note>
+            <label>netn-cbrn_changelog_1</label>
+            <semantics></semantics>
+        </note>
+    </notes>
 </objectModel>
