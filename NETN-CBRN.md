@@ -240,7 +240,7 @@ Represents an task for the specified entities to use individual protective equip
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |TaskParameters|ApplyIPETaskStruct|Required: Task parameters.|
-|Entity<br/>(NETN-SMC)|UUID|Reference to a simulation entity for which the control action is intended.| 
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended.| 
 |ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
@@ -252,7 +252,7 @@ Represents an order for the specified entities to receive the list of treatments
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |TaskParameters|AdministerTreatmentTaskStruct|Required: Task parameters.|
-|Entity<br/>(NETN-SMC)|UUID|Reference to a simulation entity for which the control action is intended.| 
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended.| 
 |ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
@@ -264,7 +264,7 @@ Represents an update to the contaminating mass inside a vehicle due to embedded 
 |Parameter|Datatype|Semantics|
 |---|---|---|
 |Contamination|ArrayOfAgentMassStruct|New state of CBRN hazardous agent inside vehicle due to embedded units.|
-|Entity<br/>(NETN-SMC)|UUID|Reference to a simulation entity for which the control action is intended.| 
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended.| 
 |ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
@@ -276,7 +276,7 @@ Informs the federate representing the entity of the casualty effects of exposure
 |---|---|---|
 |Exposures|ArrayOfCBRNExposureStruct|Optional: Array of agents to which this unit has been exposed.|
 |TriageLevel|CBRNDamageEnum8|Required: Triage level of this entity.|
-|Entity<br/>(NETN-SMC)|UUID|Reference to a simulation entity for which the control action is intended.| 
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended.| 
 |ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
