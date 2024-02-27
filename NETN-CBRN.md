@@ -1,190 +1,424 @@
+
 # NETN-CBRN
-NATO Education and Training Network (NETN) Chemical, Biological, Radiological, Nuclear (CBRN) Module
+|Version| Date| Dependencies|
+|---|---|---|
+|v2.0|2023-12-09|RPR-Physical, NETN-DIM, NETN-BASE, NETN-ETR|
 
-Copyright (C) 2020 NATO/OTAN.
-This work is licensed under a [Creative Commons Attribution-NoDerivatives 4.0 International License](LICENCE.md).
+The NATO Education and Training Network (NETN) CBRN FOM Module (NETN-CBRN) provides a common standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g the exposure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.
 
-## Introduction
+CBRN are Chemical, Biological, Radiological and Nuclear materials that can be delivered intentionally as a weapon using conventional bombs, explosive materials and enhanced blast weapons (e.g., dirty bombs) or unintentionally caused by human error or natural or technological reasons, such as spills, accidental releases or leakages. 
 
-CBRN is Chemical, Biological, Radiological and Nuclear materials that can be delivered intentionally as a weapon using conventional bombs, explosive materials and enhanced blast weapons (e.g., dirty bombs) or unintentionally caused by human error or natural or technological reasons, such as spills, accidental releases or leakages. 
+The NETN-CBRN FOM Module is a specification of how to model CBRN-related events in a federated distributed simulation. 
 
-The NATO Education and Training Network CBRN Module (NETN-CBRN) is a specification of how to model CBRN related concepts in a federated distributed simulation. 
+The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and is primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-CBRN FOM module is available as an XML file for use in HLA-based federations. 
 
-The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-CBRN FOM module is available as an XML file for use in HLA based federations.
-
-### Purpose
-
-NETN-CBRN provides a standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g. the exposure effect on individual humans in a CBRN contaminated Hazard area where the humans are represented in one simulation, and the effect is modelled in another.
-
-### Scope
-
-The NETN-CBRN FOM module covers:
-
-1.  CBRN Source release modelling
-2.  CBRN Detector modelling
-3.  CBRN Effects modelling
-4.  CBRN Protective measures modelling
-5.  Hazard area modelling
-
-Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas.
-
-### Overview
-
-Considerations have been made as to how the CBRN FOM module can be used by legacy systems that cannot be updated to implement the CBRN FOM module. These considerations have resulted in the CBRN FOM module, including interactions that mirror the changes that can be made to objects. These interactions allow for a translation federate to sit between the CBRN and simulation federate to translate the CBRN data into data that the simulation federate can understand.
-
-<img src="./images/interactions.png" width="800px"/>
-
-**Figure: CBRN Interaction Classes**
-
-
-## CBRN Source Release Modelling
-
-### CBRN Release
-
-
-The `CBRN_Release` interaction includes all of the CBRN source release information required for a CBRN federate to model a CBRN source release.
-
-<img src="./images/cbrn_release.png" width="350px"/>
-
-
-
-### CBRN Warheads on Conventional Munitions
-
-Ideally, the `CBRN_Release` interaction would be sent from a simulation federate to the CBRN federate to inform it that a release had occurred, allowing the CBRN federate to model the release. However, if a legacy simulation federate that can’t be updated to use the CBRN FOM module is being used, then the `MunitionDetonation` from the RPR FOM can be used instead. In this situation an additional federate will be created that can subscribe to the `MunitionDetonation` interactions and use the `WarheadType` parameter to check that the `MunitionDetonation` is a CBRN release. If it is a CBRN release then the additional federate will create a `CBRN_Release` using the `WarheadType` parameter, and publish the `CBRN_Release` interaction allowing the CBRN federate to start its CBRN modelling.
-
-The `CBRN_Release` interaction acts as a trigger for starting the simulation of a CBRN release event.
-
-<img src="./images/release.svg" width="1000px"/>
-
-**Figure: Triggering a CBRN Release**
-<!--
-participant CBRN Mediation
-participant CGF
-participant CBRN
-autonumber 1
-alt CBRN aware CGF
-CGF->CBRN:CBRN_Release(UniqueID, Agent, Location, Mass, \nDuration, ReleaseSize, ReleaseDynamics, ReleaseVelocity)
-else legacy RPR CGF
-CGF->CBRN Mediation:RPR-Warfare::MunitionDetonation(WarheadType, ...)
-CBRN Mediation->CBRN:CBRN_Release(UniqueID, Agent, Location, Mass, Duration, ReleaseSize, ReleaseDynamics, ReleaseVelocity)
-end
-autonumber off
--->
-
-1. The `CBRN_Release` interaction can be sent directly from a CBRN aware CGF to inform a CBRN federate that a release has occurred. 
-
-However, in some federations, an intermediate step is required to support the generation of the `CBRN_Release` interaction. 
-
-2. A legacy RPR based CGF, not aware of NETN-CBRN concepts, can generate an RPR-Warfare `MunitionDetonation` interaction. 
-3. A CBRN Mediation federate receives the `MunitionDetonation`. If the `WarheadType` parameter indicates that it is a CBRN release, then the CBRN Mediation federate sends the `CBRN_Release` interaction.
-
-
-## Detector Modelling
-
-There are two use cases for a detector in an HLA simulation:
-1.  The first is for detector properties to be created and published by a simulation federate. A detector model within a CBRN federate would calculate the detector readings and publish the alarm status. This process would use the CBRN_Detector object and CBRN_DetectorAlarm interaction.
-2.  The second would have a complete detector model in a federate; this would request concentration readings from a CBRN federate and calculate its alarm status. This would use the CBRN_Sensor object and CBRN_SensorUpdate interaction.
-
-<img src="./images/detectorobjects.png" width="800px"/>
-
-Figure: CBRN Detector Objects.
-
-Both the `CBRN_Detector` and `CBRN_Sensor` objects extend the BaseEntity.PhysicalEntity.Sensor object in the RPR Physical FOM module.
+The NETN-CBRN FOM module covers:  
+        
+1.	CBRN Source release modelling 
+2.	CBRN Detector modelling 
+3.	CBRN Effects modelling 
+4.	CBRN Protective measures modelling
+5.	Hazard area modelling  
  
+ Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas.
+
+
+## Object Classes
+
+```mermaid
+classDiagram 
+direction LR
+
+HLAobjectRoot <|-- BaseEntity
+HLAobjectRoot <|-- DIM_HazardRegion
+HLAobjectRoot : UniqueId(NETN-BASE)
+BaseEntity <|-- PhysicalEntity
+BaseEntity : EntityIdentifier(RPR-BASE)
+BaseEntity : EntityType(RPR-BASE)
+BaseEntity : Spatial(RPR-BASE)
+PhysicalEntity <|-- Lifeform
+PhysicalEntity <|-- Sensor
+PhysicalEntity <|-- Platform
+PhysicalEntity <|-- CulturalFeature
+Lifeform <|-- Human
+Human : Exposures
+Human : IPEType
+Human : Treatments
+Human : TriageLevel
+Sensor <|-- CBRN_Detector
+Sensor <|-- CBRN_Sensor
+CBRN_Detector : Alarm
+CBRN_Detector : AveragingTime
+CBRN_Detector : DetectableAgents
+CBRN_Detector : ProcessingTime
+CBRN_Sensor : AveragingTime
+CBRN_Sensor : DetectableAgents
+CBRN_Sensor : SensorReadings
+CBRN_Sensor : UpdateFrequency
+Platform : Contamination
+CulturalFeature <|-- COLPRO
+CulturalFeature <|-- DecontaminationStation
+CulturalFeature : Capacity
+COLPRO : Protection
+DecontaminationStation : DecontaminationPeriod
+DecontaminationStation : Treatments
+DIM_HazardRegion <|-- CBRN_Hazard
+DIM_HazardRegion <|-- CBRN_Hazard_Prediction
+DIM_HazardRegion : Area(NETN-DIM)
+CBRN_Hazard : AgentType
+CBRN_Hazard : Contours
+CBRN_Hazard : ExposureType
+CBRN_Hazard : HazardType
+CBRN_Hazard_Prediction : ATP45HazardAreaType
+CBRN_Hazard_Prediction : AgentClass
+CBRN_Hazard_Prediction : Duration
+```
+
+### Human
+
+A human lifeform.
+
+|Attribute|Datatype|Semantics|
+|---|---|---|
+|Exposures|ArrayOfCBRNExposureStruct|Array of agents to which this entity has been exposed to. Defaults to an empty array.|
+|IPEType|IPETypeEnum8|Type of IPE that the entity is using. Defaults to None.|
+|Treatments|ArrayOfTreatmentStruct|The types of treatment that this entity has used. Defaults to an empty array.|
+|TriageLevel|CBRNDamageEnum8|Triage level of this entity. Defaults to Uninjured.|
+|EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
+|EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
+|Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Required. A unique identifier for the object. The Universally Unique Identifier (UUID) is generated or pre-defined.| 
+
 ### CBRN_Detector
 
-The `CBRN_Detector` object is used when a CGF creates a detector with a CBRN federate performing the modelling of the detector. When the federate controlling the detector calculates a concentration above a threshold, it will issue a `CBRN_DetectorAlarm` interaction.
+Represents a CBRN detector. This object is used to pass information to a CBRN federate, which will model the detector internally and publish a CBRN_DetectorAlarm.
+
+|Attribute|Datatype|Semantics|
+|---|---|---|
+|Alarm|CBRNAlarmStruct|Data representing the alarm of this detector. Defaults to no alarm if the attribute is not set.|
+|AveragingTime|TimeSecondInteger32|Duration the detector will collect samples.|
+|DetectableAgents|ArrayOfAgentConcentrationStruct|Array of detectable agents and their thresholds.|
+|ProcessingTime|TimeSecondInteger32|Duration between the detector being exposed to a concentration of agent above its threshold and the detector raising an alarm.|
+|EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
+|EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
+|Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Required. A unique identifier for the object. The Universally Unique Identifier (UUID) is generated or pre-defined.| 
 
 ### CBRN_Sensor
 
-The `CBRN_Sensor` object is used when there is a detector federate performing the modelling of the detector. The `CBRN_Sensor` registers the agents that it is interested in and receives readings in the form of a `CBRN_SensorUpdate` interaction.
- 
-<img src="./images/detectorinteractions.png" width="600px"/>
+Represents a CBRN sensor. This object is used to pass information to a CBRN federate, which will return sensor readings by publishing CBRN_SensorUpdate interactions.
 
-Figure: CBRN Detector Interactions.
+|Attribute|Datatype|Semantics|
+|---|---|---|
+|AveragingTime|TimeSecondInteger32|Duration the sensor will collect samples.|
+|DetectableAgents|ArrayOfAgentTypeEnum|Array of agents that this sensor wishes to detect.|
+|SensorReadings|ArrayOfCBRNSensorReadingStruct|Latest sensor readings. Defaults to no readings if this attribute is not set.|
+|UpdateFrequency|TimeSecondInteger32|Duration that this sensor would like between updated readings.|
+|EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
+|EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
+|Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Required. A unique identifier for the object. The Universally Unique Identifier (UUID) is generated or pre-defined.| 
 
+### Platform
 
+A physical object under the control of armed forces upon which sensor, communication, or weapon systems may be mounted.
 
-## CBRN Effects Modelling
+|Attribute|Datatype|Semantics|
+|---|---|---|
+|Contamination|ArrayOfAgentMassStruct|CBRN hazardous agent inside vehicle due to embedded units.|
+|EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
+|EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
+|Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Required. A unique identifier for the object. The Universally Unique Identifier (UUID) is generated or pre-defined.| 
 
-Previous systems utilising HLA as the interoperability mechanism have used representations of damage from existing object models for representing kinetic weapons to represent CBRN exposure. The representation of damage from kinetic models does not necessarily map well to represent CBRN exposure.
+### CulturalFeature
 
-This section presents the use cases and data types for CBRN casualty modelling.
+Engineering and natural effects such as craters, bridges, vehicle tracks, etc.
 
-### Lifeform CBRN Effects Modelling
+|Attribute|Datatype|Semantics|
+|---|---|---|
+|Capacity|QuantityInt32|Required: The number of entities that this cultural feature can handle.|
+|EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
+|EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
+|Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Required. A unique identifier for the object. The Universally Unique Identifier (UUID) is generated or pre-defined.| 
 
-The `CBRN_Human` object is an extension of the `NETN_Human` object from the NETN Physical FOM module. The CBRN federate will update the appropriate attributes as the casualty state of the entity changes. The TriageLevel uses the NATO representation of triage category scores. The IPEType attribute denotes the level of Individual Protective Equipment (IPE) that the unit is wearing. These levels are those defined by the Nuclear, Biological and Chemical (NBC) dress states.
- 
-<img src="./images/cbrn_human.png" width="400px%"/>
+### COLPRO
 
-Figure: CBRN_Human Object.
+Represents a feature that provides Collective Protection (COLPRO) against a CBRN threat.
 
+|Attribute|Datatype|Semantics|
+|---|---|---|
+|Capacity|QuantityInt32|Required: The number of entities that this cultural feature can handle.|
+|Protection|ArrayOfProtectionEffectivenessStruct|The effectiveness that this COLPRO offers for each agent.|
+|EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
+|EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
+|Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Required. A unique identifier for the object. The Universally Unique Identifier (UUID) is generated or pre-defined.| 
 
-The `CBRN_Casualty` interaction is provided to give support to legacy systems that do not use the CBRN FOM module. A translation federate can then map the `CBRN_Casualty` interaction into a data type that the legacy system can handle.
+### DecontaminationStation
 
-<img src="./images/cbrn_casualty.png" width="350px"/>
+Represents a feature that provides treatment for CBRN exposure.
 
-Figure: CBRN_Casualty Interaction.
+|Attribute|Datatype|Semantics|
+|---|---|---|
+|Capacity|QuantityInt32|Required: The number of entities that this cultural feature can handle.|
+|DecontaminationPeriod|TimeSecondInteger32|Required: Duration it takes to decontaminate an entity.|
+|Treatments|ArrayOfTreatmentStruct|Required: The types of treatment that this decontamination station currently offers.|
+|EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
+|EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
+|Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Required. A unique identifier for the object. The Universally Unique Identifier (UUID) is generated or pre-defined.| 
 
-The triage levels used in the `CBRNDamageEnum8` enumeration uses the ‘T system’ to denote the priority of treatment for casualties where the levels are defined as:
-*   T3 – Delayed priority.
-*   T2 – Urgent priority.
-*   T1 – Immediate priority.
-*   T4 – Expectant priority (treatment would be ineffective).
+### CBRN_Hazard
 
-### CBRN Platforms 
+A generic representation of a CBRN Hazard.
 
-To calculate further contamination and exposure for a platform, extensions are made to seven NETN leaf nodes in the NETN Physical FOM module. These are all extensions of the Platform object from the RPR Physical FOM module. Each extension contains an array of the mass of all materials that are contaminating the vehicle.
+|Attribute|Datatype|Semantics|
+|---|---|---|
+|AgentType|AgentTypeEnum16|Requierd: Agent reflected in this contour.|
+|Contours|ArrayOfContourStruct|Optional: Array of contours. These should be ordered in a sequence of ascending PercentProbabilityLevel.|
+|ExposureType|ExposureTypeEnum8|Optional: The type of exposure.|
+|HazardType|HazardTypeEnum8|Type of hazard.|
+|Area<br/>(NETN-DIM)|GeodeticPolygon|Required: Geographical boundary of the HazardRegion.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Required. A unique identifier for the object. The Universally Unique Identifier (UUID) is generated or pre-defined.| 
 
-<img src="./images/cbrn_platform.png" />
+### CBRN_Hazard_Prediction
 
-Figure: CBRN Platform Objects.
+Represents the footprint generated by a CBRN warning and reporting simulation. This follows the NATO ATP-45 doctrine to generate a hazard area.
 
+|Attribute|Datatype|Semantics|
+|---|---|---|
+|ATP45HazardAreaType|ATP45HazardAreaTypeEnum8|This hazard area's type|
+|AgentClass|AgentClassEnum8|The agent class|
+|Duration|TimeSecondInteger32|Duration  that this hazard prediction is valid.|
+|Area<br/>(NETN-DIM)|GeodeticPolygon|Required: Geographical boundary of the HazardRegion.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Required. A unique identifier for the object. The Universally Unique Identifier (UUID) is generated or pre-defined.| 
 
-Using the same pattern as that used for the `CBRN_Human` object, the contaminating mass inside a platform due to embedded units can be updated by an external federate using the `CBRN_PlatformUpdate` interaction.
- 
- <img src="./images/cbrn_platformupdate.png" width="350px" />
+## Interaction Classes
 
-Figure: CBRN_PlatformUpdate Interaction.
+```mermaid
+classDiagram 
+direction LR
+HLAinteractionRoot <|-- SMC_EntityControl
+HLAinteractionRoot <|-- CBRN_Release
+HLAinteractionRoot <|-- ETR_SensorEvent
+HLAinteractionRoot : ScenarioTime(NETN-BASE)
+HLAinteractionRoot : UniqueId(NETN-BASE)
+SMC_EntityControl <|-- Task
+SMC_EntityControl <|-- SetPlatformContamination
+SMC_EntityControl <|-- SetCasualtyEffect
+SMC_EntityControl : Entity(NETN-SMC)
+Task <|-- ApplyIPE
+Task <|-- AdministerTreatment
+Task : TaskId(NETN-ETR)
+ApplyIPE : TaskParameters
+AdministerTreatment : TaskParameters
+SetPlatformContamination : Contamination
+SetCasualtyEffect : Exposures
+SetCasualtyEffect : TriageLevel
+CBRN_Release : Agent
+CBRN_Release : Duration
+CBRN_Release : Location
+CBRN_Release : Mass
+CBRN_Release : ReleaseDynamics
+CBRN_Release : ReleaseSize
+CBRN_Release : ReleaseVelocity
+ETR_SensorEvent <|-- CBRN_SensorUpdate
+ETR_SensorEvent <|-- CBRN_DetectorAlarm
+ETR_SensorEvent : ProducingEntity(NETN-ETR)
+CBRN_SensorUpdate : Agent
+CBRN_SensorUpdate : Concentration
+CBRN_DetectorAlarm : Agent
+CBRN_DetectorAlarm : Location
+```
 
-## Protective Measures Modelling
+### ApplyIPE
 
-The use case for protective measures covers both the modelling of CBRN treatment and the modelling of CBRN protective equipment. This includes both individual (i.e. a respirator) and collective protection (i.e. Collective Protection (COLPRO)).
+Represents an task for the specified entities to use individual protective equipment.
 
-The `COLPRO` and `DecontaminationStation` object classes extends the `NETN_CulturalFeature` object class and provides information on how many entities it can contain as well as what agents it provides protection against.
- 
-<img src="./images/cbrn_protectobjects.png" width="700px" />
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|TaskParameters|ApplyIPETaskStruct|Required: Task parameters.|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
-Figure: CBRN Protective Measures Objects.
+### AdministerTreatment
 
-### Protective Measures Interactions
+Represents an order for the specified entities to receive the list of treatments.
 
-<img src="./images/cbrn_protectinteractions.png" width="800px" />
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|TaskParameters|AdministerTreatmentTaskStruct|Required: Task parameters.|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
-Figure: CBRN Protective Measures Interactions.
+### SetPlatformContamination
 
-The `CBRN_FacilityUpdate` interactions allows entities to be instructed to enter or leave a CBRN facility.
+Represents an update to the contaminating mass inside a vehicle due to embedded entities.
 
-* The `COLPROUpdate` interaction extends the CBRN_FacilityUpdate and allows entities to be instructed to enter or leave a COLPRO object.
-* The `DecontaminationStationUpdate` interaction extends the CBRNFacilityUpdate and allows entities to be instructed to enter or leave a DecontaminationStation object.
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|Contamination|ArrayOfAgentMassStruct|New state of CBRN hazardous agent inside vehicle due to embedded units.|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
-The `IPECommand` interaction allows entities to be instructed to don IPE by an external federate.
+### SetCasualtyEffect
 
-The `CBRN_TreatmentCommand` can be used for both pre-mission countermeasures and for treatment to be applied post-exposure. The `CBRN_Human` object has an attribute which denotes the treatments that have been applied to the unit.
- 
-## Hazard Area Modelling
+Informs the federate representing the entity of the casualty effects of exposure.
 
-The modelling of hazard areas allows the representation of a contamination area to be sent to a simulation federate in the simplest possible form. This could be in the form of:
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|Exposures|ArrayOfCBRNExposureStruct|Optional: Array of agents to which this unit has been exposed.|
+|TriageLevel|CBRNDamageEnum8|Required: Triage level of this entity.|
+|Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
-* The output from a hazard prediction algorithm (a warning area defined in Allied Tactical Publication (ATP)-45) in response to a detector alarm or observation.
-*   Raw output from a dispersion model (contours) during a simulation run.
+### CBRN_Release
 
-<img src="./images/cbrn_hazard.png" width="700px" />
+Communicates information associated with the release of hazardous agent.
 
-Figure: CBRN Hazard Area Objects.
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|Agent|AgentTypeEnum16|The type of released CBRN hazardous agent.|
+|Duration|TimeSecondInteger32|Duration the release takes place.|
+|Location|LocationStruct|Initial location of the release in the geocentric location system.|
+|Mass|MassKilogramFloat32|Total released agent mass in kg.|
+|ReleaseDynamics|ReleaseDynamicsStruct|Temperature differance and density ratio of released material relative to the atmosphere.|
+|ReleaseSize|ReleaseSizeStruct|The initial size of the release including initial Gaussian sigmas of the released puff and mean & variance of released particles.|
+|ReleaseVelocity|VelocityVectorStruct|Velocity of the source term.|
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
-The `ATP45HazardArea` object represents the hazard region as calculated by a warning and reporting model. Currently, only a subset of the ATP-45 definition is used.
+### CBRN_SensorUpdate
 
-The `ProbabilityHazardContourGroup` object provides a representation of the hazard area of the casualty effects of this CBRN hazard, calculated from the properties of the particular material.
+Sends information about the current state of a previously registered CBRN sensor.
 
-The `RawDataHazardContourGroup` object provides a representation of the raw dispersion output, which is purely the quantity of the material calculated by a dispersion model.
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|Agent|AgentTypeEnum16|Required: Type of the agent.|
+|Concentration|MassConcentrationFloat32|Required: Mean Concentration in kg m-3.|
+|ProducingEntity<br/>(NETN-ETR)|UUID|Optional: Reference to an entity with a sensor producing the sensor event. Default is no specific entity referenced.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
+
+### CBRN_DetectorAlarm
+
+Represents the alarm trigger of a previously registered CBRN detector.
+
+|Parameter|Datatype|Semantics|
+|---|---|---|
+|Agent|AgentTypeEnum16|Enumeration representation of the agent.|
+|Location|LocationStruct|Required: Location of the detection (location of Detector)|
+|ProducingEntity<br/>(NETN-ETR)|UUID|Optional: Reference to an entity with a sensor producing the sensor event. Default is no specific entity referenced.| 
+|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
+
+## Datatypes
+
+Note that only datatypes defined in this FOM Module are listed below. Please refer to FOM Modules on which this module depends for other referenced datatypes.
+
+### Overview
+|Name|Semantics|
+|---|---|
+|ATP45HazardAreaTypeEnum8|Type of ATP-45 Hazard Area (simple or detailed).|
+|AdministerTreatmentTaskStruct|Task-specific data.|
+|AgentClassEnum8|Class of Agent for an ATP-45 Hazard Area.|
+|AgentConcentrationStruct|Concentration value associated with a specific agent.|
+|AgentMassStruct|Mass of contaminant inside a vehicle brought in by an embedded unit.|
+|AgentTypeEnum16|Type of CBRN hazardous agent.|
+|ApplyIPETaskStruct|Task-specific data.|
+|ArrayOfAgentConcentrationStruct|Array of agents and their concentrations.|
+|ArrayOfAgentMassStruct|Array of agents and their masses.|
+|ArrayOfAgentTypeEnum|Array of agents.|
+|ArrayOfCBRNExposureStruct|Array of agents and their dosages.|
+|ArrayOfCBRNSensorReadingStruct|Array of sensor readings.|
+|ArrayOfContourStruct|A set of contour boundaries defining concentration levels in ascending order.|
+|ArrayOfProtectionEffectivenessStruct|Array of the protection’s effectiveness.|
+|ArrayOfSigmas6|Size of the initial Gaussian puff sigma values.|
+|ArrayOfTreatmentStruct|Array of TreatmentStruct types.|
+|CBRNAlarmStruct|Properties of a CBRN alarm.|
+|CBRNDamageEnum8|Level of damage due to CBRN exposure.|
+|CBRNExposureStruct|Dosage exposure value associated with a specific agent.|
+|CBRNSensorReadingStruct|Timed CBRN sensor reading.|
+|ContourStruct|Countour description.|
+|DensityRatioFloat32|Ratio of density of two materials in range [0, 1].|
+|DosageKgSecondPerMeterCubedFloat32|Dosage in SI units.|
+|EntityControlActionEnum|Control actions for entities.|
+|ExposureFloat32|Data type for exposure.|
+|ExposureTypeEnum8|Type of exposure represented in a contour group.|
+|HazardTypeEnum8|Type of dispersion output represented in a contour group.|
+|IPETypeEnum8|Types of Individual Protective Equipment.|
+|MeanMetersFloat32|Mean of a Gaussian distribution, based on SI unit meter, unit symbol m.|
+|ProtectionEffectivenessStruct|Protection effectiveness associated with a specific agent.|
+|ReleaseDistributionStruct|Mean and variance of the distribution of the particles or droplets in a release.|
+|ReleaseDynamicsStruct|Defines the dynamic properties of a release.|
+|ReleaseSizeStruct|Defines the properties of the initial size of a release.|
+|TaskDefinitionVariantRecord|Variant record for task definition data.|
+|TaskProgressVariantRecord|Variant record for task progress data.|
+|TreatmentStruct|Defines the properties for a CBRN treatment.|
+|VarianceMetersSquaredFloat32|Variance of a Gaussian distribution, based on SI unit meter squared, unit symbol m2.|
+        
+### Simple Datatypes
+|Name|Units|Semantics|
+|---|---|---|
+|DensityRatioFloat32|NA|Ratio of density of two materials in range [0, 1].|
+|DosageKgSecondPerMeterCubedFloat32|Kg Second Per Meter Cubed|Dosage in SI units.|
+|ExposureFloat32|NA|Data type for exposure.|
+|MeanMetersFloat32|meters|Mean of a Gaussian distribution, based on SI unit meter, unit symbol m.|
+|VarianceMetersSquaredFloat32|meters squared|Variance of a Gaussian distribution, based on SI unit meter squared, unit symbol m2.|
+        
+### Enumerated Datatypes
+|Name|Representation|Semantics|
+|---|---|---|
+|ATP45HazardAreaTypeEnum8|HLAoctet|Type of ATP-45 Hazard Area (simple or detailed).|
+|AgentClassEnum8|HLAoctet|Class of Agent for an ATP-45 Hazard Area.|
+|AgentTypeEnum16|HLAinteger16BE|Type of CBRN hazardous agent.|
+|CBRNDamageEnum8|HLAoctet|Level of damage due to CBRN exposure.|
+|EntityControlActionEnum|HLAinteger32BE|Control actions for entities.|
+|ExposureTypeEnum8|HLAoctet|Type of exposure represented in a contour group.|
+|HazardTypeEnum8|HLAoctet|Type of dispersion output represented in a contour group.|
+|IPETypeEnum8|HLAoctet|Types of Individual Protective Equipment.|
+        
+### Array Datatypes
+|Name|Element Datatype|Semantics|
+|---|---|---|
+|ArrayOfAgentConcentrationStruct|AgentConcentrationStruct|Array of agents and their concentrations.|
+|ArrayOfAgentMassStruct|AgentMassStruct|Array of agents and their masses.|
+|ArrayOfAgentTypeEnum|AgentTypeEnum16|Array of agents.|
+|ArrayOfCBRNExposureStruct|CBRNExposureStruct|Array of agents and their dosages.|
+|ArrayOfCBRNSensorReadingStruct|CBRNSensorReadingStruct|Array of sensor readings.|
+|ArrayOfContourStruct|ContourStruct|A set of contour boundaries defining concentration levels in ascending order.|
+|ArrayOfProtectionEffectivenessStruct|ProtectionEffectivenessStruct|Array of the protection’s effectiveness.|
+|ArrayOfSigmas6|LengthMeterFloat32|Size of the initial Gaussian puff sigma values.|
+|ArrayOfTreatmentStruct|TreatmentStruct|Array of TreatmentStruct types.|
+        
+### Fixed Record Datatypes
+|Name|Fields|Semantics|
+|---|---|---|
+|AdministerTreatmentTaskStruct|Entities, Treatment, Duration|Task-specific data.|
+|AgentConcentrationStruct|MeanConcentration, Agent|Concentration value associated with a specific agent.|
+|AgentMassStruct|ContaminatedMass, Agent|Mass of contaminant inside a vehicle brought in by an embedded unit.|
+|ApplyIPETaskStruct|IPEType|Task-specific data.|
+|CBRNAlarmStruct|Location, Agent|Properties of a CBRN alarm.|
+|CBRNExposureStruct|Exposure, Agent|Dosage exposure value associated with a specific agent.|
+|CBRNSensorReadingStruct|Time, Reading|Timed CBRN sensor reading.|
+|ContourStruct|Boundary, ProbabilityLevel, ConcentrationLevel|Countour description.|
+|ProtectionEffectivenessStruct|Effectiveness, Agent|Protection effectiveness associated with a specific agent.|
+|ReleaseDistributionStruct|Mean, Variance|Mean and variance of the distribution of the particles or droplets in a release.|
+|ReleaseDynamicsStruct|DensityRatio, TemperatureDifference|Defines the dynamic properties of a release.|
+|ReleaseSizeStruct|SigmaArray, ReleaseDistribution|Defines the properties of the initial size of a release.|
+|TreatmentStruct|Effectiveness, Duration, TreatmentWindow, TreatableAgents|Defines the properties for a CBRN treatment.|
+        
+### Variant Record Datatypes
+|Name|Discriminant (Datatype)|Alternatives|Semantics|
+|---|---|---|---|
+|TaskDefinitionVariantRecord|TaskType (EntityControlActionEnum)|ApplyIPE, AdministerTreatment|Variant record for task definition data.|
+|TaskProgressVariantRecord|TaskType (EntityControlActionEnum)|Treatment|Variant record for task progress data.|
+    
