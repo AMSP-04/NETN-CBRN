@@ -14,200 +14,194 @@ The specification is based on IEEE 1516 High Level Architecture (HLA) Object Mod
 
 
 
-## Overview
-
-The NETN-CBRN FOM module covers:           
-1.	CBRN Source release modelling  
-2.	CBRN Detector modelling  
-3.	CBRN Effects modelling  
+## Overview 
+ 
+The NETN-CBRN FOM module covers: 
+1.	CBRN Source release modelling 
+2.	CBRN Detector modelling 
+3.	CBRN Effects modelling 
 4.	CBRN Protective measures modelling 
-5.	Hazard area modelling      
-
-Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas.
-
-## Contamination
-
-The NETN-CBRN module provides modelling of CBRN contamination related to both individual simulated `Platform` entities and to `CBRN_Hazard` regions.
-
-```mermaid
+5.	Hazard area modelling 
+ 
+Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas. 
+ 
+## Contamination 
+ 
+The NETN-CBRN module provides modelling of CBRN contamination related to both individual simulated `Platform` entities and to `CBRN_Hazard` regions. 
+ 
+```mermaid 
 classDiagram 
-direction LR
-
-HLAobjectRoot <|-- BaseEntity
-HLAobjectRoot <|-- DIM_HazardRegion
-HLAobjectRoot : UniqueId(NETN-BASE)
-HLAobjectRoot : CreateTime(NETN-BASE)
-BaseEntity <|-- PhysicalEntity
-BaseEntity : EntityIdentifier(RPR-BASE)
-BaseEntity : EntityType(RPR-BASE)
-BaseEntity : Spatial(RPR-BASE)
-PhysicalEntity <|-- Platform
-Platform : Contamination
-DIM_HazardRegion <|-- CBRN_Hazard
-DIM_HazardRegion : Area(NETN-DIM)
-CBRN_Hazard : AgentType
-CBRN_Hazard : Contours
-CBRN_Hazard : ExposureType
-CBRN_Hazard : HazardType
-PhysicalEntity <|-- Lifeform
-Lifeform <|-- Human
-Human : Exposures
-
-```
-
-A `CBRN_Release` event triggers the start of a CBRN related event and indicates parameters used to initiate the modelling of a `CBRN_Hazard`. As contamination spreads in the environment, the `CBRN_Hazard` objects are updated and simulated platforms located in CBRN-affected regions are contaminated and lifeforms are exposed.
-
-```mermaid
+direction LR 
+ 
+HLAobjectRoot <|-- BaseEntity 
+HLAobjectRoot <|-- DIM_HazardRegion 
+HLAobjectRoot : UniqueId(NETN-BASE) 
+HLAobjectRoot : CreateTime(NETN-BASE) 
+BaseEntity <|-- PhysicalEntity 
+BaseEntity : EntityIdentifier(RPR-BASE) 
+BaseEntity : EntityType(RPR-BASE) 
+BaseEntity : Spatial(RPR-BASE) 
+PhysicalEntity <|-- Platform 
+Platform : Contamination 
+DIM_HazardRegion <|-- CBRN_Hazard 
+DIM_HazardRegion : Area(NETN-DIM) 
+CBRN_Hazard : AgentType 
+CBRN_Hazard : Contours 
+CBRN_Hazard : ExposureType 
+CBRN_Hazard : HazardType 
+PhysicalEntity <|-- Lifeform 
+Lifeform <|-- Human 
+Human : Exposures 
+ 
+``` 
+ 
+A `CBRN_Release` event triggers the start of a CBRN related event and indicates parameters used to initiate the modelling of a `CBRN_Hazard`. As contamination spreads in the environment, the `CBRN_Hazard` objects are updated and simulated platforms located in CBRN-affected regions are contaminated and lifeforms are exposed. 
+ 
+```mermaid 
 classDiagram 
-direction LR
-HLAinteractionRoot <|-- SMC_EntityControl
-HLAinteractionRoot <|-- CBRN_Release
-HLAinteractionRoot : SendTime(NETN-BASE)
-HLAinteractionRoot : UniqueId(NETN-BASE)
-SMC_EntityControl <|-- SetPlatformContamination
-SMC_EntityControl : Entity(NETN-SMC)
-SetPlatformContamination : Contamination
-SMC_EntityControl <|-- SetCasualtyEffect
-SetCasualtyEffect : Exposures
-CBRN_Release : Agent
-CBRN_Release : Duration
-CBRN_Release : Location
-CBRN_Release : Mass
-CBRN_Release : ReleaseDynamics
-CBRN_Release : ReleaseSize
-CBRN_Release : ReleaseVelocity
-```
-
-The platform contamination and lifeform exposure are normally simulated but can also be set explicitly using NETN-SMC entity control interactions. Use the `SetPlatformContamination` interaction to set `Platform` contamination level. Use `SetCausaltyEffect` to set `Lifeform` exposure levels.
-
-## Protection and Treatment
-Individual `Lifeform` objects are extended with attributes related to CBRN exposure and also with treatments. Facilities providing protection and treatment are modelled using `DecontamiationStation` or CollectiveProtection `COLPRO` objects.
-
-```mermaid
+direction LR 
+HLAinteractionRoot <|-- SMC_EntityControl 
+HLAinteractionRoot <|-- CBRN_Release 
+HLAinteractionRoot : SendTime(NETN-BASE) 
+HLAinteractionRoot : UniqueId(NETN-BASE) 
+SMC_EntityControl <|-- SetPlatformContamination 
+SMC_EntityControl : Entity(NETN-SMC) 
+SetPlatformContamination : Contamination 
+SMC_EntityControl <|-- SetCasualtyEffect 
+SetCasualtyEffect : Exposures 
+CBRN_Release : Agent 
+CBRN_Release : Duration 
+CBRN_Release : Location 
+CBRN_Release : Mass 
+CBRN_Release : ReleaseDynamics 
+CBRN_Release : ReleaseSize 
+CBRN_Release : ReleaseVelocity 
+``` 
+ 
+The platform contamination and lifeform exposure are normally simulated but can also be set explicitly using NETN-SMC entity control interactions. Use the `SetPlatformContamination` interaction to set `Platform` contamination level. Use `SetCausaltyEffect` to set `Lifeform` exposure levels. 
+ 
+## Protection and Treatment 
+Individual `Lifeform` objects are extended with attributes related to CBRN exposure and also with treatments. Facilities providing protection and treatment are modelled using `DecontamiationStation` or CollectiveProtection `COLPRO` objects. 
+ 
+```mermaid 
 classDiagram 
-direction LR
-
-HLAobjectRoot <|-- BaseEntity
-
-HLAobjectRoot : UniqueId(NETN-BASE)
-BaseEntity <|-- PhysicalEntity
-BaseEntity : EntityIdentifier(RPR-BASE)
-BaseEntity : EntityType(RPR-BASE)
-BaseEntity : Spatial(RPR-BASE)
-PhysicalEntity <|-- Lifeform
-Lifeform <|-- Human
-
-
-PhysicalEntity <|-- CulturalFeature
-
-Human : IPEType
-Human : Treatments
-Human : TriageLevel
-
-
-CulturalFeature <|-- COLPRO
-CulturalFeature <|-- DecontaminationStation
-CulturalFeature : Capacity
-COLPRO : Protection
-DecontaminationStation : DecontaminationPeriod
-DecontaminationStation : Treatments
-
-
-```
-
-Two NETN-ETR `Task` subclasses related to protection and treatment are defined in the NETN-CBRN module. Use `ApplyIPE` task to request a `Lifeform` to apply individual protection equipment. Use `AdministerTreatment` task to request an entity to initiate treatment of a set of entities.
-
-```mermaid
+direction LR 
+ 
+HLAobjectRoot <|-- BaseEntity 
+ 
+HLAobjectRoot : UniqueId(NETN-BASE) 
+BaseEntity <|-- PhysicalEntity 
+BaseEntity : EntityIdentifier(RPR-BASE) 
+BaseEntity : EntityType(RPR-BASE) 
+BaseEntity : Spatial(RPR-BASE) 
+PhysicalEntity <|-- Lifeform 
+Lifeform <|-- Human 
+ 
+ 
+PhysicalEntity <|-- CulturalFeature 
+ 
+Human : IPEType 
+Human : Treatments 
+Human : TriageLevel 
+ 
+ 
+CulturalFeature <|-- COLPRO 
+CulturalFeature <|-- DecontaminationStation 
+CulturalFeature : Capacity 
+COLPRO : Protection 
+DecontaminationStation : DecontaminationPeriod 
+DecontaminationStation : Treatments 
+ 
+ 
+``` 
+ 
+Two NETN-ETR `Task` subclasses related to protection and treatment are defined in the NETN-CBRN module. Use `ApplyIPE` task to request a `Lifeform` to apply individual protection equipment. Use `AdministerTreatment` task to request an entity to initiate treatment of a set of entities. 
+ 
+```mermaid 
 classDiagram 
-direction LR
-HLAinteractionRoot <|-- SMC_EntityControl
-HLAinteractionRoot : SendTime(NETN-BASE)
-HLAinteractionRoot : UniqueId(NETN-BASE)
-SMC_EntityControl <|-- Task
-
-SMC_EntityControl <|-- SetCasualtyEffect
-
-SetCasualtyEffect : TriageLevel
-SMC_EntityControl : Entity(NETN-SMC)
-Task <|-- ApplyIPE
-Task <|-- AdministerTreatment
-Task : TaskId(NETN-ETR)
-ApplyIPE : TaskParameters
-AdministerTreatment : TaskParameters
-```
-
-## Detection and Alarm
-
-The NETN-CBRN can represent CBRN Sensors and CBRN Detectors as `Sensor` objects in the federation. These objects define, e.g., the type of `DetectableAgents` and are used to share aspects of the individual equipment to a CBRN simulation that can generate corresponding sensor events.
-
-```mermaid
+direction LR 
+HLAinteractionRoot <|-- SMC_EntityControl 
+HLAinteractionRoot : SendTime(NETN-BASE) 
+HLAinteractionRoot : UniqueId(NETN-BASE) 
+SMC_EntityControl <|-- Task 
+ 
+SMC_EntityControl <|-- SetCasualtyEffect 
+ 
+SetCasualtyEffect : TriageLevel 
+SMC_EntityControl : Entity(NETN-SMC) 
+Task <|-- ApplyIPE 
+Task <|-- AdministerTreatment 
+Task : TaskId(NETN-ETR) 
+ApplyIPE : TaskParameters 
+AdministerTreatment : TaskParameters 
+``` 
+ 
+## Detection and Alarm 
+ 
+The NETN-CBRN can represent CBRN Sensors and CBRN Detectors as `Sensor` objects in the federation. These objects define, e.g., the type of `DetectableAgents` and are used to share aspects of the individual equipment to a CBRN simulation that can generate corresponding sensor events. 
+ 
+```mermaid 
 classDiagram 
-direction LR
-
-HLAobjectRoot <|-- BaseEntity
-HLAobjectRoot : UniqueId(NETN-BASE)
-BaseEntity <|-- PhysicalEntity
-BaseEntity : EntityIdentifier(RPR-BASE)
-BaseEntity : EntityType(RPR-BASE)
-BaseEntity : Spatial(RPR-BASE)
-PhysicalEntity <|-- Sensor
-Sensor <|-- CBRN_Detector
-Sensor <|-- CBRN_Sensor
-CBRN_Detector : Alarm
-CBRN_Detector : AveragingTime
-CBRN_Detector : DetectableAgents
-CBRN_Detector : ProcessingTime
-CBRN_Sensor : AveragingTime
-CBRN_Sensor : DetectableAgents
-CBRN_Sensor : SensorReadings
-CBRN_Sensor : UpdateFrequency
-```
-
-A CBRN federate can generate a `CBRN_DetectorAlarm` event to indicate a detected agent at a specific location. A CBRN federate can also generate a `CBRN_SensorUpdate` event to indicate the concentration of a specific agent.
-
-
-```mermaid
+direction LR 
+ 
+HLAobjectRoot <|-- BaseEntity 
+HLAobjectRoot : UniqueId(NETN-BASE) 
+BaseEntity <|-- PhysicalEntity 
+BaseEntity : EntityIdentifier(RPR-BASE) 
+BaseEntity : EntityType(RPR-BASE) 
+BaseEntity : Spatial(RPR-BASE) 
+PhysicalEntity <|-- Sensor 
+Sensor <|-- CBRN_Detector 
+Sensor <|-- CBRN_Sensor 
+CBRN_Detector : Alarm 
+CBRN_Detector : AveragingTime 
+CBRN_Detector : DetectableAgents 
+CBRN_Detector : ProcessingTime 
+CBRN_Sensor : AveragingTime 
+CBRN_Sensor : DetectableAgents 
+CBRN_Sensor : SensorReadings 
+CBRN_Sensor : UpdateFrequency 
+``` 
+ 
+A CBRN federate can generate a `CBRN_DetectorAlarm` event to indicate a detected agent at a specific location. A CBRN federate can also generate a `CBRN_SensorUpdate` event to indicate the concentration of a specific agent. 
+ 
+ 
+```mermaid 
 classDiagram 
-direction LR
-HLAinteractionRoot <|-- ETR_SensorEvent
-HLAinteractionRoot : SendTime(NETN-BASE)
-HLAinteractionRoot : UniqueId(NETN-BASE)
-
-ETR_SensorEvent <|-- CBRN_SensorUpdate
-ETR_SensorEvent <|-- CBRN_DetectorAlarm
-ETR_SensorEvent : ProducingEntity(NETN-ETR)
-CBRN_SensorUpdate : Agent
-CBRN_SensorUpdate : Concentration
-CBRN_DetectorAlarm : Agent
-CBRN_DetectorAlarm : Location
-```
-
-
-## Prediction
-
-To support the prediction of CBRN Hazard Regions, the NETN-CBRN module also supports the `CBRN_Hazard_Prediction` object class. Instances of this object can be published by a prediction model to indicate a potential CBRN hazard.
-
-```mermaid
+direction LR 
+HLAinteractionRoot <|-- ETR_SensorEvent 
+HLAinteractionRoot : SendTime(NETN-BASE) 
+HLAinteractionRoot : UniqueId(NETN-BASE) 
+ 
+ETR_SensorEvent <|-- CBRN_SensorUpdate 
+ETR_SensorEvent <|-- CBRN_DetectorAlarm 
+ETR_SensorEvent : ProducingEntity(NETN-ETR) 
+CBRN_SensorUpdate : Agent 
+CBRN_SensorUpdate : Concentration 
+CBRN_DetectorAlarm : Agent 
+CBRN_DetectorAlarm : Location 
+``` 
+ 
+ 
+## Prediction 
+ 
+To support the prediction of CBRN Hazard Regions, the NETN-CBRN module also supports the `CBRN_Hazard_Prediction` object class. Instances of this object can be published by a prediction model to indicate a potential CBRN hazard. 
+ 
+```mermaid 
 classDiagram 
-direction LR
-
-HLAobjectRoot <|-- DIM_HazardRegion
-HLAobjectRoot : UniqueId(NETN-BASE)
-HLAobjectRoot : CreateTime(NETN-BASE)
-
-DIM_HazardRegion <|-- CBRN_Hazard_Prediction
-DIM_HazardRegion : Area(NETN-DIM)
-
-CBRN_Hazard_Prediction : ATP45HazardAreaType
-CBRN_Hazard_Prediction : AgentClass
-CBRN_Hazard_Prediction : Duration
+direction LR 
+ 
+HLAobjectRoot <|-- DIM_HazardRegion 
+HLAobjectRoot : UniqueId(NETN-BASE) 
+HLAobjectRoot : CreateTime(NETN-BASE) 
+ 
+DIM_HazardRegion <|-- CBRN_Hazard_Prediction 
+DIM_HazardRegion : Area(NETN-DIM) 
+ 
+CBRN_Hazard_Prediction : ATP45HazardAreaType 
+CBRN_Hazard_Prediction : AgentClass 
+CBRN_Hazard_Prediction : Duration 
 ```
-
-
-
-
-
-            
 
 
 ## Object Classes
@@ -547,7 +541,7 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 |ContourStruct|Countour description.|
 |DensityRatioFloat32|Ratio of density of two materials in range [0, 1].|
 |DosageKgSecondPerMeterCubedFloat32|Dosage in SI units.|
-|EntityControlActionEnum|Control actions for entities.|
+|EntityControlActionEnum|Enumeration of Entity Control Actions. The datatype is expected to be extended in specific modules defining additional actions.|
 |ExposureFloat32|Data type for exposure.|
 |ExposureTypeEnum8|Type of exposure represented in a contour group.|
 |HazardTypeEnum8|Type of dispersion output represented in a contour group.|
@@ -578,7 +572,7 @@ Note that only datatypes defined in this FOM Module are listed below. Please ref
 |AgentClassEnum8|HLAoctet|Class of Agent for an ATP-45 Hazard Area.|
 |AgentTypeEnum16|HLAinteger16BE|Type of CBRN hazardous agent.|
 |CBRNDamageEnum8|HLAoctet|Level of damage due to CBRN exposure.|
-|EntityControlActionEnum|HLAinteger32BE|Control actions for entities.|
+|EntityControlActionEnum|HLAinteger32BE|Enumeration of Entity Control Actions. The datatype is expected to be extended in specific modules defining additional actions.|
 |ExposureTypeEnum8|HLAoctet|Type of exposure represented in a contour group.|
 |HazardTypeEnum8|HLAoctet|Type of dispersion output represented in a contour group.|
 |IPETypeEnum8|HLAoctet|Types of Individual Protective Equipment.|
