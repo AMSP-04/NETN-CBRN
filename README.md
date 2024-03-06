@@ -3,11 +3,11 @@
 
 |Version| Date| Dependencies|
 |---|---|---|
-|v2.0|2023-12-09|RPR-Physical, NETN-DIM, NETN-BASE, NETN-ETR|
+|v2.0|2024-03-05|RPR-Physical, NETN-DIM, NETN-BASE, NETN-ETR|
 
 > [Full Documentation](NETN-CBRN.md)
 
-The NATO Education and Training Network (NETN) CBRN FOM Module (NETN-CBRN) provides a common standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g the exposure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.
+The NATO Education and Training Network Chemical, Biological, Radiological and Nuclear (NETN-CBRN) provides a common standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g the exposure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.
 
 CBRN are Chemical, Biological, Radiological and Nuclear materials that can be delivered intentionally as a weapon using conventional bombs, explosive materials and enhanced blast weapons (e.g., dirty bombs) or unintentionally caused by human error or natural or technological reasons, such as spills, accidental releases or leakages. 
 
@@ -15,15 +15,7 @@ The NETN-CBRN FOM Module is a specification of how to model CBRN-related events 
 
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and is primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-CBRN FOM module is available as an XML file for use in HLA-based federations. 
 
-The NETN-CBRN FOM module covers:  
-        
-1.	CBRN Source release modelling 
-2.	CBRN Detector modelling 
-3.	CBRN Effects modelling 
-4.	CBRN Protective measures modelling
-5.	Hazard area modelling  
- 
- Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas.
+
 
 ## License
 

@@ -2,9 +2,9 @@
 # NETN-CBRN
 |Version| Date| Dependencies|
 |---|---|---|
-|v2.0|2023-12-09|RPR-Physical, NETN-DIM, NETN-BASE, NETN-ETR|
+|v2.0|2024-03-05|RPR-Physical, NETN-DIM, NETN-BASE, NETN-ETR|
 
-The NATO Education and Training Network (NETN) CBRN FOM Module (NETN-CBRN) provides a common standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g the exposure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.
+The NATO Education and Training Network Chemical, Biological, Radiological and Nuclear (NETN-CBRN) provides a common standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g the exposure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.
 
 CBRN are Chemical, Biological, Radiological and Nuclear materials that can be delivered intentionally as a weapon using conventional bombs, explosive materials and enhanced blast weapons (e.g., dirty bombs) or unintentionally caused by human error or natural or technological reasons, such as spills, accidental releases or leakages. 
 
@@ -12,15 +12,202 @@ The NETN-CBRN FOM Module is a specification of how to model CBRN-related events 
 
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and is primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-CBRN FOM module is available as an XML file for use in HLA-based federations. 
 
-The NETN-CBRN FOM module covers:  
-        
-1.	CBRN Source release modelling 
-2.	CBRN Detector modelling 
-3.	CBRN Effects modelling 
-4.	CBRN Protective measures modelling
-5.	Hazard area modelling  
- 
- Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas.
+
+
+## Overview
+
+The NETN-CBRN FOM module covers:           
+1.	CBRN Source release modelling  
+2.	CBRN Detector modelling  
+3.	CBRN Effects modelling  
+4.	CBRN Protective measures modelling 
+5.	Hazard area modelling      
+
+Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas.
+
+## Contamination
+
+The NETN-CBRN module provides modelling of CBRN contamination related to both individual simulated `Platform` entities and to `CBRN_Hazard` regions.
+
+```mermaid
+classDiagram 
+direction LR
+
+HLAobjectRoot <|-- BaseEntity
+HLAobjectRoot <|-- DIM_HazardRegion
+HLAobjectRoot : UniqueId(NETN-BASE)
+HLAobjectRoot : CreateTime(NETN-BASE)
+BaseEntity <|-- PhysicalEntity
+BaseEntity : EntityIdentifier(RPR-BASE)
+BaseEntity : EntityType(RPR-BASE)
+BaseEntity : Spatial(RPR-BASE)
+PhysicalEntity <|-- Platform
+Platform : Contamination
+DIM_HazardRegion <|-- CBRN_Hazard
+DIM_HazardRegion : Area(NETN-DIM)
+CBRN_Hazard : AgentType
+CBRN_Hazard : Contours
+CBRN_Hazard : ExposureType
+CBRN_Hazard : HazardType
+PhysicalEntity <|-- Lifeform
+Lifeform <|-- Human
+Human : Exposures
+
+```
+
+A `CBRN_Release` event triggers the start of a CBRN related event and indicates parameters used to initiate the modelling of a `CBRN_Hazard`. As contamination spreads in the environment, the `CBRN_Hazard` objects are updated and simulated platforms located in CBRN-affected regions are contaminated and lifeforms are exposed.
+
+```mermaid
+classDiagram 
+direction LR
+HLAinteractionRoot <|-- SMC_EntityControl
+HLAinteractionRoot <|-- CBRN_Release
+HLAinteractionRoot : SendTime(NETN-BASE)
+HLAinteractionRoot : UniqueId(NETN-BASE)
+SMC_EntityControl <|-- SetPlatformContamination
+SMC_EntityControl : Entity(NETN-SMC)
+SetPlatformContamination : Contamination
+SMC_EntityControl <|-- SetCasualtyEffect
+SetCasualtyEffect : Exposures
+CBRN_Release : Agent
+CBRN_Release : Duration
+CBRN_Release : Location
+CBRN_Release : Mass
+CBRN_Release : ReleaseDynamics
+CBRN_Release : ReleaseSize
+CBRN_Release : ReleaseVelocity
+```
+
+The platform contamination and lifeform exposure are normally simulated but can also be set explicitly using NETN-SMC entity control interactions. Use the `SetPlatformContamination` interaction to set `Platform` contamination level. Use `SetCausaltyEffect` to set `Lifeform` exposure levels.
+
+## Protection and Treatment
+Individual `Lifeform` objects are extended with attributes related to CBRN exposure and also with treatments. Facilities providing protection and treatment are modelled using `DecontamiationStation` or CollectiveProtection `COLPRO` objects.
+
+```mermaid
+classDiagram 
+direction LR
+
+HLAobjectRoot <|-- BaseEntity
+
+HLAobjectRoot : UniqueId(NETN-BASE)
+BaseEntity <|-- PhysicalEntity
+BaseEntity : EntityIdentifier(RPR-BASE)
+BaseEntity : EntityType(RPR-BASE)
+BaseEntity : Spatial(RPR-BASE)
+PhysicalEntity <|-- Lifeform
+Lifeform <|-- Human
+
+
+PhysicalEntity <|-- CulturalFeature
+
+Human : IPEType
+Human : Treatments
+Human : TriageLevel
+
+
+CulturalFeature <|-- COLPRO
+CulturalFeature <|-- DecontaminationStation
+CulturalFeature : Capacity
+COLPRO : Protection
+DecontaminationStation : DecontaminationPeriod
+DecontaminationStation : Treatments
+
+
+```
+
+Two NETN-ETR `Task` subclasses related to protection and treatment are defined in the NETN-CBRN module. Use `ApplyIPE` task to request a `Lifeform` to apply individual protection equipment. Use `AdministerTreatment` task to request an entity to initiate treatment of a set of entities.
+
+```mermaid
+classDiagram 
+direction LR
+HLAinteractionRoot <|-- SMC_EntityControl
+HLAinteractionRoot : SendTime(NETN-BASE)
+HLAinteractionRoot : UniqueId(NETN-BASE)
+SMC_EntityControl <|-- Task
+
+SMC_EntityControl <|-- SetCasualtyEffect
+
+SetCasualtyEffect : TriageLevel
+SMC_EntityControl : Entity(NETN-SMC)
+Task <|-- ApplyIPE
+Task <|-- AdministerTreatment
+Task : TaskId(NETN-ETR)
+ApplyIPE : TaskParameters
+AdministerTreatment : TaskParameters
+```
+
+## Detection and Alarm
+
+The NETN-CBRN can represent CBRN Sensors and CBRN Detectors as `Sensor` objects in the federation. These objects define, e.g., the type of `DetectableAgents` and are used to share aspects of the individual equipment to a CBRN simulation that can generate corresponding sensor events.
+
+```mermaid
+classDiagram 
+direction LR
+
+HLAobjectRoot <|-- BaseEntity
+HLAobjectRoot : UniqueId(NETN-BASE)
+BaseEntity <|-- PhysicalEntity
+BaseEntity : EntityIdentifier(RPR-BASE)
+BaseEntity : EntityType(RPR-BASE)
+BaseEntity : Spatial(RPR-BASE)
+PhysicalEntity <|-- Sensor
+Sensor <|-- CBRN_Detector
+Sensor <|-- CBRN_Sensor
+CBRN_Detector : Alarm
+CBRN_Detector : AveragingTime
+CBRN_Detector : DetectableAgents
+CBRN_Detector : ProcessingTime
+CBRN_Sensor : AveragingTime
+CBRN_Sensor : DetectableAgents
+CBRN_Sensor : SensorReadings
+CBRN_Sensor : UpdateFrequency
+```
+
+A CBRN federate can generate a `CBRN_DetectorAlarm` event to indicate a detected agent at a specific location. A CBRN federate can also generate a `CBRN_SensorUpdate` event to indicate the concentration of a specific agent.
+
+
+```mermaid
+classDiagram 
+direction LR
+HLAinteractionRoot <|-- ETR_SensorEvent
+HLAinteractionRoot : SendTime(NETN-BASE)
+HLAinteractionRoot : UniqueId(NETN-BASE)
+
+ETR_SensorEvent <|-- CBRN_SensorUpdate
+ETR_SensorEvent <|-- CBRN_DetectorAlarm
+ETR_SensorEvent : ProducingEntity(NETN-ETR)
+CBRN_SensorUpdate : Agent
+CBRN_SensorUpdate : Concentration
+CBRN_DetectorAlarm : Agent
+CBRN_DetectorAlarm : Location
+```
+
+
+## Prediction
+
+To support the prediction of CBRN Hazard Regions, the NETN-CBRN module also supports the `CBRN_Hazard_Prediction` object class. Instances of this object can be published by a prediction model to indicate a potential CBRN hazard.
+
+```mermaid
+classDiagram 
+direction LR
+
+HLAobjectRoot <|-- DIM_HazardRegion
+HLAobjectRoot : UniqueId(NETN-BASE)
+HLAobjectRoot : CreateTime(NETN-BASE)
+
+DIM_HazardRegion <|-- CBRN_Hazard_Prediction
+DIM_HazardRegion : Area(NETN-DIM)
+
+CBRN_Hazard_Prediction : ATP45HazardAreaType
+CBRN_Hazard_Prediction : AgentClass
+CBRN_Hazard_Prediction : Duration
+```
+
+
+
+
+
+            
 
 
 ## Object Classes
@@ -31,6 +218,7 @@ direction LR
 
 HLAobjectRoot <|-- BaseEntity
 HLAobjectRoot <|-- DIM_HazardRegion
+HLAobjectRoot : CreateTime(NETN-BASE)
 HLAobjectRoot : UniqueId(NETN-BASE)
 BaseEntity <|-- PhysicalEntity
 BaseEntity : EntityIdentifier(RPR-BASE)
@@ -84,6 +272,7 @@ A human lifeform.
 |IPEType|IPETypeEnum8|Type of IPE that the entity is using. Defaults to None.|
 |Treatments|ArrayOfTreatmentStruct|The types of treatment that this entity has used. Defaults to an empty array.|
 |TriageLevel|CBRNDamageEnum8|Triage level of this entity. Defaults to Uninjured.|
+|CreateTime<br/>(NETN-BASE)|EpochTime|Optional: The time in the scenario when the object is created.| 
 |EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
 |EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
 |Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
@@ -99,6 +288,7 @@ Represents a CBRN detector. This object is used to pass information to a CBRN fe
 |AveragingTime|TimeSecondInteger32|Duration the detector will collect samples.|
 |DetectableAgents|ArrayOfAgentConcentrationStruct|Array of detectable agents and their thresholds.|
 |ProcessingTime|TimeSecondInteger32|Duration between the detector being exposed to a concentration of agent above its threshold and the detector raising an alarm.|
+|CreateTime<br/>(NETN-BASE)|EpochTime|Optional: The time in the scenario when the object is created.| 
 |EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
 |EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
 |Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
@@ -114,6 +304,7 @@ Represents a CBRN sensor. This object is used to pass information to a CBRN fede
 |DetectableAgents|ArrayOfAgentTypeEnum|Array of agents that this sensor wishes to detect.|
 |SensorReadings|ArrayOfCBRNSensorReadingStruct|Latest sensor readings. Defaults to no readings if this attribute is not set.|
 |UpdateFrequency|TimeSecondInteger32|Duration that this sensor would like between updated readings.|
+|CreateTime<br/>(NETN-BASE)|EpochTime|Optional: The time in the scenario when the object is created.| 
 |EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
 |EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
 |Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
@@ -126,6 +317,7 @@ A physical object under the control of armed forces upon which sensor, communica
 |Attribute|Datatype|Semantics|
 |---|---|---|
 |Contamination|ArrayOfAgentMassStruct|CBRN hazardous agent inside vehicle due to embedded units.|
+|CreateTime<br/>(NETN-BASE)|EpochTime|Optional: The time in the scenario when the object is created.| 
 |EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
 |EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
 |Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
@@ -138,6 +330,7 @@ Engineering and natural effects such as craters, bridges, vehicle tracks, etc.
 |Attribute|Datatype|Semantics|
 |---|---|---|
 |Capacity|QuantityInt32|Required: The number of entities that this cultural feature can handle.|
+|CreateTime<br/>(NETN-BASE)|EpochTime|Optional: The time in the scenario when the object is created.| 
 |EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
 |EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
 |Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
@@ -151,6 +344,7 @@ Represents a feature that provides Collective Protection (COLPRO) against a CBRN
 |---|---|---|
 |Capacity|QuantityInt32|Required: The number of entities that this cultural feature can handle.|
 |Protection|ArrayOfProtectionEffectivenessStruct|The effectiveness that this COLPRO offers for each agent.|
+|CreateTime<br/>(NETN-BASE)|EpochTime|Optional: The time in the scenario when the object is created.| 
 |EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
 |EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
 |Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
@@ -165,6 +359,7 @@ Represents a feature that provides treatment for CBRN exposure.
 |Capacity|QuantityInt32|Required: The number of entities that this cultural feature can handle.|
 |DecontaminationPeriod|TimeSecondInteger32|Required: Duration it takes to decontaminate an entity.|
 |Treatments|ArrayOfTreatmentStruct|Required: The types of treatment that this decontamination station currently offers.|
+|CreateTime<br/>(NETN-BASE)|EpochTime|Optional: The time in the scenario when the object is created.| 
 |EntityIdentifier<br/>(RPR-BASE)|EntityIdentifierStruct|The unique identifier for the entity instance.| 
 |EntityType<br/>(RPR-BASE)|EntityTypeStruct|The category of the entity.| 
 |Spatial<br/>(RPR-BASE)|SpatialVariantStruct|Spatial state stored in one variant record attribute.| 
@@ -181,6 +376,7 @@ A generic representation of a CBRN Hazard.
 |ExposureType|ExposureTypeEnum8|Optional: The type of exposure.|
 |HazardType|HazardTypeEnum8|Type of hazard.|
 |Area<br/>(NETN-DIM)|GeodeticPolygon|Required: Geographical boundary of the HazardRegion.| 
+|CreateTime<br/>(NETN-BASE)|EpochTime|Optional: The time in the scenario when the object is created.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Required. A unique identifier for the object. The Universally Unique Identifier (UUID) is generated or pre-defined.| 
 
 ### CBRN_Hazard_Prediction
@@ -193,6 +389,7 @@ Represents the footprint generated by a CBRN warning and reporting simulation. T
 |AgentClass|AgentClassEnum8|The agent class|
 |Duration|TimeSecondInteger32|Duration  that this hazard prediction is valid.|
 |Area<br/>(NETN-DIM)|GeodeticPolygon|Required: Geographical boundary of the HazardRegion.| 
+|CreateTime<br/>(NETN-BASE)|EpochTime|Optional: The time in the scenario when the object is created.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Required. A unique identifier for the object. The Universally Unique Identifier (UUID) is generated or pre-defined.| 
 
 ## Interaction Classes
@@ -203,7 +400,7 @@ direction LR
 HLAinteractionRoot <|-- SMC_EntityControl
 HLAinteractionRoot <|-- CBRN_Release
 HLAinteractionRoot <|-- ETR_SensorEvent
-HLAinteractionRoot : ScenarioTime(NETN-BASE)
+HLAinteractionRoot : SendTime(NETN-BASE)
 HLAinteractionRoot : UniqueId(NETN-BASE)
 SMC_EntityControl <|-- Task
 SMC_EntityControl <|-- SetPlatformContamination
@@ -241,7 +438,7 @@ Represents an task for the specified entities to use individual protective equip
 |---|---|---|
 |TaskParameters|ApplyIPETaskStruct|Required: Task parameters.|
 |Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended.| 
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|SendTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
@@ -253,7 +450,7 @@ Represents an order for the specified entities to receive the list of treatments
 |---|---|---|
 |TaskParameters|AdministerTreatmentTaskStruct|Required: Task parameters.|
 |Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended.| 
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|SendTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |TaskId<br/>(NETN-ETR)|UUID|Required. Unique identifier for the task.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
@@ -265,7 +462,7 @@ Represents an update to the contaminating mass inside a vehicle due to embedded 
 |---|---|---|
 |Contamination|ArrayOfAgentMassStruct|New state of CBRN hazardous agent inside vehicle due to embedded units.|
 |Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended.| 
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|SendTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
 ### SetCasualtyEffect
@@ -277,7 +474,7 @@ Informs the federate representing the entity of the casualty effects of exposure
 |Exposures|ArrayOfCBRNExposureStruct|Optional: Array of agents to which this unit has been exposed.|
 |TriageLevel|CBRNDamageEnum8|Required: Triage level of this entity.|
 |Entity<br/>(NETN-SMC)|UUID|Required: Reference to a simulation entity for which the control action is intended.| 
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|SendTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
 ### CBRN_Release
@@ -293,7 +490,7 @@ Communicates information associated with the release of hazardous agent.
 |ReleaseDynamics|ReleaseDynamicsStruct|Temperature differance and density ratio of released material relative to the atmosphere.|
 |ReleaseSize|ReleaseSizeStruct|The initial size of the release including initial Gaussian sigmas of the released puff and mean & variance of released particles.|
 |ReleaseVelocity|VelocityVectorStruct|Velocity of the source term.|
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|SendTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
 ### CBRN_SensorUpdate
@@ -305,7 +502,7 @@ Sends information about the current state of a previously registered CBRN sensor
 |Agent|AgentTypeEnum16|Required: Type of the agent.|
 |Concentration|MassConcentrationFloat32|Required: Mean Concentration in kg m-3.|
 |ProducingEntity<br/>(NETN-ETR)|UUID|Optional: Reference to an entity with a sensor producing the sensor event. Default is no specific entity referenced.| 
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|SendTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
 ### CBRN_DetectorAlarm
@@ -317,7 +514,7 @@ Represents the alarm trigger of a previously registered CBRN detector.
 |Agent|AgentTypeEnum16|Enumeration representation of the agent.|
 |Location|LocationStruct|Required: Location of the detection (location of Detector)|
 |ProducingEntity<br/>(NETN-ETR)|UUID|Optional: Reference to an entity with a sensor producing the sensor event. Default is no specific entity referenced.| 
-|ScenarioTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
+|SendTime<br/>(NETN-BASE)|EpochTime|Optional: Scenario time when the interaction was sent. Default is interpreted as the receivers scenario time when the interaction is received. Required for all CBRN related interactions.| 
 |UniqueId<br/>(NETN-BASE)|UUID|Optional: A unique identifier for the interaction. Required for all CBRN related interactions.| 
 
 ## Datatypes
