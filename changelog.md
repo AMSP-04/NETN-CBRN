@@ -42,5 +42,8 @@ Version 1.2 of the NETN-CBRN was updated by MSG-163 and included in NETN-FOM v3.
 
 ### v2.0 - Updated version developed by MSG-191. Release included in NETN FOM v4.0
 
-
+* Remodelled based on HLA4 modelling
+* Based on NETN-DIM
+* Simplified Hazard representation
+* Updated documentation
 

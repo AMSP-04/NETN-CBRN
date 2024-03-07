@@ -14,9 +14,9 @@ The NETN-CBRN FOM Module is a specification of how to model CBRN-related events 
 
 The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and is primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-CBRN FOM module is available as an XML file for use in HLA-based federations. </description>
         <useLimitation></useLimitation>
-        <useHistory notes="netn-cbrn_1_1">v1.1 - Initial version developed by MSG-106. Included in NETN FOM v2.0 and AMSP-04 Ed A.</useHistory>
-        <useHistory notes="netn-cbrn_1_2">v1.2 - Minor update of the NETN-CBRN FOM Module developed by MSG-163 and included in AMSP-04 Ed B.</useHistory>
-        <useHistory notes="netn-cbrn_2_0">v2.0 - Updated version developed by MSG-191. Release included in NETN FOM v4.0</useHistory>
+        <useHistory notes="netn-cbrn_changelog_1">v1.1 - Initial version developed by MSG-106. Included in NETN FOM v2.0 and AMSP-04 Ed A.</useHistory>
+        <useHistory notes="netn-cbrn_changelog_2">v1.2 - Minor update of the NETN-CBRN FOM Module developed by MSG-163 and included in AMSP-04 Ed B.</useHistory>
+        <useHistory notes="netn-cbrn_changelog_0">v2.0 - Updated version developed by MSG-191. Release included in NETN FOM v4.0</useHistory>
         <poc>
             <pocType>Release authority</pocType>
             <pocName>NATO Modelling and Simulation Group</pocName>
@@ -1380,7 +1380,7 @@ CBRN_Hazard_Prediction : Duration
 ```</semantics>
         </note>
         <note>
-            <label>netn-cbrn_1_1</label>
+            <label>netn-cbrn_changelog_1</label>
             <semantics>Version 1.1.9 is the initial public release of the NETN-CBRN FOM Module developed by MSG-106 &amp; MSG-134. This version is included in NETN-FOM v2.0 and AMSP-04 Ed A. Several internal development releases were also made available to the team and a summary of the changes are provided below
 
 * v1.0.0 - Initial; object, interaction classes and datatypes.
@@ -1398,7 +1398,7 @@ CBRN_Hazard_Prediction : Duration
 * v1.1.9 - Added POC information.</semantics>
         </note>
         <note>
-            <label>netn-cbrn_1_2</label>
+            <label>netn-cbrn_changelog_2</label>
             <semantics>Version 1.2 of the NETN-CBRN was updated by MSG-163 and included in NETN-FOM v3.0 and AMSP-04 Ed B.
 
 * Changed modelIdentification securityClassification from unclassified to Not Classified
@@ -1418,12 +1418,11 @@ CBRN_Hazard_Prediction : Duration
 * Changed use of datatype ArrayOfWorldLocationStruct3 to GeocentricPolygon (renamed in NETN-BASE)</semantics>
         </note>
         <note>
-            <label>netn-cbrn_2_0</label>
-* Remodelled based on HLA4 modelling
+            <label>netn-cbrn_changelog_0</label>
+            <semantics>* Remodelled based on HLA4 modelling
 * Based on NETN-DIM
 * Simplified Hazard representation
-* Updated documentation
-            <semantics></semantics>
+* Updated documentation</semantics>
         </note>
     </notes>
 </objectModel>
