@@ -867,11 +867,11 @@ Above license gives you the right to use and redistribute the NETN FOM Module (X
                 <semantics>Enumeration of Entity Control Actions. The datatype is expected to be extended in specific modules defining additional actions.</semantics>
                 <enumerator>
                     <name>ApplyIPE</name>
-                    <value>501</value>
+                    <value>500</value>
                 </enumerator>
                 <enumerator>
                     <name>AdministerTreatment</name>
-                    <value>502</value>
+                    <value>501</value>
                 </enumerator>
             </enumeratedData>
         </enumeratedDataTypes>
