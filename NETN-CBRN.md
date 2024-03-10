@@ -2,15 +2,13 @@
 # NETN-CBRN
 |Version| Date| Dependencies|
 |---|---|---|
-|v2.0|2024-03-05|RPR-Physical, NETN-DIM, NETN-BASE, NETN-ETR|
+|v2.0|2024-03-10|RPR-Physical, NETN-DIM, NETN-BASE, NETN-ETR|
 
-The NATO Education and Training Network Chemical, Biological, Radiological and Nuclear (NETN-CBRN) provides a common standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g the exposure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.
+The NATO Education and Training Network Chemical, Biological, Radiological and Nuclear (NETN-CBRN) provides a standard interface for representing CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g., the exposure effect on individual humans in a CBRN-contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.
 
 CBRN are Chemical, Biological, Radiological and Nuclear materials that can be delivered intentionally as a weapon using conventional bombs, explosive materials and enhanced blast weapons (e.g., dirty bombs) or unintentionally caused by human error or natural or technological reasons, such as spills, accidental releases or leakages. 
 
-The NETN-CBRN FOM Module is a specification of how to model CBRN-related events in a federated distributed simulation. 
-
-The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and is primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-CBRN FOM module is available as an XML file for use in HLA-based federations. 
+The NETN-CBRN module specifies how to model CBRN-related events in a federated distributed simulation.
 
 
 
@@ -23,11 +21,11 @@ The NETN-CBRN FOM module covers:
 4.	CBRN Protective measures modelling 
 5.	Hazard area modelling 
  
-Meteorological conditions and CBRN material properties for modelling the dispersion of CBRN material are not explicitly represented in the NETN-CBRN FOM Module. NETN-METOC FOM module can be used to model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas. 
+The NETN-METOC module can model weather conditions that may impact the dispersion of CBRN materials and cause dynamic change to hazard areas. 
  
 ## Contamination 
  
-The NETN-CBRN module provides modelling of CBRN contamination related to both individual simulated `Platform` entities and to `CBRN_Hazard` regions. 
+The NETN-CBRN module provides modelling of CBRN contamination related to individual simulated `Platform` entities and `CBRN_Hazard` regions. 
  
 ```mermaid 
 classDiagram 
@@ -55,7 +53,7 @@ Human : Exposures
  
 ``` 
  
-A `CBRN_Release` event triggers the start of a CBRN related event and indicates parameters used to initiate the modelling of a `CBRN_Hazard`. As contamination spreads in the environment, the `CBRN_Hazard` objects are updated and simulated platforms located in CBRN-affected regions are contaminated and lifeforms are exposed. 
+A `CBRN_Release` event triggers the start of a CBRN-related event and indicates parameters used to initiate the modelling of a `CBRN_Hazard`. As contamination spreads in the environment, the `CBRN_Hazard` objects are updated, simulated platforms located in CBRN-affected regions are contaminated, and lifeforms are exposed. 
  
 ```mermaid 
 classDiagram 
@@ -78,10 +76,10 @@ CBRN_Release : ReleaseSize
 CBRN_Release : ReleaseVelocity 
 ``` 
  
-The platform contamination and lifeform exposure are normally simulated but can also be set explicitly using NETN-SMC entity control interactions. Use the `SetPlatformContamination` interaction to set `Platform` contamination level. Use `SetCausaltyEffect` to set `Lifeform` exposure levels. 
+The platform contamination and lifeform exposure are usually simulated but can also be set explicitly using NETN-SMC entity control interactions. Use the `SetPlatformContamination` interaction to set the `Platform` contamination level. Use `SetCausaltyEffect` to set `Lifeform` exposure levels. 
  
 ## Protection and Treatment 
-Individual `Lifeform` objects are extended with attributes related to CBRN exposure and also with treatments. Facilities providing protection and treatment are modelled using `DecontamiationStation` or CollectiveProtection `COLPRO` objects. 
+Individual `Lifeform` objects are extended with attributes related to CBRN exposure and treatments. Facilities providing protection and treatment are modelled using `DecontamiationStation` or CollectiveProtection `COLPRO` objects. 
  
 ```mermaid 
 classDiagram 
@@ -115,7 +113,7 @@ DecontaminationStation : Treatments
  
 ``` 
  
-Two NETN-ETR `Task` subclasses related to protection and treatment are defined in the NETN-CBRN module. Use `ApplyIPE` task to request a `Lifeform` to apply individual protection equipment. Use `AdministerTreatment` task to request an entity to initiate treatment of a set of entities. 
+Two NETN-ETR `Task` subclasses related to protection and treatment are defined in the NETN-CBRN module. Use the `ApplyIPE` task to request a `Lifeform` to apply individual protection equipment. Use the `AdministerTreatment` task to request an entity to initiate the treatment of a set of entities. 
  
 ```mermaid 
 classDiagram 
@@ -138,7 +136,7 @@ AdministerTreatment : TaskParameters
  
 ## Detection and Alarm 
  
-The NETN-CBRN can represent CBRN Sensors and CBRN Detectors as `Sensor` objects in the federation. These objects define, e.g., the type of `DetectableAgents` and are used to share aspects of the individual equipment to a CBRN simulation that can generate corresponding sensor events. 
+The NETN-CBRN can represent CBRN sensors and detectors as `Sensor` objects in the federation. These objects define, e.g., the type of `DetectableAgents` and are used to share aspects of the individual equipment to a CBRN simulation that can generate corresponding sensor events. 
  
 ```mermaid 
 classDiagram 
@@ -185,7 +183,7 @@ CBRN_DetectorAlarm : Location
  
 ## Prediction 
  
-To support the prediction of CBRN Hazard Regions, the NETN-CBRN module also supports the `CBRN_Hazard_Prediction` object class. Instances of this object can be published by a prediction model to indicate a potential CBRN hazard. 
+The NETN-CBRN module also supports the `CBRN_Hazard_Prediction` object class to predict CBRN hazard regions. A prediction model can publish instances of this object to indicate a potential CBRN hazard.
  
 ```mermaid 
 classDiagram 

@@ -3,17 +3,15 @@
 
 |Version| Date| Dependencies|
 |---|---|---|
-|v2.0|2024-03-05|RPR-Physical, NETN-DIM, NETN-BASE, NETN-ETR|
+|v2.0|2024-03-10|RPR-Physical, NETN-DIM, NETN-BASE, NETN-ETR|
 
 > [Full Documentation](NETN-CBRN.md)
 
-The NATO Education and Training Network Chemical, Biological, Radiological and Nuclear (NETN-CBRN) provides a common standard interface for the representation of CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g the exposure effect on individual humans in a CBRN contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.
+The NATO Education and Training Network Chemical, Biological, Radiological and Nuclear (NETN-CBRN) provides a standard interface for representing CBRN release, detection, effects, and protective measures in a federated distributed simulation. E.g., the exposure effect on individual humans in a CBRN-contaminated Hazard area where the human is represented in one simulation and the effect is modelled in another federate simulation.
 
 CBRN are Chemical, Biological, Radiological and Nuclear materials that can be delivered intentionally as a weapon using conventional bombs, explosive materials and enhanced blast weapons (e.g., dirty bombs) or unintentionally caused by human error or natural or technological reasons, such as spills, accidental releases or leakages. 
 
-The NETN-CBRN FOM Module is a specification of how to model CBRN-related events in a federated distributed simulation. 
-
-The specification is based on IEEE 1516 High Level Architecture (HLA) Object Model Template (OMT) and is primarily intended to support interoperability in a federated simulation (federation) based on HLA. A Federation Object Model (FOM) Module is used to specify how data is represented and exchanged in the federation. The NETN-CBRN FOM module is available as an XML file for use in HLA-based federations. 
+The NETN-CBRN module specifies how to model CBRN-related events in a federated distributed simulation.
 
 
 
